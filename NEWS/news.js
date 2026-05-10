@@ -278,7 +278,6 @@ form.addEventListener(
                 ).value
 
         };
-//fetch
 
         const response =
             await fetch(

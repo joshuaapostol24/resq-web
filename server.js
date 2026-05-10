@@ -61,6 +61,12 @@ app.use(
     newsRoutes
 );
 
+//risk report route
+app.use(
+    "/api/risk-report",
+    require("./routes/riskReportRoutes")
+);
+
 /*
     LOGIN API
 */

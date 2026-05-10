@@ -604,6 +604,171 @@ document.addEventListener(
         renderList();
 
         renderDetail();
+/*
+    MODAL
+*/
+const reportModal =
+    document.getElementById(
+        "reportModal"
+    );
 
+const createForm =
+    document.getElementById(
+        "createReportForm"
+    );
+
+/*
+    OPEN MODAL
+*/
+document
+    .querySelectorAll(
+        '[data-action="open-create"]'
+    )
+
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                reportModal.classList.remove(
+                    "hidden"
+                );
+
+            }
+        );
+
+    });
+
+/*
+    CLOSE MODAL
+*/
+document
+    .querySelectorAll(
+        '[data-action="close-create"]'
+    )
+
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                reportModal.classList.add(
+                    "hidden"
+                );
+
+            }
+        );
+
+    });
+
+/*
+    CLICK OUTSIDE
+*/
+reportModal.addEventListener(
+    "click",
+    event => {
+
+        if(event.target === reportModal){
+
+            reportModal.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+);
+
+/*
+    CREATE REPORT
+*/
+createForm.addEventListener(
+    "submit",
+    event => {
+
+        event.preventDefault();
+
+        const formData =
+            new FormData(createForm);
+
+        const report = {
+
+            id:
+                "RPT-" +
+                String(
+                    reports.length + 1
+                ).padStart(3,"0"),
+
+            title:
+                formData.get("title"),
+
+            type:
+                formData.get("type"),
+
+            priority:
+                formData.get("priority"),
+
+            status:
+                "received",
+
+            reporter:
+                formData.get("reporter"),
+
+            mobile:
+                formData.get("mobile"),
+
+            location:
+                formData.get("location"),
+
+            description:
+                formData.get("description"),
+
+            assignedTo:
+                formData.get("assignedTo"),
+
+            submittedAt:
+                new Date(),
+
+            coordinates:{
+                lat:Number(
+                    formData.get("lat")
+                ),
+                lng:Number(
+                    formData.get("lng")
+                )
+            },
+
+            dispatch:{
+                responder:
+                    formData.get("responder"),
+
+                etaMinutes:Number(
+                    formData.get("etaMinutes")
+                )
+            }
+
+        };
+
+        reports.unshift(report);
+
+        selectedReport =
+            report;
+
+        renderSummary();
+
+        renderList();
+
+        renderDetail();
+
+        createForm.reset();
+
+        reportModal.classList.add(
+            "hidden"
+        );
+
+    }
+);
     }
 );

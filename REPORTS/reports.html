@@ -126,46 +126,251 @@
                     <i data-lucide="x" size="16"></i>
                 </button>
             </div>
-            <form id="createReportForm" class="report-form">
-                <div class="form-grid">
-                    <label>Incident title<input name="title" required></label>
-                    <label>Type
-                        <select name="type" required>
-                            <option value="FIRE">Fire</option>
-                            <option value="FLOOD">Flood</option>
-                            <option value="MEDICAL">Medical</option>
-                            <option value="ACCIDENT">Accident</option>
-                            <option value="LANDSLIDE">Landslide</option>
-                            <option value="RESCUE">Rescue</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                    </label>
-                    <label>Priority
-                        <select name="priority" required>
-                            <option value="critical">Critical</option>
-                            <option value="high">High</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="low">Low</option>
-                        </select>
-                    </label>
-                    <label>Reporter<input name="reporter" required></label>
-                    <label>Mobile<input name="mobile" placeholder="+63"></label>
-                    <label>Location<input name="location" value="Mamburao, Occidental Mindoro" required></label>
-                    <label>Latitude<input name="lat" type="number" step="any" value="13.2233" required></label>
-                    <label>Longitude<input name="lng" type="number" step="any" value="120.5960" required></label>
-                    <label>Assigned unit<input name="assignedTo" value="Mamburao MDRRMO"></label>
-                    <label>Responder<input name="responder" placeholder="Team or vehicle"></label>
-                    <label>ETA minutes<input name="etaMinutes" type="number" min="1" max="240" value="10"></label>
-                    <label>Evidence URL<input name="evidenceUrl" placeholder="https://..."></label>
-                    <label>Evidence file<input name="evidenceFile" type="file" accept="image/png,image/jpeg,image/webp,application/pdf,video/mp4"></label>
-                </div>
-                <label>Description<textarea name="description" rows="4" required></textarea></label>
-                <label>Evidence note<textarea name="evidenceLabel" rows="2" placeholder="Photo, video, caller statement, landmark, or verification detail"></textarea></label>
-                <div class="modal-actions">
-                    <button class="btn-secondary" type="button" data-action="close-create">Cancel</button>
-                    <button class="btn-primary" type="submit"><i data-lucide="send" size="14"></i>Create Report</button>
-                </div>
-            </form>
+           <form id="createReportForm" class="report-form">
+
+    <div class="form-grid">
+
+        <div class="form-group">
+
+            <label>
+                Incident Title
+            </label>
+
+            <input
+                type="text"
+                name="title"
+                placeholder="Enter incident title"
+                required
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Incident Type
+            </label>
+
+            <select
+                name="type"
+                required
+            >
+
+                <option value="FIRE">
+                    FIRE
+                </option>
+
+                <option value="FLOOD">
+                    FLOOD
+                </option>
+
+                <option value="MEDICAL">
+                    MEDICAL
+                </option>
+
+                <option value="ACCIDENT">
+                    ACCIDENT
+                </option>
+
+                <option value="LANDSLIDE">
+                    LANDSLIDE
+                </option>
+
+                <option value="OTHER">
+                    OTHER
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Priority
+            </label>
+
+            <select
+                name="priority"
+                required
+            >
+
+                <option value="low">
+                    Low
+                </option>
+
+                <option value="medium">
+                    Medium
+                </option>
+
+                <option value="high">
+                    High
+                </option>
+
+                <option value="critical">
+                    Critical
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Reporter Name
+            </label>
+
+            <input
+                type="text"
+                name="reporter"
+                placeholder="Enter reporter name"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Mobile Number
+            </label>
+
+            <input
+                type="text"
+                name="mobile"
+                placeholder="09XXXXXXXXX"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Location
+            </label>
+
+            <input
+                type="text"
+                name="location"
+                placeholder="Barangay / Area"
+                required
+            >
+
+        </div>
+
+        <div class="form-group full-width">
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                rows="4"
+                placeholder="Describe the incident..."
+                required
+            ></textarea>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Assigned Unit
+            </label>
+
+            <input
+                type="text"
+                name="assignedTo"
+                placeholder="MDRRMO / Rescue Team"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Responder
+            </label>
+
+            <input
+                type="text"
+                name="responder"
+                placeholder="Responder name"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                ETA Minutes
+            </label>
+
+            <input
+                type="number"
+                name="etaMinutes"
+                placeholder="10"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Latitude
+            </label>
+
+            <input
+                type="number"
+                step="any"
+                name="lat"
+                placeholder="13.2233"
+            >
+
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Longitude
+            </label>
+
+            <input
+                type="number"
+                step="any"
+                name="lng"
+                placeholder="120.5960"
+            >
+
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+
+        <button
+            type="button"
+            class="btn-secondary"
+            data-action="close-create"
+        >
+
+            Cancel
+
+        </button>
+
+        <button
+            type="submit"
+            class="btn-primary"
+        >
+
+            Create Report
+
+        </button>
+
+    </div>
+
+</form>
         </section>
     </div>
 

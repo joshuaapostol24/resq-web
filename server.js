@@ -11,7 +11,7 @@ const path =
     require("path");
 
 const newsRoutes =
-    require("./routes/newsRoutes");
+    require("./server/routes/newsRoutes");
 
 const app =
     express();
@@ -64,7 +64,7 @@ app.use(
 //risk report route
 app.use(
     "/api/risk-report",
-    require("./routes/riskReportRoutes")
+    require("./server/routes/riskReportRoutes")
 );
 
 /*

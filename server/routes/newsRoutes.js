@@ -5,7 +5,7 @@ const router =
     express.Router();
 
 const News =
-    require("../models/News");
+    require("../../models/News");
 
 router.post(
     "/create",

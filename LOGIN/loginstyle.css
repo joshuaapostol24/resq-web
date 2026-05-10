@@ -1,0 +1,178 @@
+body{
+
+    margin:0;
+
+    font-family:Arial,sans-serif;
+
+    background:#F1F5F9;
+
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+}
+
+.login-wrapper{
+
+    width:100%;
+    max-width:420px;
+
+}
+
+.login-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.1);
+
+}
+
+.card-header{
+
+    background:#FFF5E9;
+
+    text-align:center;
+
+    padding:40px 20px;
+
+}
+
+.logo-box{
+
+    width:60px;
+    height:60px;
+
+    margin:auto auto 15px;
+
+    background:#FF8C00;
+
+    border-radius:14px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+
+}
+
+.card-body{
+
+    padding:35px;
+
+}
+
+.subtitle{
+
+    color:#64748B;
+
+    margin-bottom:25px;
+
+}
+
+.input-group{
+
+    margin-bottom:20px;
+
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+}
+
+.input-wrapper{
+
+    position:relative;
+
+}
+
+.input-wrapper input{
+
+    width:100%;
+
+    padding:14px 40px;
+
+    border:1px solid #CBD5E1;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    box-sizing:border-box;
+
+}
+
+.input-wrapper i{
+
+    position:absolute;
+
+    top:14px;
+
+    left:12px;
+
+    color:#64748B;
+
+}
+
+.eye-icon{
+
+    left:auto !important;
+
+    right:12px;
+
+    cursor:pointer;
+
+}
+
+.btn-primary{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#FF8C00;
+
+    color:white;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+}
+
+.login-feedback{
+
+    background:#FEE2E2;
+
+    color:#991B1B;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+}
+
+.hidden{
+
+    display:none;
+
+}

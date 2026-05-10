@@ -1,0 +1,377 @@
+# DASHBOARD/dashboard.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        ResQ Dashboard
+    </title>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        body{
+            font-family:Arial,sans-serif;
+            background:#F1F5F9;
+            color:#0F172A;
+        }
+
+        .sidebar{
+            position:fixed;
+            left:0;
+            top:0;
+            width:260px;
+            height:100vh;
+            background:#FFFFFF;
+            border-right:1px solid #E2E8F0;
+            padding:25px;
+        }
+
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            margin-bottom:40px;
+        }
+
+        .logo-box{
+            width:50px;
+            height:50px;
+            border-radius:14px;
+            background:#FF8C00;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .logo h2{
+            font-size:24px;
+        }
+
+        .menu{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+        }
+
+        .menu a{
+            text-decoration:none;
+            color:#334155;
+            padding:14px;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            font-weight:600;
+            transition:0.2s;
+        }
+
+        .menu a:hover,
+        .menu .active{
+            background:#FFF5E9;
+            color:#FF8C00;
+        }
+
+        .main{
+            margin-left:260px;
+            padding:30px;
+        }
+
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:30px;
+        }
+
+        .topbar h1{
+            font-size:34px;
+            margin-bottom:5px;
+        }
+
+        .topbar p{
+            color:#64748B;
+        }
+
+        .logout-btn{
+            background:#FF8C00;
+            color:white;
+            border:none;
+            padding:12px 20px;
+            border-radius:12px;
+            cursor:pointer;
+            font-weight:700;
+        }
+
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:20px;
+            margin-bottom:30px;
+        }
+
+        .card{
+            background:white;
+            border-radius:18px;
+            padding:24px;
+            box-shadow:0 4px 14px rgba(0,0,0,0.05);
+        }
+
+        .card h3{
+            color:#64748B;
+            margin-bottom:12px;
+            font-size:16px;
+        }
+
+        .card p{
+            font-size:34px;
+            font-weight:700;
+            color:#FF8C00;
+        }
+
+        .welcome{
+            background:white;
+            border-radius:20px;
+            padding:30px;
+            box-shadow:0 4px 14px rgba(0,0,0,0.05);
+        }
+
+        .welcome h2{
+            margin-bottom:12px;
+        }
+
+        .welcome p{
+            color:#64748B;
+            line-height:1.7;
+        }
+
+        @media(max-width:1000px){
+
+            .stats{
+                grid-template-columns:1fr 1fr;
+            }
+
+        }
+
+        @media(max-width:700px){
+
+            .sidebar{
+                position:relative;
+                width:100%;
+                height:auto;
+            }
+
+            .main{
+                margin-left:0;
+            }
+
+            .stats{
+                grid-template-columns:1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <script>
+
+        /*
+            SESSION CHECK
+        */
+        const loggedIn =
+            localStorage.getItem(
+                "resq_logged_in"
+            );
+
+        if(loggedIn !== "true"){
+
+            window.location.href =
+                "/LOGIN/login.html";
+
+        }
+
+    </script>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-box">
+
+                <i data-lucide="shield-alert"></i>
+
+            </div>
+
+            <h2>
+                ResQ
+            </h2>
+
+        </div>
+
+        <nav class="menu">
+
+            <a
+                href="dashboard.html"
+                class="active"
+            >
+                <i data-lucide="layout-dashboard"></i>
+                Dashboard
+            </a>
+
+            <a href="../NEWS/news.html">
+                <i data-lucide="newspaper"></i>
+                News
+            </a>
+
+            <a href="../REPORTS/reports.html">
+                <i data-lucide="file-text"></i>
+                Reports
+            </a>
+
+            <a href="../RISKREPORT/riskreport.html">
+                <i data-lucide="triangle-alert"></i>
+                Risk Report
+            </a>
+
+            <a href="../USERVER/user.html">
+                <i data-lucide="users"></i>
+                Users
+            </a>
+
+            <a href="../SETTINGS/settings.html">
+                <i data-lucide="settings"></i>
+                Settings
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div>
+
+                <h1>
+                    Dashboard
+                </h1>
+
+                <p>
+                    Welcome back,
+                    <span id="adminName"></span>
+                </p>
+
+            </div>
+
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+        <section class="stats">
+
+            <div class="card">
+                <h3>Total Residents</h3>
+                <p>1,248</p>
+            </div>
+
+            <div class="card">
+                <h3>Active Alerts</h3>
+                <p>12</p>
+            </div>
+
+            <div class="card">
+                <h3>Emergency Reports</h3>
+                <p>86</p>
+            </div>
+
+            <div class="card">
+                <h3>Risk Zones</h3>
+                <p>9</p>
+            </div>
+
+        </section>
+
+        <section class="welcome">
+
+            <h2>
+                ResQ Emergency Monitoring System
+            </h2>
+
+            <p>
+                This dashboard allows administrators to monitor emergencies,
+                publish announcements, track reports, manage users,
+                and coordinate disaster response activities.
+            </p>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        /*
+            LOAD ICONS
+        */
+        lucide.createIcons();
+
+        /*
+            SHOW USERNAME
+        */
+        document.getElementById(
+            "adminName"
+        ).innerText =
+            localStorage.getItem(
+                "resq_user"
+            ) || "Admin";
+
+        /*
+            LOGOUT
+        */
+        function logout(){
+
+            localStorage.removeItem(
+                "resq_logged_in"
+            );
+
+            localStorage.removeItem(
+                "resq_user"
+            );
+
+            window.location.href =
+                "/LOGIN/login.html";
+
+        }
+
+    </script>
+
+</body>
+</html>
+```

@@ -278,10 +278,11 @@ form.addEventListener(
                 ).value
 
         };
+//fetch
 
         const response =
             await fetch(
-                "/api/news/create",
+                "/api/news/create", 
                 {
                     method:"POST",
 

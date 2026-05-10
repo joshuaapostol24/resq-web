@@ -516,36 +516,53 @@ document.addEventListener(
 
             reports = data.map(report => ({
 
-                id:report.id,
+                id:
+                    report.id || "N/A",
 
-                title:report.title,
+                title:
+                    report.title || "Untitled Report",
 
-                type:report.type,
+                type:
+                    report.type || "OTHER",
 
-                priority:report.priority,
+                priority:
+                    report.priority || "medium",
 
-                status:report.status,
+                status:
+                    report.status || "received",
 
-                reporter:report.reporter,
+                reporter:
+                    report.reporter || "Anonymous",
 
-                mobile:report.mobile,
+                mobile:
+                    report.mobile || "Not provided",
 
-                location:report.location,
+                location:
+                    report.location || "Unknown location",
 
-                description:report.description,
+                description:
+                    report.description || "No description provided.",
 
-                assignedTo:report.assigned_to,
+                assignedTo:
+                    report.assigned_to || "Unassigned",
 
-                submittedAt:report.created_at,
+                submittedAt:
+                    report.created_at || new Date(),
 
                 coordinates:{
-                    lat:report.lat,
-                    lng:report.lng
+                    lat:
+                        report.lat || 13.2233,
+
+                    lng:
+                        report.lng || 120.5960
                 },
 
                 dispatch:{
-                    responder:report.responder,
-                    etaMinutes:report.eta_minutes
+                    responder:
+                        report.responder || "No responder",
+
+                    etaMinutes:
+                        report.eta_minutes || 0
                 }
 
             }));

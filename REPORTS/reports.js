@@ -20,6 +20,21 @@ document.addEventListener(
         }
 
         /*
+            SUPABASE
+        */
+        const SUPABASE_URL =
+            "https://jpovamcznyzoemcnjrgs.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+        /*
             LOGOUT
         */
         const logoutButton =
@@ -57,85 +72,6 @@ document.addEventListener(
             lucide.createIcons();
 
         }
-
-        /*
-            SAMPLE REPORTS
-        */
-        let reports = [
-
-            {
-                id:"RPT-001",
-
-                title:"Residential Fire",
-
-                type:"FIRE",
-
-                priority:"critical",
-
-                status:"received",
-
-                reporter:"Juan Dela Cruz",
-
-                mobile:"09123456789",
-
-                location:"Poblacion 1, Mamburao",
-
-                description:
-                    "Fire reported near the public market area.",
-
-                assignedTo:"MDRRMO",
-
-                submittedAt:new Date(),
-
-                coordinates:{
-                    lat:13.2233,
-                    lng:120.5960
-                },
-
-                dispatch:{
-                    responder:"Fire Unit Alpha",
-                    etaMinutes:10
-                }
-
-            },
-
-            {
-                id:"RPT-002",
-
-                title:"Flooded Road",
-
-                type:"FLOOD",
-
-                priority:"high",
-
-                status:"verified",
-
-                reporter:"Maria Santos",
-
-                mobile:"09987654321",
-
-                location:"Balansay, Mamburao",
-
-                description:
-                    "Heavy rain caused road flooding.",
-
-                assignedTo:"Rescue Team Bravo",
-
-                submittedAt:new Date(),
-
-                coordinates:{
-                    lat:13.2100,
-                    lng:120.6100
-                },
-
-                dispatch:{
-                    responder:"Water Rescue Team",
-                    etaMinutes:15
-                }
-
-            }
-
-        ];
 
         /*
             ELEMENTS
@@ -179,6 +115,18 @@ document.addEventListener(
             document.getElementById(
                 "reportSearch"
             );
+
+        const reportModal =
+            document.getElementById(
+                "reportModal"
+            );
+
+        const createForm =
+            document.getElementById(
+                "createReportForm"
+            );
+
+        let reports = [];
 
         let selectedReport =
             null;
@@ -262,7 +210,7 @@ document.addEventListener(
         }
 
         /*
-            RENDER LIST
+            LIST
         */
         function renderList(){
 
@@ -538,6 +486,233 @@ document.addEventListener(
         }
 
         /*
+            LOAD REPORTS
+        */
+        async function loadReportsFromSupabase(){
+
+            const {
+                data,
+                error
+            } = await supabaseClient
+
+                .from("reports")
+
+                .select("*")
+
+                .order(
+                    "created_at",
+                    {
+                        ascending:false
+                    }
+                );
+
+            if(error){
+
+                console.log(error);
+
+                return;
+
+            }
+
+            reports = data.map(report => ({
+
+                id:report.id,
+
+                title:report.title,
+
+                type:report.type,
+
+                priority:report.priority,
+
+                status:report.status,
+
+                reporter:report.reporter,
+
+                mobile:report.mobile,
+
+                location:report.location,
+
+                description:report.description,
+
+                assignedTo:report.assigned_to,
+
+                submittedAt:report.created_at,
+
+                coordinates:{
+                    lat:report.lat,
+                    lng:report.lng
+                },
+
+                dispatch:{
+                    responder:report.responder,
+                    etaMinutes:report.eta_minutes
+                }
+
+            }));
+
+            renderSummary();
+
+            renderList();
+
+            renderDetail();
+
+        }
+
+        /*
+            MODAL
+        */
+        document
+            .querySelectorAll(
+                '[data-action="open-create"]'
+            )
+
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        reportModal.classList.remove(
+                            "hidden"
+                        );
+
+                    }
+                );
+
+            });
+
+        document
+            .querySelectorAll(
+                '[data-action="close-create"]'
+            )
+
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        reportModal.classList.add(
+                            "hidden"
+                        );
+
+                    }
+                );
+
+            });
+
+        reportModal.addEventListener(
+            "click",
+            event => {
+
+                if(event.target === reportModal){
+
+                    reportModal.classList.add(
+                        "hidden"
+                    );
+
+                }
+
+            }
+        );
+
+        /*
+            CREATE REPORT
+        */
+        createForm.addEventListener(
+            "submit",
+            async event => {
+
+                event.preventDefault();
+
+                const formData =
+                    new FormData(createForm);
+
+                const report = {
+
+                    title:
+                        formData.get("title"),
+
+                    type:
+                        formData.get("type"),
+
+                    priority:
+                        formData.get("priority"),
+
+                    status:
+                        "received",
+
+                    reporter:
+                        formData.get("reporter"),
+
+                    mobile:
+                        formData.get("mobile"),
+
+                    location:
+                        formData.get("location"),
+
+                    description:
+                        formData.get("description"),
+
+                    assigned_to:
+                        formData.get("assignedTo"),
+
+                    responder:
+                        formData.get("responder"),
+
+                    eta_minutes:Number(
+                        formData.get("etaMinutes")
+                    ),
+
+                    lat:Number(
+                        formData.get("lat")
+                    ),
+
+                    lng:Number(
+                        formData.get("lng")
+                    )
+
+                };
+
+                const {
+                    data,
+                    error
+                } = await supabaseClient
+
+                    .from("reports")
+
+                    .insert([report])
+
+                    .select();
+
+                if(error){
+
+                    console.log(error);
+
+                    alert(
+                        "Failed to create report"
+                    );
+
+                    return;
+
+                }
+
+                alert(
+                    "Report created successfully"
+                );
+
+                createForm.reset();
+
+                reportModal.classList.add(
+                    "hidden"
+                );
+
+                loadReportsFromSupabase();
+
+            }
+        );
+
+        /*
             SEARCH
         */
         searchInput.addEventListener(
@@ -565,15 +740,7 @@ document.addEventListener(
 
                 button.addEventListener(
                     "click",
-                    () => {
-
-                        renderSummary();
-
-                        renderList();
-
-                        renderDetail();
-
-                    }
+                    loadReportsFromSupabase
                 );
 
             });
@@ -599,176 +766,7 @@ document.addEventListener(
         /*
             INIT
         */
-        renderSummary();
+        loadReportsFromSupabase();
 
-        renderList();
-
-        renderDetail();
-/*
-    MODAL
-*/
-const reportModal =
-    document.getElementById(
-        "reportModal"
-    );
-
-const createForm =
-    document.getElementById(
-        "createReportForm"
-    );
-
-/*
-    OPEN MODAL
-*/
-document
-    .querySelectorAll(
-        '[data-action="open-create"]'
-    )
-
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                reportModal.classList.remove(
-                    "hidden"
-                );
-
-            }
-        );
-
-    });
-
-/*
-    CLOSE MODAL
-*/
-document
-    .querySelectorAll(
-        '[data-action="close-create"]'
-    )
-
-    .forEach(button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                reportModal.classList.add(
-                    "hidden"
-                );
-
-            }
-        );
-
-    });
-
-/*
-    CLICK OUTSIDE
-*/
-reportModal.addEventListener(
-    "click",
-    event => {
-
-        if(event.target === reportModal){
-
-            reportModal.classList.add(
-                "hidden"
-            );
-
-        }
-
-    }
-);
-
-/*
-    CREATE REPORT
-*/
-createForm.addEventListener(
-    "submit",
-    event => {
-
-        event.preventDefault();
-
-        const formData =
-            new FormData(createForm);
-
-        const report = {
-
-            id:
-                "RPT-" +
-                String(
-                    reports.length + 1
-                ).padStart(3,"0"),
-
-            title:
-                formData.get("title"),
-
-            type:
-                formData.get("type"),
-
-            priority:
-                formData.get("priority"),
-
-            status:
-                "received",
-
-            reporter:
-                formData.get("reporter"),
-
-            mobile:
-                formData.get("mobile"),
-
-            location:
-                formData.get("location"),
-
-            description:
-                formData.get("description"),
-
-            assignedTo:
-                formData.get("assignedTo"),
-
-            submittedAt:
-                new Date(),
-
-            coordinates:{
-                lat:Number(
-                    formData.get("lat")
-                ),
-                lng:Number(
-                    formData.get("lng")
-                )
-            },
-
-            dispatch:{
-                responder:
-                    formData.get("responder"),
-
-                etaMinutes:Number(
-                    formData.get("etaMinutes")
-                )
-            }
-
-        };
-
-        reports.unshift(report);
-
-        selectedReport =
-            report;
-
-        renderSummary();
-
-        renderList();
-
-        renderDetail();
-
-        createForm.reset();
-
-        reportModal.classList.add(
-            "hidden"
-        );
-
-    }
-);
     }
 );

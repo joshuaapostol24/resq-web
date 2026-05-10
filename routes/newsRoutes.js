@@ -65,5 +65,23 @@ router.get(
     }
 );
 
+router.get(
+    "/public",
+    async (req, res) => {
+        try {
+            const news =
+                await News.find()
+                .sort({ createdAt: -1 });
+            res.json(news);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({
+                success: false,
+                error: error.message
+            });
+        }
+    }
+);
+
 module.exports =
     router;

@@ -58,8 +58,6 @@ if(logoutButton){
     }
 
     // =========================
-    // ELEMENTS
-    // =========================
 
     const barangaySelect = document.getElementById("barangaySelect");
     const generateRiskBtn = document.getElementById("generateRiskBtn");
@@ -76,9 +74,7 @@ if(logoutButton){
     const moderateRiskCount = document.getElementById("moderateRiskCount");
     const safeCount = document.getElementById("safeCount");
 
-    // =========================
-    // HELPERS
-    // =========================
+
 
     function escapeHtml(value = "") {
 
@@ -459,8 +455,13 @@ if(logoutButton){
                     </div>
 
                     <div class="weather-box">
-                        <span>Flood Depth</span>
-                        <strong>${Math.floor(rainfall / 10)} ft</strong>
+                        <span>Flood Probability</span>
+                        <strong>
+                            ${Math.min(
+                                100,
+                                Math.floor(score / 2)
+                            )}%
+                        </strong>
                     </div>
 
                     <div class="weather-box">

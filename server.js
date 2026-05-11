@@ -38,7 +38,7 @@ app.use(
     MONGODB
 */
 mongoose.connect(
-    "mongodb://batutoytria_db_user:October1001%21%40%23@ac-cmgnn9t-shard-00-00.rvgegja.mongodb.net:27017,ac-cmgnn9t-shard-00-01.rvgegja.mongodb.net:27017,ac-cmgnn9t-shard-00-02.rvgegja.mongodb.net:27017/?ssl=true&replicaSet=atlas-6e6lj1-shard-0&authSource=admin&appName=resq-cluster"
+    "mongodb+srv://batutoytria_db_user:October1001%21%40%23@resq-cluster.rvgegja.mongodb.net/?appName=resq-cluster"
 )
 .then(() => {
 

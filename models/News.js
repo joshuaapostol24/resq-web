@@ -4,29 +4,45 @@ const mongoose =
 const NewsSchema =
     new mongoose.Schema({
 
-        title: String,
+        title:{
+            type:String,
+            required:true
+        },
 
-        category: String,
+        category:{
+            type:String,
+            default:"General News"
+        },
 
-        priority: String,
+        priority:{
+            type:String,
+            default:"Low"
+        },
 
-        date: String,
+        date:{
+            type:String
+        },
 
-        audience: String,
+        audience:{
+            type:String,
+            default:"All Residents"
+        },
 
-        pinned: String,
+        pinned:{
+            type:String,
+            default:"No"
+        },
 
-        message: String,
-
-        createdAt: {
-
-            type: Date,
-
-            default: Date.now
-
+        message:{
+            type:String,
+            required:true
         }
 
-    });
+    },
+    {
+        timestamps:true
+    }
+);
 
 module.exports =
     mongoose.model(

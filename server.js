@@ -1,4 +1,6 @@
-require("dotenv").config();
+require("dotenv").config({
+    quiet:true
+});
 
 const express =
     require("express");
@@ -39,9 +41,7 @@ app.use(
 /*
     MONGODB
 */
-console.log(
-    process.env.MONGO_URI
-);
+
 
 mongoose.connect(
     process.env.MONGO_URI,

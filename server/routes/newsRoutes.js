@@ -75,13 +75,44 @@ router.post(
 
         try {
 
+            console.log(
+                "Incoming News:"
+            );
+
             console.log(req.body);
 
             const news =
-                new News(req.body);
+                new News({
+
+                    title:
+                        req.body.title,
+
+                    category:
+                        req.body.category,
+
+                    priority:
+                        req.body.priority,
+
+                    date:
+                        req.body.date,
+
+                    audience:
+                        req.body.audience,
+
+                    pinned:
+                        req.body.pinned,
+
+                    message:
+                        req.body.message
+
+                });
 
             await news.save();
-            
+
+            console.log(
+                "News saved successfully"
+            );
+
             notifyUsersOfNews(news);
 
             res.json({
@@ -90,11 +121,23 @@ router.post(
 
         } catch (error) {
 
+            console.log(
+                "NEWS SAVE ERROR:"
+            );
+
             console.log(error);
 
+            console.log(
+                error.message
+            );
+
             res.status(500).json({
+
                 success: false,
-                error: error.message
+
+                error:
+                    error.message
+
             });
 
         }

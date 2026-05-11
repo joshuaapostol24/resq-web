@@ -38,7 +38,7 @@ app.use(
     MONGODB
 */
 mongoose.connect(
-    "mongodb+srv://batutoytria_db_user:October1001%21%40%23@resq-cluster.rvgegja.mongodb.net/?appName=resq-cluster"
+    "mongodb+srv://batutoytria_db_user:October1001%21%40%23@resq-cluster.rvgegja.mongodb.net/resq?retryWrites=true&w=majority&appName=resq-cluster"
 )
 .then(() => {
 

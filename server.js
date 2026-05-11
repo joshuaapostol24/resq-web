@@ -83,6 +83,14 @@ app.use(
 );
 
 /*
+    WEATHER RISK API
+*/
+app.use(
+    "/api/weather-risk",
+    require("./server/routes/weatherRiskRoutes")
+);
+
+/*
     LOGIN API
 */
 app.post(

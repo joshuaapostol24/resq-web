@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const express =
     require("express");
 
@@ -39,13 +37,8 @@ app.use(
 /*
     MONGODB
 */
-console.log(
-    "Connecting to:",
-    process.env.MONGO_URI
-);
-
 mongoose.connect(
-    process.env.MONGO_URI
+    "mongodb://batutoytria_db_user:October1001%21%40%23@ac-cmgnn9t-shard-00-00.rvgegja.mongodb.net:27017,ac-cmgnn9t-shard-00-01.rvgegja.mongodb.net:27017,ac-cmgnn9t-shard-00-02.rvgegja.mongodb.net:27017/?ssl=true&replicaSet=atlas-6e6lj1-shard-0&authSource=admin&appName=resq-cluster"
 )
 .then(() => {
 
@@ -55,10 +48,6 @@ mongoose.connect(
 
 })
 .catch(err => {
-
-    console.log(
-        "MongoDB Error:"
-    );
 
     console.log(err);
 
@@ -72,9 +61,7 @@ app.use(
     newsRoutes
 );
 
-/*
-    RISK REPORT ROUTE
-*/
+//risk report route
 app.use(
     "/api/risk-report",
     require("./server/routes/riskReportRoutes")

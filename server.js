@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express =
     require("express");
 
@@ -37,8 +39,15 @@ app.use(
 /*
     MONGODB
 */
+console.log(
+    process.env.MONGO_URI
+);
+
 mongoose.connect(
-    "mongodb+srv://batutoytria_db_user:October1001%21%40%23@resq-cluster.rvgegja.mongodb.net/resq?retryWrites=true&w=majority&appName=resq-cluster"
+    process.env.MONGO_URI,
+    {
+        family:4
+    }
 )
 .then(() => {
 
@@ -48,6 +57,10 @@ mongoose.connect(
 
 })
 .catch(err => {
+
+    console.log(
+        "MongoDB Error:"
+    );
 
     console.log(err);
 
@@ -61,7 +74,9 @@ app.use(
     newsRoutes
 );
 
-//risk report route
+/*
+    RISK REPORT ROUTE
+*/
 app.use(
     "/api/risk-report",
     require("./server/routes/riskReportRoutes")

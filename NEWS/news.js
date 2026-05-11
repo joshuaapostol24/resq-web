@@ -36,45 +36,47 @@ const latestContainer =
         "latestAnnouncements"
     );
 
-const resultCount =
-    document.getElementById(
-        "resultCount"
-    );
-
 /*
     LOAD ANNOUNCEMENTS
 */
 async function loadAnnouncements(){
 
-    const response =
-        await fetch(
-            "/api/news/all"
+    try{
+
+        const response =
+            await fetch(
+                "/api/news/all"
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "Failed to fetch news"
+            );
+
+        }
+
+        let announcements =
+            await response.json();
+
+        /*
+            SORT NEWEST FIRST
+        */
+        announcements.sort(
+            (a,b) =>
+                new Date(b.createdAt)
+                -
+                new Date(a.createdAt)
         );
 
-    const announcements =
-        await response.json();
-
-    /*
-        COUNT
-    */
-    if(resultCount){
-
-        resultCount.innerText =
-            announcements.length +
-            " found";
-
-    }
-
-    /*
-        PINNED
-    */
-    const pinned =
-        announcements.find(
-            item =>
-                item.pinned === "Yes"
-        );
-
-    if(pinnedContainer){
+        /*
+            PINNED
+        */
+        const pinned =
+            announcements.find(
+                item =>
+                    item.pinned === "Yes"
+            );
 
         if(pinned){
 
@@ -85,7 +87,7 @@ async function loadAnnouncements(){
                     <div class="news-title-row">
 
                         <h3>
-                            ${pinned.title}
+                            ${pinned.title || ""}
                         </h3>
 
                         <span class="badge">
@@ -95,21 +97,21 @@ async function loadAnnouncements(){
                     </div>
 
                     <p>
-                        ${pinned.message}
+                        ${pinned.message || ""}
                     </p>
 
                     <div class="meta-row">
 
                         <span>
-                            ${pinned.category}
+                            ${pinned.category || ""}
                         </span>
 
                         <span>
-                            • ${pinned.priority}
+                            • ${pinned.priority || ""}
                         </span>
 
                         <span>
-                            • ${pinned.audience}
+                            • ${pinned.audience || ""}
                         </span>
 
                     </div>
@@ -134,13 +136,9 @@ async function loadAnnouncements(){
 
         }
 
-    }
-
-    /*
-        LATEST
-    */
-    if(latestContainer){
-
+        /*
+            ALL NEWS
+        */
         latestContainer.innerHTML = "";
 
         if(announcements.length === 0){
@@ -161,66 +159,83 @@ async function loadAnnouncements(){
 
         }
 
-        announcements
-            .slice()
-            .reverse()
-            .forEach(news => {
+        announcements.forEach(news => {
 
-                const formattedDate =
-                    news.date
-                    ? new Date(news.date)
-                        .toLocaleString()
-                    : "No date";
+            const formattedDate =
+                news.date
+                ? new Date(news.date)
+                    .toLocaleString()
+                : "No date";
 
-                const card =
-                    document.createElement(
-                        "div"
-                    );
-
-                card.className =
-                    "news-card";
-
-                card.innerHTML = `
-
-                    <div class="news-title-row">
-
-                        <h3>
-                            ${news.title}
-                        </h3>
-
-                        <span class="badge">
-                            ${news.priority}
-                        </span>
-
-                    </div>
-
-                    <p>
-                        ${news.message}
-                    </p>
-
-                    <div class="meta-row">
-
-                        <span>
-                            ${news.category}
-                        </span>
-
-                        <span>
-                            • ${news.audience}
-                        </span>
-
-                        <span>
-                            • ${formattedDate}
-                        </span>
-
-                    </div>
-
-                `;
-
-                latestContainer.appendChild(
-                    card
+            const card =
+                document.createElement(
+                    "div"
                 );
 
-            });
+            card.className =
+                "news-card";
+
+            card.innerHTML = `
+
+                <div class="news-title-row">
+
+                    <h3>
+                        ${news.title || ""}
+                    </h3>
+
+                    <span class="badge">
+                        ${news.priority || ""}
+                    </span>
+
+                </div>
+
+                <p>
+                    ${news.message || ""}
+                </p>
+
+                <div class="meta-row">
+
+                    <span>
+                        ${news.category || ""}
+                    </span>
+
+                    <span>
+                        • ${news.audience || ""}
+                    </span>
+
+                    <span>
+                        • ${formattedDate}
+                    </span>
+
+                </div>
+
+            `;
+
+            latestContainer.appendChild(
+                card
+            );
+
+        });
+
+    }catch(error){
+
+        console.log(
+            "Load News Error:"
+        );
+
+        console.log(error);
+
+        latestContainer.innerHTML = `
+
+            <div class="empty-state">
+
+                <h3>
+                    Failed to load announcements
+                </h3>
+
+            </div>
+
+        `;
 
     }
 
@@ -232,7 +247,7 @@ async function loadAnnouncements(){
 loadAnnouncements();
 
 /*
-    SUBMIT
+    SUBMIT NEWS
 */
 form.addEventListener(
     "submit",
@@ -279,27 +294,90 @@ form.addEventListener(
 
         };
 
-        const response =
-            await fetch(
-                "/api/news/create", 
-                {
-                    method:"POST",
+        try{
 
-                    headers:{
-                        "Content-Type":
-                        "application/json"
-                    },
+            const response =
+                await fetch(
+                    "/api/news/create",
+                    {
+                        method:"POST",
 
-                    body:
-                        JSON.stringify(news)
-                }
+                        headers:{
+                            "Content-Type":
+                            "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(news)
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            console.log(result);
+
+            if(result.success){
+
+                alert(
+                    "Announcement published successfully"
+                );
+
+                form.reset();
+
+                loadAnnouncements();
+
+            }else{
+
+                alert(
+                    "Failed to publish announcement"
+                );
+
+            }
+
+        }catch(error){
+
+            console.log(
+                "Submit Error:"
             );
 
-        await response.json();
+            console.log(error);
 
-        form.reset();
+            alert(
+                "Server error while publishing announcement"
+            );
 
-        loadAnnouncements();
+        }
 
     }
 );
+
+/*
+    SCROLL TO CREATE
+*/
+const newAnnouncementBtn =
+    document.getElementById(
+        "newAnnouncementBtn"
+    );
+
+if(newAnnouncementBtn){
+
+    newAnnouncementBtn.addEventListener(
+        "click",
+        () => {
+
+            document
+                .getElementById(
+                    "createAnnouncementSection"
+                )
+
+                .scrollIntoView({
+
+                    behavior:"smooth"
+
+                });
+
+        }
+    );
+
+}

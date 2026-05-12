@@ -522,11 +522,6 @@ document.addEventListener(
 
                 .select("*")
 
-                .eq(
-                    "status",
-                    "approved"
-                )
-
                 .order(
                     "created_at",
                     {

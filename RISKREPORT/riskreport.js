@@ -121,96 +121,6 @@ if(logoutButton){
 
 }
 
-    async function loadHistory(){
-
-        try{
-
-            const barangay =
-                barangaySelect.value;
-
-            if(!barangay){
-
-                alert(
-                    "Select a barangay first"
-                );
-
-                return;
-
-            }
-
-            historySection.classList.remove(
-                "hidden"
-            );
-
-            const response =
-                await fetch(
-
-                    `${API_BASE_URL}/history/${barangay}`
-
-                );
-
-            const data =
-                await response.json();
-
-            historyTableBody.innerHTML = "";
-
-            if(data.length === 0){
-
-                historyTableBody.innerHTML = `
-
-                    <tr>
-
-                        <td colspan="4">
-
-                            No history data
-
-                        </td>
-
-                    </tr>
-
-                `;
-
-                return;
-
-            }
-
-            data.forEach(item => {
-
-                historyTableBody.innerHTML += `
-
-                    <tr>
-
-                        <td>
-                            ${item.timestamp || ""}
-                        </td>
-
-                        <td>
-                            ${item.rainfall || ""}
-                        </td>
-
-                        <td>
-                            ${item.humidity || ""}
-                        </td>
-
-                        <td>
-                            ${item.risk_level || ""}
-                        </td>
-
-                    </tr>
-
-                `;
-
-            });
-
-        }catch(error){
-
-            console.log(error);
-
-        }
-
-    }
-
-
 
     const generateRiskBtn = document.getElementById("generateRiskBtn");
 
@@ -279,8 +189,8 @@ if(logoutButton){
 
         try {
 
-            showLoading(historyContainer, "Loading assessment history...");
-
+            historySection.classList.remove("hidden");
+            
             const endpoint = `${API_BASE_URL}/history/${barangay}`;
 
             const response = await fetch(endpoint, {
@@ -291,49 +201,51 @@ if(logoutButton){
 
             if (!history.length) {
 
-                historyContainer.innerHTML = `
-                    <div class="empty-state">
-                        No assessment history available
-                    </div>
+                historyTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="4">
+                            No assessment history available
+                        </td>
+                    </tr>
                 `;
 
                 return;
             }
 
-            historyContainer.innerHTML = history.map(item => `
+                historyTableBody.innerHTML = "";
 
-                <div class="history-item">
+                history.forEach(item => {
 
-                    <div>
+                    historyTableBody.innerHTML += `
+                        <tr>
+                            <td>
+                                ${
+                                    new Date(item.timestamp)
+                                    .toLocaleString()
+                                }
+                            </td>
 
-                        <h4>
-                            ${escapeHtml(item.barangay)}
-                        </h4>
+                            <td>${item.rainfall}</td>
 
-                        <p>
-                            ${new Date(item.timestamp).toLocaleString()}
-                        </p>
+                            <td>${item.humidity}</td>
 
-                    </div>
-
-                    <div class="risk-badge ${getRiskClass(item.riskLevel)}">
-                        ${escapeHtml(item.riskLevel)}
-                    </div>
-
-                </div>
-
-            `).join("");
+                            <td>${item.final_risk}</td>
+                        </tr>
+                    `;
+                });
 
         } catch (error) {
 
-            console.error(error);
+    console.error(error);
 
-            historyContainer.innerHTML = `
-                <div class="empty-state">
-                    Failed to load history
-                </div>
-            `;
-        }
+    historyTableBody.innerHTML = `
+        <tr>
+            <td colspan="4">
+                Failed to load history
+            </td>
+        </tr>
+    `;
+    }
 
     }
 
@@ -366,6 +278,8 @@ if(logoutButton){
 
     function renderRiskResult(data) {
 
+        console.log("NEW CODE RUNNING");
+
         const riskClass = getRiskClass(data.risk_level);
 
         riskResultContainer.innerHTML = `
@@ -377,7 +291,11 @@ if(logoutButton){
                     <div>
 
                         <h2>
-                            ${escapeHtml(data.barangay)}
+                            ${
+                                barangaySelect.options[
+                                    barangaySelect.selectedIndex
+                                ].text
+                            }
                         </h2>
 
                         <p>
@@ -507,7 +425,11 @@ if(logoutButton){
                     <div>
 
                         <h2>
-                            ${escapeHtml(barangay)}
+                            ${escapeHtml(
+                                barangaySelect.options[
+                                    barangaySelect.selectedIndex
+                                ].text
+                            )}
                         </h2>
 
                         <p>
@@ -620,8 +542,6 @@ if(logoutButton){
 document.getElementById("refreshBtn")
     .addEventListener("click", () => {
 
-        loadSummary();
-
         loadHistory();
 
     });
@@ -705,19 +625,23 @@ if(weatherRiskBtn){
 
                             <div>
 
-                                <h2>
-                                    ${data.city}
+                               <h2>
+                                 ${
+                                        barangaySelect.options[
+                                            barangaySelect.selectedIndex
+                                        ].text
+                                    }
                                 </h2>
 
                                 <p>
-                                    ${data.weather}
+                                    ML-Based Disaster Risk Assessment
                                 </p>
 
                             </div>
 
-                            <div class="risk-badge ${data.risk_level.toLowerCase()}">
+                            <div class="risk-badge ${(data.risk_level || "low").toLowerCase()}">
 
-                                ${data.risk_level}
+                               ${data.risk_level || "LOW"}
 
                             </div>
 

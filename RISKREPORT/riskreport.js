@@ -281,9 +281,7 @@ if(logoutButton){
 
             showLoading(historyContainer, "Loading assessment history...");
 
-            const endpoint = barangay
-                ? `/api/risk-report/history/${encodeURIComponent(barangay)}`
-                : `/api/risk-report/history`;
+            const endpoint = `${API_BASE_URL}/history/${barangay}`;
 
             const response = await fetch(endpoint, {
                 headers: authHeaders()

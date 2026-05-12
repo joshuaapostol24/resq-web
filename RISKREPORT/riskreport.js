@@ -311,7 +311,7 @@ if(logoutButton){
                         </h4>
 
                         <p>
-                            ${new Date(item.calculatedAt).toLocaleString()}
+                            ${new Date(item.timestamp).toLocaleString()}
                         </p>
 
                     </div>

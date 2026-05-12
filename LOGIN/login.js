@@ -98,10 +98,12 @@ document.addEventListener(
 
                                 body:JSON.stringify({
 
-                                    email:
-                                        emailInput.value,
-                                    password:
-                                        passwordInput.value
+                                     email:
+                                        email,
+
+                                     password:
+                                        password
+
 
                                 })
                             }

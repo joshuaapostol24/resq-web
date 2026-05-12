@@ -915,7 +915,7 @@ app.post("/api/login", loginLimit, asyncRoute(async (req, res) => {
   } catch (error) {
     const fallbackUsername = process.env.DEFAULT_ADMIN_USERNAME || "admin";
     const fallbackEmail = process.env.DEFAULT_ADMIN_EMAIL || "admin@resq.local";
-    const fallbackPassword = process.env.DEFAULT_ADMIN_PASSWORD || "admin";
+    const fallbackPassword = process.env.DEFAULT_ADMIN_PASSWORD || "admin123";
     const loginMatches = login === fallbackUsername || login === fallbackEmail || login === "admin";
     const passwordMatches = password === fallbackPassword || (login === "admin" && password === "admin");
 

@@ -98,13 +98,15 @@ app.post(
     async(req,res)=>{
 
         const {
-            email,
+            username,
             password
         } = req.body;
 
         if(
 
-            email === "admin@resq.com" &&
+            username === "admin"
+
+            &&
 
             password === "admin123"
 
@@ -114,8 +116,7 @@ app.post(
 
                 success:true,
 
-                redirect:
-                    "/DASHBOARD/dashboard.html"
+                role:"admin"
 
             });
 

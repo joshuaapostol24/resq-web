@@ -59,7 +59,49 @@ if(logoutButton){
 
     // =========================
 
-    const barangaySelect = document.getElementById("barangaySelect");
+    const barangaySelect =
+    document.getElementById("barangaySelect");
+
+    async function loadBarangays(){
+
+        try{
+
+            const response =
+                await fetch(
+                    "http://192.168.254.108:8000/barangays"
+                );
+
+            const data =
+                await response.json();
+
+            barangaySelect.innerHTML =
+                `<option value="">
+                    Select Barangay
+                </option>`;
+
+            data.forEach((barangay)=>{
+
+                barangaySelect.innerHTML += `
+
+                    <option value="${barangay.barangay_id}">
+
+                        ${barangay.name}
+
+                    </option>
+
+                `;
+
+            });
+
+    }
+    catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
     const generateRiskBtn = document.getElementById("generateRiskBtn");
 
     const runSimulationBtn = document.getElementById("runSimulationBtn");
@@ -573,37 +615,52 @@ if(weatherRiskBtn){
             try{
 
                 const city =
-                    barangaySelect.value;;
+                    barangaySelect.value;
 
                 if(!city){
 
                     alert(
-                        "Please enter a city"
+                        "Please select a barangay"
                     );
 
                     return;
 
                 }
 
-                const response =
-                    await fetch(
-                        `/api/weather-risk/Mamburao`
-                    );
+                
+
+               const response =
+                await fetch(
+
+                    "http://192.168.254.108:8000/predict-risk",
+
+                {
+
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":"application/json"
+                        },
+
+                        body:JSON.stringify({
+
+                            barangay_id:
+                                Number(city),
+
+                            hazard_type:
+                                "Flood"
+
+                        })
+
+                }
+
+            );
 
                 const data =
                     await response.json();
 
                 console.log(data);
 
-                if(!data.success){
-
-                    alert(
-                        "Failed to get weather risk"
-                    );
-
-                    return;
-
-                }
 
                 document.getElementById(
                     "weatherRiskResult"
@@ -625,9 +682,9 @@ if(weatherRiskBtn){
 
                             </div>
 
-                            <div class="risk-badge ${data.riskLevel.toLowerCase()}">
+                            <div class="risk-badge ${data.risk_level.toLowerCase()}">
 
-                                ${data.riskLevel}
+                                ${data.risk_level}
 
                             </div>
 
@@ -666,7 +723,7 @@ if(weatherRiskBtn){
                                 </span>
 
                                 <strong>
-                                    ${data.windSpeed}
+                                    ${data.wind_speed}
                                 </strong>
 
                             </div>
@@ -689,13 +746,12 @@ if(weatherRiskBtn){
 
                 `;
 
-            }catch(error){
+            }
+            catch(error){
 
-                console.log(error);
+                console.error(error);
 
-                alert(
-                    "Server Error"
-                );
+                alert(error);
 
             }
 
@@ -707,9 +763,11 @@ if(weatherRiskBtn){
 // =========================
 // INIT
 // =========================
+loadBarangays();
 
 await loadSummary();
 
 await loadHistory();
 
 });
+

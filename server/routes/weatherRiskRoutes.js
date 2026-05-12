@@ -12,13 +12,16 @@ const router =
     express.Router();
 
 router.get(
-    "/:city",
+    "/:lat/:lon",
     async(req,res)=>{
 
         try{
 
-            const city =
-                req.params.city;
+            const lat =
+                req.params.lat;
+
+            const lon =
+                req.params.lon;
 
             const apiKey =
                 process.env.OPENWEATHER_API_KEY;
@@ -26,7 +29,7 @@ router.get(
             const response =
                 await fetch(
 
-                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+                    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
 
                 );
 

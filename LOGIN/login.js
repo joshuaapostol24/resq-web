@@ -124,7 +124,7 @@ document.addEventListener(
 
                         localStorage.setItem(
                             "resq_user",
-                            username
+                            email
                         );
 
                         window.location.href =

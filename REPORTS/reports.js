@@ -358,7 +358,30 @@ document.addEventListener(
                     ${getStatusBadge(
                         selectedReport.status
                     )}
+                                
+                <div class="detail-actions">
 
+                    <button
+                        class="action-btn btn-approve"
+                        onclick="approveReport('${selectedReport.id}')"
+                    >
+
+                        Approve
+
+                    </button>
+
+                    <button
+                        class="action-btn btn-reject"
+                        onclick="rejectReport('${selectedReport.id}')"
+                    >
+
+                        Reject
+
+                    </button>
+
+                </div>
+
+                                    
                 </div>
 
                 <div class="detail-body">
@@ -648,7 +671,7 @@ document.addEventListener(
                 const report = {
 
                     title:
-                        formData.get("title"),
+                        formData.get("type"),
 
                     type:
                         formData.get("type"),
@@ -657,7 +680,7 @@ document.addEventListener(
                         formData.get("priority"),
 
                     status:
-                        "received",
+                        "pending",
 
                     reporter:
                         formData.get("reporter"),
@@ -779,6 +802,79 @@ document.addEventListener(
 
                 }
             );
+
+            window.approveReport = async function(id){
+
+                try{
+
+                    const {
+                        error
+                    } = await supabaseClient
+
+                        .from("reports")
+
+                        .update({
+
+                            status:"approved"
+
+                        })
+
+                        .eq("id", id);
+
+                    if(error){
+
+                        console.log(error);
+
+                        return;
+
+                    }
+
+                    loadReportsFromSupabase();
+
+                }catch(error){
+
+                    console.log(error);
+
+                }
+
+            };
+
+            window.rejectReport = async function(id){
+
+                try{
+
+                    const {
+                        error
+                    } = await supabaseClient
+
+                        .from("reports")
+
+                        .update({
+
+                            status:"rejected"
+
+                        })
+
+                        .eq("id", id);
+
+                    if(error){
+
+                        console.log(error);
+
+                        return;
+
+                    }
+
+        loadReportsFromSupabase();
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+};
+
 
         /*
             INIT

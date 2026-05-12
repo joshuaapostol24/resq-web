@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // AUTH
     // =========================
 
+const API_BASE_URL =
+    "https://resq-app-xsb98.ondigitalocean.app/api";
     /*
     NEW AUTH SYSTEM
 */
@@ -68,7 +70,7 @@ if(logoutButton){
 
             const response =
                 await fetch(
-                    "http://192.168.254.108:8000/barangays"
+                    `${API_BASE_URL}/barangays`
                 );
 
             const data =
@@ -632,7 +634,7 @@ if(weatherRiskBtn){
                const response =
                 await fetch(
 
-                    "http://192.168.254.108:8000/predict-risk",
+                    `${API_BASE_URL}/predict-risk`,
 
                 {
 

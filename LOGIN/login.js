@@ -73,7 +73,7 @@ document.addEventListener(
                     "hidden"
                 );
 
-                const username =
+                const email =
                     document.getElementById(
                         "username"
                     ).value.trim();
@@ -98,7 +98,7 @@ document.addEventListener(
 
                                 body:JSON.stringify({
 
-                                    username,
+                                    email,
                                     password
 
                                 })

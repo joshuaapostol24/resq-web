@@ -174,7 +174,7 @@ Expected columns:
 **.env file (server/)**
 ```env
 PORT=5000
-MONGO_URL=mongodb://...
+MONGO_URI=mongodb://...
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_KEY=your-supabase-key
 ```

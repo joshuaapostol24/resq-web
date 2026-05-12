@@ -171,104 +171,11 @@
 
         </section>
 
-        <!-- SUMMARY -->
 
-        <section class="summary-grid">
-
-            <article class="summary-card">
-
-                <span>
-                    Total Assessments
-                </span>
-
-                <strong id="totalAssessments">
-                    0
-                </strong>
-
-            </article>
-
-            <article class="summary-card">
-
-                <span>
-                    High Risk Barangays
-                </span>
-
-                <strong id="highRiskCount">
-                    0
-                </strong>
-
-            </article>
-
-            <article class="summary-card">
-
-                <span>
-                    Moderate Risk Areas
-                </span>
-
-                <strong id="moderateRiskCount">
-                    0
-                </strong>
-
-            </article>
-
-            <article class="summary-card">
-
-                <span>
-                    Safe Barangays
-                </span>
-
-                <strong id="safeCount">
-                    0
-                </strong>
-
-            </article>
-
-        </section>
-
-        <!-- TOOLBAR -->
-
-        <section class="toolbar">
-
-            <select id="barangaySelect">
-
-    <option value="">
-        Select Barangay
-    </option>
+        
     
 </select>
 
-            <button
-                class="btn-primary"
-                id="generateRiskBtn"
-            >
-
-                <i data-lucide="shield-alert" size="14"></i>
-
-                Get Risk Report
-
-            </button>
-
-            <button
-                class="btn-secondary"
-                id="openSimulationBtn"
-            >
-
-                <i data-lucide="flask-conical" size="14"></i>
-
-                Disaster Simulation
-
-            </button>
-
-            <button
-                class="btn-secondary"
-                id="loadHistoryBtn"
-            >
-
-                <i data-lucide="history" size="14"></i>
-
-                View History
-
-            </button>
 
         </section>
 
@@ -286,7 +193,71 @@
 
             <div class="weather-risk-toolbar">
 
+                <select id="barangaySelect">
+                    <option value="">
+                        Select Barangay
+                    </option>
 
+                    <option value="8">
+                        Poblacion 1
+                    </option>
+
+                    <option value="9">
+                        Poblacion 2
+                    </option>
+
+                    <option value="10">
+                        Poblacion 3
+                    </option>
+
+                    <option value="11">
+                        Poblacion 4
+                    </option>
+
+                    <option value="12">
+                        Poblacion 5
+                    </option>
+
+                    <option value="13">
+                        Poblacion 6
+                    </option>
+
+                    <option value="14">
+                        Poblacion 7
+                    </option>
+
+                    <option value="15">
+                        Poblacion 8
+                    </option>
+
+                    <option value="3">
+                        Payompon
+                    </option>
+
+                    <option value="1">
+                        Balansay
+                    </option>
+
+                    <option value="2">
+                        Fatima
+                    </option>
+
+                    <option value="7">
+                        Tayamaan
+                    </option>
+
+                    <option value="6">
+                        Tangkalan
+                    </option>
+
+                    <option value="5">
+                        Talabaan
+                    </option>
+
+                    <option value="4">
+                        San Luis
+                    </option>
+                        </select>
 
                 <button
                     class="btn-primary"
@@ -300,10 +271,81 @@
 
                 </button>
 
+                <button
+                class="btn-secondary"
+                id="viewHistoryBtn"
+            >
+
+                <i data-lucide="history" size="14"></i>
+
+                View History
+
+                 </button>
+
             </div>
 
             <div id="weatherRiskResult">
 
+
+                <section 
+                    class="card hidden"
+                    id = "historySection"
+                >
+                    <div class="card-header">
+
+                        <h3>
+                            Barangay Training Data History
+                        </h3>
+
+                    </div>
+
+                    <div class="table-wrapper">
+
+                        <table class="history-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Timestamp
+                                    </th>
+
+                                    <th>
+                                        Rainfall
+                                    </th>
+
+                                    <th>
+                                        Humidity
+                                    </th>
+
+                                    <th>
+                                        Flood
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="historyTableBody">
+
+                                <tr>
+
+                                    <td colspan="4">
+
+                                        No history data
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </section>
                 <div class="empty-state">
 
                     No weather risk assessment yet
@@ -367,69 +409,69 @@
 
                            <select id="simBarangay">
 
-    <option value="">
-        Select Barangay
-    </option>
+            <option value="">
+                Select Barangay
+            </option>
 
-    <option value="Poblacion 1">
-        Poblacion 1
-    </option>
+            <option value="Poblacion 1">
+                Poblacion 1
+            </option>
 
-    <option value="Poblacion 2">
-        Poblacion 2
-    </option>
+            <option value="Poblacion 2">
+                Poblacion 2
+            </option>
 
-    <option value="Poblacion 3">
-        Poblacion 3
-    </option>
+            <option value="Poblacion 3">
+                Poblacion 3
+            </option>
 
-    <option value="Poblacion 4">
-        Poblacion 4
-    </option>
+            <option value="Poblacion 4">
+                Poblacion 4
+            </option>
 
-    <option value="Poblacion 5">
-        Poblacion 5
-    </option>
+            <option value="Poblacion 5">
+                Poblacion 5
+            </option>
 
-    <option value="Poblacion 6">
-        Poblacion 6
-    </option>
+            <option value="Poblacion 6">
+                Poblacion 6
+            </option>
 
-    <option value="Poblacion 7">
-        Poblacion 7
-    </option>
+            <option value="Poblacion 7">
+                Poblacion 7
+            </option>
 
-    <option value="Poblacion 8">
-        Poblacion 8
-    </option>
+            <option value="Poblacion 8">
+                Poblacion 8
+            </option>
 
-    <option value="Payompon">
-        Payompon
-    </option>
+            <option value="Payompon">
+                Payompon
+            </option>
 
-    <option value="Balansay">
-        Balansay
-    </option>
+            <option value="Balansay">
+                Balansay
+            </option>
 
-    <option value="Fatima">
-        Fatima
-    </option>
+            <option value="Fatima">
+                Fatima
+            </option>
 
-    <option value="Tayamaan">
-        Tayamaan
-    </option>
+            <option value="Tayamaan">
+                Tayamaan
+            </option>
 
-    <option value="Tangkalan">
-        Tangkalan
-    </option>
+            <option value="Tangkalan">
+                Tangkalan
+            </option>
 
-    <option value="Talabaan">
-        Talabaan
-    </option>
+            <option value="Talabaan">
+                Talabaan
+            </option>
 
-    <option value="Ligang">
-        Ligang
-    </option>
+            <option value="Ligang">
+                Ligang
+            </option>
 
 </select>
 

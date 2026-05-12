@@ -62,7 +62,24 @@ if(logoutButton){
     // =========================
 
     const barangaySelect =
-    document.getElementById("barangaySelect");
+    document.getElementById(
+        "barangaySelect"
+    );
+
+    const historySection =
+    document.getElementById(
+        "historySection"
+    );
+
+    const historyTableBody =
+    document.getElementById(
+        "historyTableBody"
+    );
+
+    const viewHistoryBtn =
+    document.getElementById(
+        "viewHistoryBtn"
+    );
 
     async function loadBarangays(){
 
@@ -103,6 +120,97 @@ if(logoutButton){
     }
 
 }
+
+    async function loadHistory(){
+
+        try{
+
+            const barangay =
+                barangaySelect.value;
+
+            if(!barangay){
+
+                alert(
+                    "Select a barangay first"
+                );
+
+                return;
+
+            }
+
+            historySection.classList.remove(
+                "hidden"
+            );
+
+            const response =
+                await fetch(
+
+                    `${API_BASE_URL}/history/${barangay}`
+
+                );
+
+            const data =
+                await response.json();
+
+            historyTableBody.innerHTML = "";
+
+            if(data.length === 0){
+
+                historyTableBody.innerHTML = `
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            No history data
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+            data.forEach(item => {
+
+                historyTableBody.innerHTML += `
+
+                    <tr>
+
+                        <td>
+                            ${item.timestamp || ""}
+                        </td>
+
+                        <td>
+                            ${item.rainfall || ""}
+                        </td>
+
+                        <td>
+                            ${item.humidity || ""}
+                        </td>
+
+                        <td>
+                            ${item.risk_level || ""}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            });
+
+        }catch(error){
+
+            console.log(error);
+
+        }
+
+    }
+
+
 
     const generateRiskBtn = document.getElementById("generateRiskBtn");
 
@@ -160,38 +268,14 @@ if(logoutButton){
         `;
     }
 
-    // =========================
-    // SUMMARY
-    // =========================
-
-    async function loadSummary() {
-
-        try {
-
-            const response = await fetch("/api/risk-report/summary", {
-                headers: authHeaders()
-            });
-
-            const data = await response.json();
-
-            totalAssessments.textContent = data.total || 0;
-            highRiskCount.textContent = data.high || 0;
-            moderateRiskCount.textContent = data.moderate || 0;
-            safeCount.textContent = data.low || 0;
-
-        } catch (error) {
-
-            console.error(error);
-
-        }
-
-    }
 
     // =========================
     // HISTORY
     // =========================
 
-    async function loadHistory(barangay = "") {
+    async function loadHistory() {
+
+        const barangay = barangaySelect.value;
 
         try {
 
@@ -255,57 +339,6 @@ if(logoutButton){
 
     }
 
-    // =========================
-    // RISK REPORT
-    // =========================
-
-    generateRiskBtn.addEventListener("click", async () => {
-
-        const barangay = barangaySelect.value;
-
-        if (!barangay) {
-
-            alert("Please select a barangay.");
-
-            return;
-        }
-
-        try {
-
-            showLoading(
-                riskResultContainer,
-                "Generating ML disaster assessment..."
-            );
-
-            const response = await fetch(
-                `/api/risk-report/${encodeURIComponent(barangay)}`,
-                {
-                    headers: authHeaders()
-                }
-            );
-
-            const data = await response.json();
-
-            renderRiskResult(data);
-
-            await saveRiskReport(data);
-
-            await loadHistory(barangay);
-
-            await loadSummary();
-
-        } catch (error) {
-
-            console.error(error);
-
-            riskResultContainer.innerHTML = `
-                <div class="empty-state large">
-                    Failed to generate risk report
-                </div>
-            `;
-        }
-
-    });
 
     // =========================
     // SAVE REPORT
@@ -767,9 +800,10 @@ if(weatherRiskBtn){
 // =========================
 loadBarangays();
 
-await loadSummary();
-
-await loadHistory();
+viewHistoryBtn.addEventListener(
+    "click",
+    loadHistory
+);
 
 });
 

@@ -1,97 +1,133 @@
+
 lucide.createIcons();
 
 /*
-    AUTH
+=========================================================
+AUTH
+=========================================================
 */
-const loggedIn =
-    localStorage.getItem(
-        "resq_logged_in"
-    );
 
-if(loggedIn !== "true"){
+const loggedIn = localStorage.getItem("resq_logged_in");
 
-    window.location.href =
-        "/LOGIN/login.html";
-
+if (loggedIn !== "true") {
+    window.location.href = "/LOGIN/login.html";
 }
 
 /*
-    FORM
+=========================================================
+ELEMENTS
+=========================================================
 */
-const form =
-    document.getElementById(
-        "newsForm"
-    );
 
-/*
-    CONTAINERS
-*/
+const form = document.getElementById("newsForm");
+
 const pinnedContainer =
-    document.getElementById(
-        "pinnedAnnouncement"
-    );
+    document.getElementById("pinnedAnnouncement");
 
 const latestContainer =
-    document.getElementById(
-        "latestAnnouncements"
-    );
+    document.getElementById("latestAnnouncements");
 
 /*
-    API URL
+=========================================================
+API
+=========================================================
 */
-const API_URL =
-    "http://127.0.0.1:8000/news";
+
+const API_URL = "http://127.0.0.1:8000/news";
 
 /*
-    LOAD NEWS
+=========================================================
+LOAD ANNOUNCEMENTS
+=========================================================
 */
-async function loadAnnouncements(){
 
-    try{
+async function loadAnnouncements() {
 
-        const response =
-            await fetch(
-                `${API_URL}/all`
-            );
+    try {
 
-        if(!response.ok){
+        const response = await fetch(
+            `${API_URL}/all`
+        );
 
+        if (!response.ok) {
             throw new Error(
-                "Failed to fetch news"
+                "Failed to fetch announcements"
             );
-
         }
 
         let announcements =
             await response.json();
 
         /*
-            SORT NEWEST FIRST
+        -----------------------------------------
+        CHECK IF ARRAY
+        -----------------------------------------
         */
-        announcements.sort(
-            (a,b) =>
-                new Date(
-                    b.createdAt || b.date
-                )
-                -
-                new Date(
-                    a.createdAt || a.date
-                )
+
+        if (!Array.isArray(announcements)) {
+            announcements = [];
+        }
+
+        /*
+        -----------------------------------------
+        SORT NEWEST FIRST
+        -----------------------------------------
+        */
+
+        announcements.sort((a, b) =>
+            new Date(
+                b.createdAt || b.date
+            ) -
+            new Date(
+                a.createdAt || a.date
+            )
         );
 
         /*
-            PINNED
+        -----------------------------------------
+        CLEAR CONTAINERS
+        -----------------------------------------
         */
-        const pinned =
-            announcements.find(
-                item =>
-                    item.pinned === "Yes"
-            );
 
-        if(pinned){
+        pinnedContainer.innerHTML = "";
+        latestContainer.innerHTML = "";
+
+        /*
+        -----------------------------------------
+        EMPTY STATE
+        -----------------------------------------
+        */
+
+        if (announcements.length === 0) {
 
             pinnedContainer.innerHTML = `
+                <div class="empty-state">
+                    <h3>No pinned announcement</h3>
+                </div>
+            `;
 
+            latestContainer.innerHTML = `
+                <div class="empty-state">
+                    <h3>No announcements yet</h3>
+                </div>
+            `;
+
+            return;
+        }
+
+        /*
+        -----------------------------------------
+        PINNED ANNOUNCEMENT
+        -----------------------------------------
+        */
+
+        const pinned = announcements.find(
+            item => item.pinned === "Yes"
+        );
+
+        if (pinned) {
+
+            pinnedContainer.innerHTML = `
                 <div class="news-card">
 
                     <div class="news-title-row">
@@ -127,66 +163,34 @@ async function loadAnnouncements(){
                     </div>
 
                 </div>
-
             `;
 
-        }else{
+        } else {
 
             pinnedContainer.innerHTML = `
-
                 <div class="empty-state">
-
-                    <h3>
-                        No pinned announcement
-                    </h3>
-
+                    <h3>No pinned announcement</h3>
                 </div>
-
             `;
-
         }
 
         /*
-            DISPLAY ALL NEWS
+        -----------------------------------------
+        DISPLAY ALL ANNOUNCEMENTS
+        -----------------------------------------
         */
-        latestContainer.innerHTML = "";
-
-        if(announcements.length === 0){
-
-            latestContainer.innerHTML = `
-
-                <div class="empty-state">
-
-                    <h3>
-                        No announcements yet
-                    </h3>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
 
         announcements.forEach(news => {
 
-            const formattedDate =
-                news.date
-                ? new Date(news.date)
-                    .toLocaleString()
+            const formattedDate = news.date
+                ? new Date(news.date).toLocaleString()
                 : "No date";
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+            const card = document.createElement("div");
 
-            card.className =
-                "news-card";
+            card.className = "news-card";
 
             card.innerHTML = `
-
                 <div class="news-title-row">
 
                     <h3>
@@ -218,145 +222,138 @@ async function loadAnnouncements(){
                     </span>
 
                 </div>
-
             `;
 
-            latestContainer.appendChild(
-                card
-            );
+            latestContainer.appendChild(card);
 
         });
 
-    }catch(error){
+    } catch (error) {
 
-        console.log(
-            "Load News Error:"
-        );
-
+        console.log("LOAD NEWS ERROR:");
         console.log(error);
 
+        latestContainer.innerHTML = `
+            <div class="empty-state">
+                <h3>
+                    Failed to load announcements
+                </h3>
+            </div>
+        `;
     }
-
 }
 
 /*
-    INITIAL LOAD
+=========================================================
+INITIAL LOAD
+=========================================================
 */
+
 loadAnnouncements();
 
 /*
-    SUBMIT NEWS
+=========================================================
+SUBMIT NEWS
+=========================================================
 */
+
 form.addEventListener(
     "submit",
-    async function(e){
+    async function (e) {
 
         e.preventDefault();
 
         const news = {
 
             title:
-                document.getElementById(
-                    "f-title"
-                ).value.trim(),
+                document.getElementById("f-title")
+                .value.trim(),
 
             category:
-                document.getElementById(
-                    "f-category"
-                ).value,
+                document.getElementById("f-category")
+                .value,
 
             priority:
-                document.getElementById(
-                    "f-priority"
-                ).value,
+                document.getElementById("f-priority")
+                .value,
 
             date:
-                document.getElementById(
-                    "f-date"
-                ).value,
+                document.getElementById("f-date")
+                .value,
 
             audience:
-                document.getElementById(
-                    "f-audience"
-                ).value,
+                document.getElementById("f-audience")
+                .value,
 
             pinned:
-                document.getElementById(
-                    "f-pin"
-                ).value,
+                document.getElementById("f-pin")
+                .value,
 
             message:
-                document.getElementById(
-                    "f-message"
-                ).value.trim()
-
+                document.getElementById("f-message")
+                .value.trim()
         };
 
-        try{
+        try {
 
-            const response =
-                await fetch(
-                    `${API_URL}/create`,
-                    {
-                        method:"POST",
+            const response = await fetch(
+                `${API_URL}/create`,
+                {
+                    method: "POST",
 
-                        headers:{
-                            "Content-Type":
+                    headers: {
+                        "Content-Type":
                             "application/json"
-                        },
+                    },
 
-                        body:
-                            JSON.stringify(news)
-                    }
+                    body: JSON.stringify(news)
+                }
+            );
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Failed to create announcement"
                 );
+            }
 
             const result =
                 await response.json();
 
-            if(result.success){
+            console.log(result);
 
-                alert(
-                    "Announcement published successfully"
-                );
-
-                form.reset();
-
-                loadAnnouncements();
-
-            }else{
-
-                alert(
-                    "Failed to publish announcement"
-                );
-
-            }
-
-        }catch(error){
-
-            console.log(
-                "Submit Error:"
+            alert(
+                "Announcement published successfully"
             );
 
+            form.reset();
+
+            loadAnnouncements();
+
+        } catch (error) {
+
+            console.log("SUBMIT ERROR:");
             console.log(error);
 
             alert(
-                "Server error"
+                "Server error while publishing announcement"
             );
-
         }
-
     }
 );
 
 /*
-    SCROLL TO CREATE
+=========================================================
+SCROLL TO CREATE
+=========================================================
 */
+
 const newAnnouncementBtn =
     document.getElementById(
         "newAnnouncementBtn"
     );
 
-if(newAnnouncementBtn){
+if (newAnnouncementBtn) {
 
     newAnnouncementBtn.addEventListener(
         "click",
@@ -366,14 +363,10 @@ if(newAnnouncementBtn){
                 .getElementById(
                     "createAnnouncementSection"
                 )
-
                 .scrollIntoView({
-
-                    behavior:"smooth"
-
+                    behavior: "smooth"
                 });
-
         }
     );
-
 }
+

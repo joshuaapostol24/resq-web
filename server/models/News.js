@@ -45,7 +45,13 @@ const NewsSchema =
 );
 
 module.exports =
+
+    mongoose.models.news ||
+
     mongoose.model(
-        "News",
+
+        "news",
+
         NewsSchema
+
     );

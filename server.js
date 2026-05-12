@@ -98,13 +98,16 @@ app.post(
     async(req,res)=>{
 
         const {
-            username,
+            email,
             password
         } = req.body;
 
         if(
-            username === "admin" &&
+
+            email === "admin@resq.com" &&
+
             password === "admin123"
+
         ){
 
             return res.json({
@@ -118,12 +121,10 @@ app.post(
 
         }
 
-        res.status(401).json({
+        return res.status(401).json({
 
             success:false,
-
-            message:
-                "Invalid username or password"
+            message:"Invalid credentials"
 
         });
 

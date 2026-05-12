@@ -634,7 +634,7 @@ document.addEventListener(
                         reportModal.classList.remove(
                             "hidden"
                         );
-                        
+
                         initializeReportMap();
 
                     }
@@ -995,7 +995,7 @@ function initializeReportMap(){
 
         reportMap.invalidateSize();
 
-    }, 200);
+    }, 30);
 
 }
 

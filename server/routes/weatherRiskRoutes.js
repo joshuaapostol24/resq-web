@@ -2,14 +2,15 @@ const express =
     require("express");
 
 const fetch =
-    require("node-fetch");
+    (...args) =>
+        import("node-fetch")
+        .then(({default: fetch}) =>
+            fetch(...args)
+        );
 
 const router =
     express.Router();
 
-/*
-    GET WEATHER RISK
-*/
 router.get(
     "/:city",
     async(req,res)=>{
@@ -32,9 +33,6 @@ router.get(
             const data =
                 await response.json();
 
-            /*
-                SIMPLE RISK ANALYSIS
-            */
             let riskLevel =
                 "Low";
 

@@ -530,3 +530,86 @@ body{
     }
 
 }
+
+.weather-risk-card{
+
+    margin-bottom:24px;
+
+}
+
+.weather-risk-toolbar{
+
+    display:flex;
+
+    gap:14px;
+
+    margin-top:18px;
+
+    margin-bottom:24px;
+
+}
+
+.weather-risk-toolbar input{
+
+    flex:1;
+
+    padding:14px;
+
+    border:1px solid #CBD5E1;
+
+    border-radius:12px;
+
+    outline:none;
+
+    font-size:14px;
+
+}
+
+.risk-weather-card{
+
+    background:#F8FAFC;
+
+    border:1px solid #E2E8F0;
+
+    border-radius:18px;
+
+    padding:24px;
+
+}
+
+.risk-weather-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:24px;
+
+}
+
+.risk-badge{
+
+    background:#FFF7ED;
+
+    color:#EA580C;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.weather-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(180px,1fr));
+
+}

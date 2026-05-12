@@ -539,24 +539,177 @@ if(logoutButton){
     }
 
     // =========================
-    // REFRESH
-    // =========================
+// REFRESH
+// =========================
 
-    document.getElementById("refreshBtn")
-        .addEventListener("click", () => {
+document.getElementById("refreshBtn")
+    .addEventListener("click", () => {
 
-            loadSummary();
+        loadSummary();
 
-            loadHistory();
+        loadHistory();
 
-        });
+    });
 
-    // =========================
-    // INIT
-    // =========================
+/*
+    getRisk()
+*/
 
-    await loadSummary();
+// =========================
+// WEATHER RISK
+// =========================
 
-    await loadHistory();
+const weatherRiskBtn =
+    document.getElementById(
+        "weatherRiskBtn"
+    );
+
+if(weatherRiskBtn){
+
+    weatherRiskBtn.addEventListener(
+        "click",
+        async () => {
+
+            try{
+
+                const city =
+                    barangaySelect.value;;
+
+                if(!city){
+
+                    alert(
+                        "Please enter a city"
+                    );
+
+                    return;
+
+                }
+
+                const response =
+                    await fetch(
+                        `/api/weather-risk/Mamburao`
+                    );
+
+                const data =
+                    await response.json();
+
+                console.log(data);
+
+                if(!data.success){
+
+                    alert(
+                        "Failed to get weather risk"
+                    );
+
+                    return;
+
+                }
+
+                document.getElementById(
+                    "weatherRiskResult"
+                ).innerHTML = `
+
+                    <div class="result-card">
+
+                        <div class="result-header">
+
+                            <div>
+
+                                <h2>
+                                    ${data.city}
+                                </h2>
+
+                                <p>
+                                    ${data.weather}
+                                </p>
+
+                            </div>
+
+                            <div class="risk-badge ${data.riskLevel.toLowerCase()}">
+
+                                ${data.riskLevel}
+
+                            </div>
+
+                        </div>
+
+                        <div class="weather-grid">
+
+                            <div class="weather-box">
+
+                                <span>
+                                    Temperature
+                                </span>
+
+                                <strong>
+                                    ${data.temperature}°C
+                                </strong>
+
+                            </div>
+
+                            <div class="weather-box">
+
+                                <span>
+                                    Rainfall
+                                </span>
+
+                                <strong>
+                                    ${data.rainfall}
+                                </strong>
+
+                            </div>
+
+                            <div class="weather-box">
+
+                                <span>
+                                    Wind Speed
+                                </span>
+
+                                <strong>
+                                    ${data.windSpeed}
+                                </strong>
+
+                            </div>
+
+                            <div class="weather-box">
+
+                                <span>
+                                    Humidity
+                                </span>
+
+                                <strong>
+                                    ${data.humidity}%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }catch(error){
+
+                console.log(error);
+
+                alert(
+                    "Server Error"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+// =========================
+// INIT
+// =========================
+
+await loadSummary();
+
+await loadHistory();
 
 });

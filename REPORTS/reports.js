@@ -127,6 +127,10 @@ document.addEventListener(
             );
 
         let reports = [];
+        
+        let reportMap;
+
+        let reportMarker;
 
         let selectedReport =
             null;
@@ -630,6 +634,8 @@ document.addEventListener(
                         reportModal.classList.remove(
                             "hidden"
                         );
+                        
+                        initializeReportMap();
 
                     }
                 );
@@ -879,6 +885,120 @@ document.addEventListener(
                         return;
 
                     }
+
+function initializeReportMap(){
+
+    if(reportMap){
+
+        reportMap.remove();
+
+    }
+
+    reportMap = L.map("reportMap")
+
+        .setView(
+
+            [13.2233, 120.5960],
+
+            14
+
+        );
+
+    L.tileLayer(
+
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+        {
+
+            attribution:
+                "© OpenStreetMap"
+
+        }
+
+    ).addTo(reportMap);
+
+    reportMarker = L.marker(
+
+        [13.2233, 120.5960],
+
+        {
+
+            draggable:true
+
+        }
+
+    ).addTo(reportMap);
+
+    const latInput =
+
+        document.querySelector(
+            'input[name="lat"]'
+        );
+
+    const lngInput =
+
+        document.querySelector(
+            'input[name="lng"]'
+        );
+
+    latInput.value = 13.2233;
+
+    lngInput.value = 120.5960;
+
+    reportMap.on(
+
+        "click",
+
+        function(event){
+
+            const {
+                lat,
+                lng
+            } = event.latlng;
+
+            reportMarker.setLatLng([
+                lat,
+                lng
+            ]);
+
+            latInput.value =
+                lat.toFixed(6);
+
+            lngInput.value =
+                lng.toFixed(6);
+
+        }
+
+    );
+
+    reportMarker.on(
+
+        "dragend",
+
+        function(event){
+
+            const position =
+
+                event.target.getLatLng();
+
+            latInput.value =
+                position.lat.toFixed(6);
+
+            lngInput.value =
+                position.lng.toFixed(6);
+
+        }
+
+    );
+
+    setTimeout(() => {
+
+        reportMap.invalidateSize();
+
+    }, 200);
+
+}
+
 
         loadReportsFromSupabase();
 

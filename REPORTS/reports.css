@@ -534,16 +534,8 @@ button { cursor: pointer; }
     font-weight: 900;
     padding: 6px 10px;
     text-transform: uppercase;
-}
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    white-space: nowrap;
-    font-size: 10px;
-    font-weight: 900;
-    padding: 3px 8px;
-    text-transform: uppercase;
-}
+} 
+
 
 .status-pending, .status-received { background: #FFFBEB; color: #B45309; box-shadow: inset 0 0 0 1px rgba(180, 83, 9, 0.12); }
 .status-approved, .status-verified, .status-resolved { background: #EFF6FF; color: #1D4ED8; box-shadow: inset 0 0 0 1px rgba(30, 64, 175, 0.12); }
@@ -739,4 +731,20 @@ button { cursor: pointer; }
     .action-btn { flex: 1 1 130px; justify-content: center; }
     .form-grid { grid-template-columns: 1fr; }
     .modal-actions { flex-direction: column-reverse; }
+}
+
+.report-image{
+
+    width:100%;
+
+    margin-top:12px;
+
+    border-radius:10px;
+
+    border:1px solid #E2E8F0;
+
+    max-height:320px;
+
+    object-fit:cover;
+
 }

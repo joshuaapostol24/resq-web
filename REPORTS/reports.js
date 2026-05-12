@@ -398,6 +398,16 @@ document.addEventListener(
                                 ${selectedReport.description}
                             </p>
 
+                            ${selectedReport.image
+                            ? `
+                                 <img
+                                    src="${selectedReport.image}"
+                                    class="report-image"
+                                    alt="Report Image"
+                                >
+                            `
+                            : ""}
+
                         </section>
 
                         <section class="panel">
@@ -565,6 +575,11 @@ document.addEventListener(
 
                 description:
                     report.description || "No description provided.",
+
+            
+                image:
+                   report.image_url || "",
+
 
                 assignedTo:
                     report.assigned_to || "Unassigned",

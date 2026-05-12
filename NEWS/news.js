@@ -37,197 +37,207 @@ const latestContainer =
     );
 
 /*
-    GET NEWS
+    LOAD ANNOUNCEMENTS
 */
-function getAnnouncements(){
+async function loadAnnouncements(){
 
-    return JSON.parse(
+    try{
 
-        localStorage.getItem(
-            "resq_news"
-        )
+        const response =
+            await fetch(
+                "/api/news/all"
+            );
 
-    ) || [];
+        if(!response.ok){
 
-}
+            throw new Error(
+                "Failed to fetch news"
+            );
 
-/*
-    SAVE NEWS
-*/
-function saveAnnouncements(data){
+        }
 
-    localStorage.setItem(
-        "resq_news",
-        JSON.stringify(data)
-    );
+        let announcements =
+            await response.json();
 
-}
-
-/*
-    LOAD NEWS
-*/
-function loadAnnouncements(){
-
-    let announcements =
-        getAnnouncements();
-
-    /*
-        SORT NEWEST FIRST
-    */
-    announcements.sort(
-        (a,b) =>
-            new Date(b.date)
-            -
-            new Date(a.date)
-    );
-
-    /*
-        PINNED
-    */
-    const pinned =
-        announcements.find(
-            item =>
-                item.pinned === "Yes"
+        /*
+            SORT NEWEST FIRST
+        */
+        announcements.sort(
+            (a,b) =>
+                new Date(b.createdAt)
+                -
+                new Date(a.createdAt)
         );
 
-    if(pinned){
+        /*
+            PINNED
+        */
+        const pinned =
+            announcements.find(
+                item =>
+                    item.pinned === "Yes"
+            );
 
-        pinnedContainer.innerHTML = `
+        if(pinned){
 
-            <div class="news-card">
+            pinnedContainer.innerHTML = `
+
+                <div class="news-card">
+
+                    <div class="news-title-row">
+
+                        <h3>
+                            ${pinned.title || ""}
+                        </h3>
+
+                        <span class="badge">
+                            PINNED
+                        </span>
+
+                    </div>
+
+                    <p>
+                        ${pinned.message || ""}
+                    </p>
+
+                    <div class="meta-row">
+
+                        <span>
+                            ${pinned.category || ""}
+                        </span>
+
+                        <span>
+                            • ${pinned.priority || ""}
+                        </span>
+
+                        <span>
+                            • ${pinned.audience || ""}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }else{
+
+            pinnedContainer.innerHTML = `
+
+                <div class="empty-state">
+
+                    <h3>
+                        No pinned announcement
+                    </h3>
+
+                </div>
+
+            `;
+
+        }
+
+        /*
+            ALL NEWS
+        */
+        latestContainer.innerHTML = "";
+
+        if(announcements.length === 0){
+
+            latestContainer.innerHTML = `
+
+                <div class="empty-state">
+
+                    <h3>
+                        No announcements yet
+                    </h3>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        announcements.forEach(news => {
+
+            const formattedDate =
+                news.date
+                ? new Date(news.date)
+                    .toLocaleString()
+                : "No date";
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                "news-card";
+
+            card.innerHTML = `
 
                 <div class="news-title-row">
 
                     <h3>
-                        ${pinned.title}
+                        ${news.title || ""}
                     </h3>
 
                     <span class="badge">
-                        PINNED
+                        ${news.priority || ""}
                     </span>
 
                 </div>
 
                 <p>
-                    ${pinned.message}
+                    ${news.message || ""}
                 </p>
 
                 <div class="meta-row">
 
                     <span>
-                        ${pinned.category}
+                        ${news.category || ""}
                     </span>
 
                     <span>
-                        • ${pinned.priority}
+                        • ${news.audience || ""}
                     </span>
 
                     <span>
-                        • ${pinned.audience}
+                        • ${formattedDate}
                     </span>
 
                 </div>
 
-            </div>
+            `;
 
-        `;
+            latestContainer.appendChild(
+                card
+            );
 
-    }else{
+        });
 
-        pinnedContainer.innerHTML = `
+    }catch(error){
 
-            <div class="empty-state">
+        console.log(
+            "Load News Error:"
+        );
 
-                <h3>
-                    No pinned announcement
-                </h3>
-
-            </div>
-
-        `;
-
-    }
-
-    /*
-        ALL NEWS
-    */
-    latestContainer.innerHTML = "";
-
-    if(announcements.length === 0){
+        console.log(error);
 
         latestContainer.innerHTML = `
 
             <div class="empty-state">
 
                 <h3>
-                    No announcements yet
+                    Failed to load announcements
                 </h3>
 
             </div>
 
         `;
-
-        return;
 
     }
-
-    announcements.forEach(news => {
-
-        const formattedDate =
-            news.date
-            ? new Date(news.date)
-                .toLocaleString()
-            : "No date";
-
-        const card =
-            document.createElement(
-                "div"
-            );
-
-        card.className =
-            "news-card";
-
-        card.innerHTML = `
-
-            <div class="news-title-row">
-
-                <h3>
-                    ${news.title}
-                </h3>
-
-                <span class="badge">
-                    ${news.priority}
-                </span>
-
-            </div>
-
-            <p>
-                ${news.message}
-            </p>
-
-            <div class="meta-row">
-
-                <span>
-                    ${news.category}
-                </span>
-
-                <span>
-                    • ${news.audience}
-                </span>
-
-                <span>
-                    • ${formattedDate}
-                </span>
-
-            </div>
-
-        `;
-
-        latestContainer.appendChild(
-            card
-        );
-
-    });
 
 }
 
@@ -241,13 +251,11 @@ loadAnnouncements();
 */
 form.addEventListener(
     "submit",
-    function(e){
+    async function(e){
 
         e.preventDefault();
 
         const news = {
-
-            id:Date.now(),
 
             title:
                 document.getElementById(
@@ -286,37 +294,60 @@ form.addEventListener(
 
         };
 
-        let announcements =
-            getAnnouncements();
+        try{
 
-        /*
-            ONLY ONE PINNED
-        */
-        if(news.pinned === "Yes"){
+            const response =
+                await fetch(
+                    "/api/news/create",
+                    {
+                        method:"POST",
 
-            announcements =
-                announcements.map(item => ({
+                        headers:{
+                            "Content-Type":
+                            "application/json"
+                        },
 
-                    ...item,
-                    pinned:"No"
+                        body:
+                            JSON.stringify(news)
+                    }
+                );
 
-                }));
+            const result =
+                await response.json();
+
+            console.log(result);
+
+            if(result.success){
+
+                alert(
+                    "Announcement published successfully"
+                );
+
+                form.reset();
+
+                loadAnnouncements();
+
+            }else{
+
+                alert(
+                    "Failed to publish announcement"
+                );
+
+            }
+
+        }catch(error){
+
+            console.log(
+                "Submit Error:"
+            );
+
+            console.log(error);
+
+            alert(
+                "Server error while publishing announcement"
+            );
 
         }
-
-        announcements.push(news);
-
-        saveAnnouncements(
-            announcements
-        );
-
-        alert(
-            "Announcement published successfully"
-        );
-
-        form.reset();
-
-        loadAnnouncements();
 
     }
 );

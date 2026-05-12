@@ -1,7 +1,7 @@
 const mongoose =
     require("mongoose");
 
-const NewsSchema =
+const newsSchema =
     new mongoose.Schema({
 
         title:{
@@ -10,13 +10,11 @@ const NewsSchema =
         },
 
         category:{
-            type:String,
-            default:"General News"
+            type:String
         },
 
         priority:{
-            type:String,
-            default:"Low"
+            type:String
         },
 
         date:{
@@ -24,24 +22,23 @@ const NewsSchema =
         },
 
         audience:{
-            type:String,
-            default:"All Residents"
+            type:String
         },
 
         pinned:{
-            type:String,
-            default:"No"
+            type:String
         },
 
         message:{
-            type:String,
-            required:true
+            type:String
         }
 
     },
+
     {
         timestamps:true
     }
+
 );
 
 module.exports =
@@ -52,6 +49,6 @@ module.exports =
 
         "news",
 
-        NewsSchema
+        newsSchema
 
     );

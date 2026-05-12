@@ -37,7 +37,13 @@ const latestContainer =
     );
 
 /*
-    LOAD ANNOUNCEMENTS
+    API URL
+*/
+const API_URL =
+    "http://127.0.0.1:8000/news";
+
+/*
+    LOAD NEWS
 */
 async function loadAnnouncements(){
 
@@ -45,7 +51,7 @@ async function loadAnnouncements(){
 
         const response =
             await fetch(
-                "/api/news/all"
+                `${API_URL}/all`
             );
 
         if(!response.ok){
@@ -64,9 +70,13 @@ async function loadAnnouncements(){
         */
         announcements.sort(
             (a,b) =>
-                new Date(b.createdAt)
+                new Date(
+                    b.createdAt || b.date
+                )
                 -
-                new Date(a.createdAt)
+                new Date(
+                    a.createdAt || a.date
+                )
         );
 
         /*
@@ -137,7 +147,7 @@ async function loadAnnouncements(){
         }
 
         /*
-            ALL NEWS
+            DISPLAY ALL NEWS
         */
         latestContainer.innerHTML = "";
 
@@ -225,18 +235,6 @@ async function loadAnnouncements(){
 
         console.log(error);
 
-        latestContainer.innerHTML = `
-
-            <div class="empty-state">
-
-                <h3>
-                    Failed to load announcements
-                </h3>
-
-            </div>
-
-        `;
-
     }
 
 }
@@ -260,7 +258,7 @@ form.addEventListener(
             title:
                 document.getElementById(
                     "f-title"
-                ).value,
+                ).value.trim(),
 
             category:
                 document.getElementById(
@@ -290,7 +288,7 @@ form.addEventListener(
             message:
                 document.getElementById(
                     "f-message"
-                ).value
+                ).value.trim()
 
         };
 
@@ -298,7 +296,7 @@ form.addEventListener(
 
             const response =
                 await fetch(
-                    "/api/news/create",
+                    `${API_URL}/create`,
                     {
                         method:"POST",
 
@@ -314,8 +312,6 @@ form.addEventListener(
 
             const result =
                 await response.json();
-
-            console.log(result);
 
             if(result.success){
 
@@ -344,7 +340,7 @@ form.addEventListener(
             console.log(error);
 
             alert(
-                "Server error while publishing announcement"
+                "Server error"
             );
 
         }

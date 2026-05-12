@@ -45,7 +45,7 @@ app.use(
 
 
 mongoose.connect(
-    process.env.MONGO_URL,
+    process.env.MONGODB_URL,
     {
         family:4
     }

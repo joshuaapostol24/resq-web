@@ -1,3 +1,4 @@
+
 require("dotenv").config({
     quiet:true
 });
@@ -44,7 +45,7 @@ app.use(
 
 
 mongoose.connect(
-    process.env.MONGO_URI,
+    process.env.MONGO_URL,
     {
         family:4
     }

@@ -34,7 +34,7 @@ API
 */
 
 const API_URL =
-    "https://resq-app-xsb98.ondigitalocean.app/news";
+    "https://resq-app-xsb98.ondigitalocean.app/api/news";
 
 
 

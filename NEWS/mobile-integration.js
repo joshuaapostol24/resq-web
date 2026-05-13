@@ -290,7 +290,7 @@ form.addEventListener(
 
 
         await fetch(
-            "/api/sms/send",
+            "/api/send-sms",
             {
 
                 method:"POST",

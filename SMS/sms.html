@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResQ Admin | SMS</title>
+    <link rel="stylesheet" href="sms.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <div class="scoped-banner">
+        <i data-lucide="lock" size="10"></i>
+        SCOPED VIEW: MUNICIPALITY OF MAMBURAO
+    </div>
+
+    <!-- NAVIGATION -->
+    <header class="top-nav">
+        <div class="nav-left">
+            <div class="logo-box">
+                <i data-lucide="shield-alert" size="16"></i>
+            </div>
+            <span class="brand">ResQ Admin</span>
+            <nav class="nav-links">
+                <a href="../DASHBOARD/dashboard.html">Dashboard</a>
+                <a href="../REPORTS/reports.html">Reports</a>
+                <a href="../RISKREPORT/riskreport.html">Risk Report</a>
+                <a href="../NEWS/news.html">News</a>
+                <a href="../USERVER/user.html">Users</a>
+                <a href="../SETTINGS/settings.html">Settings</a>
+                <a href="sms.html" class="active">SMS</a>
+            </nav>
+        </div>
+        <div class="nav-right">
+            <button class="icon-btn" type="button" onclick="location.reload()">
+                <i data-lucide="refresh-cw" size="16"></i>
+            </button>
+            <button class="icon-btn" type="button" data-action="logout">
+                <i data-lucide="log-out" size="16"></i>
+            </button>
+            <img
+                src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff"
+                alt="Admin Avatar"
+                class="avatar"
+            >
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="sms-main">
+
+        <section class="page-header">
+            <div>
+                <h1>SMS Center</h1>
+                <p>Send alerts and notifications to residents via SMS.</p>
+            </div>
+        </section>
+
+        <div class="sms-grid">
+
+            <!-- TEST SMS -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i data-lucide="send" size="14"></i> Test SMS</h3>
+                    <p>Send a message to a single number</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrap">
+                        <i data-lucide="phone" class="input-icon" size="14"></i>
+                        <input type="text" id="testPhone" placeholder="+639XXXXXXXXX">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="testMessage" placeholder="Type your message here..." rows="4"></textarea>
+                    <div class="char-count"><span id="testCharCount">0</span> / 160</div>
+                </div>
+
+                <button class="btn-primary" onclick="sendTestSMS()">
+                    <i data-lucide="send" size="14"></i>
+                    Send Test SMS
+                </button>
+
+                <div id="testResult" class="result-box hidden"></div>
+            </div>
+
+            <!-- BULK SMS -->
+            <div class="card">
+                <div class="card-header">
+                    <h3><i data-lucide="users" size="14"></i> Send to Selected Users</h3>
+                    <p>Broadcast to verified residents</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Recipients</label>
+                    <div class="input-wrap">
+                        <i data-lucide="search" class="input-icon" size="14"></i>
+                        <input type="text" id="userSearch" placeholder="Search users..." oninput="filterUsers()">
+                    </div>
+                    <div class="user-list" id="userList">
+                        <div class="user-list-loading">
+                            <i data-lucide="loader" size="14"></i>
+                            Loading users...
+                        </div>
+                    </div>
+                    <div class="selected-count">
+                        <span id="selectedCount">0</span> user(s) selected
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea id="bulkMessage" placeholder="Type your broadcast message..." rows="4"></textarea>
+                    <div class="char-count"><span id="bulkCharCount">0</span> / 160</div>
+                </div>
+
+                <button class="btn-primary btn-full" onclick="sendBulkSMS()">
+                    <i data-lucide="send" size="14"></i>
+                    Send to Selected
+                </button>
+
+                <div id="bulkResult" class="result-box hidden"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../ADMIN/admin.js"></script>
+    <script src="sms.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

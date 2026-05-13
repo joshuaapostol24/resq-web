@@ -289,33 +289,6 @@ form.addEventListener(
 
 
 
-        await fetch(
-           "https://resq-app-xsb98.ondigitalocean.app/sms/test",
-            {
-
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body:JSON.stringify({
-
-                    phone:
-                        "639976857742",
-
-                    message:
-                        news.message
-
-                })
-
-            }
-        );
-
-
-
-
 /*
     SCROLL TO CREATE
 */

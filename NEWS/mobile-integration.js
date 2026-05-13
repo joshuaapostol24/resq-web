@@ -268,24 +268,95 @@ form.addEventListener(
         await fetch(
             "/api/news/create",
             {
+
                 method:"POST",
 
                 headers:{
                     "Content-Type":
-                    "application/json"
+                        "application/json"
                 },
 
                 body:
                     JSON.stringify(news)
+
             }
         );
 
-        form.reset();
 
-        loadAnnouncements();
+        /*
+            SEND PUSH NOTIFICATION
+        */
+        await fetch(
 
-    }
-);
+            "https://jpovamcznyzoemcnjrgs.supabase.co/functions/v1/send-news-notification",
+
+            {
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":
+                        "application/json",
+
+                    "Authorization":
+                        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwb3ZhbWN6bnl6b2VtY25qcmdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4ODMwMTcsImV4cCI6MjA5MzQ1OTAxN30.1WTdf3j4F6z-attUvvPi5Z7i8Q81hB4hhQtpyrgU8ao"
+
+                },
+
+                body:JSON.stringify({
+
+                    title:
+                        news.title,
+
+                    message:
+                        news.message,
+
+                    category:
+                        news.category,
+
+                    priority:
+                        news.priority
+
+                })
+
+            }
+
+        );
+
+
+form.reset();
+
+loadAnnouncements();
+
+
+
+
+
+        await fetch(
+            "/api/send-sms",
+            {
+
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:JSON.stringify({
+
+                    number:
+                        "639976857742",
+
+                    message:
+                        news.message
+
+                })
+
+            }
+        );
+
 
 
 

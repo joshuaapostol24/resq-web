@@ -338,7 +338,7 @@ form.addEventListener(
 
                     body:JSON.stringify({
 
-                        number:
+                        phone:
                             "639976857742",
 
                         message:

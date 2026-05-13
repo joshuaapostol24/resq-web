@@ -326,7 +326,7 @@ form.addEventListener(
             console.log(result);
 
             await fetch(
-                "https://resq-app-xsb98.ondigitalocean.app/api/send-sms",
+                "https://resq-app-xsb98.ondigitalocean.app/sms/test",
                 {
 
                     method:"POST",

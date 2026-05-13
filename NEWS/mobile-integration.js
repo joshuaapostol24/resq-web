@@ -287,6 +287,33 @@ form.addEventListener(
     }
 );
 
+
+          await fetch(
+              "/api/send-sms",
+              {
+
+                  method:"POST",
+
+                  headers:{
+                      "Content-Type":
+                          "application/json"
+                  },
+
+                  body:JSON.stringify({
+
+                      number:
+                          "639976857742",
+
+                      message:
+                          news.message
+
+                  })
+
+              }
+          );
+
+
+
 /*
     SCROLL TO CREATE
 */

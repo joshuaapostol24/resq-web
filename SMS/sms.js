@@ -17,7 +17,7 @@ document.addEventListener(
 
         lucide.createIcons();
 
-        loadUsers();
+        //loadUsers();
 
         bindCounters();
 

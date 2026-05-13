@@ -325,37 +325,39 @@ form.addEventListener(
         );
 
 
-form.reset();
+        form.reset();
 
-loadAnnouncements();
-
-
+        loadAnnouncements();
 
 
+          await fetch(
+              "/api/send-sms",
+              {
 
-        await fetch(
-            "/api/send-sms",
-            {
+                  method:"POST",
 
-                method:"POST",
+                  headers:{
+                      "Content-Type":
+                          "application/json"
+                  },
 
-                headers:{
-                    "Content-Type":
-                        "application/json"
-                },
+                  body:JSON.stringify({
 
-                body:JSON.stringify({
+                      phone:
+                          "639976857742",
 
-                    number:
-                        "639976857742",
+                      message:
+                          news.message
 
-                    message:
-                        news.message
+                  })
 
-                })
+              }
+          );
 
-            }
-        );
+
+
+    }
+);
 
 
 

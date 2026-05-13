@@ -93,6 +93,7 @@ app.use(
     require("./server/routes/weatherRiskRoutes")
 );
 
+
 /*
     LOGIN API
 */
@@ -150,6 +151,123 @@ app.get("/", (req,res)=>{
 
 });
 
+
+
+/*
+    SEND SMS
+*/
+app.post(
+    "/api/send-sms",
+    async(req,res)=>{
+
+        try{
+
+            let {
+                phone,
+                message
+            } = req.body;
+
+            if(
+                !phone ||
+                !message
+            ){
+
+                return res.status(400).json({
+
+                    success:false,
+
+                    message:
+                        "Missing phone or message"
+
+                });
+
+            }
+
+            phone =
+                phone.trim();
+
+            if(
+                phone.startsWith("09")
+            ){
+
+                phone =
+                    "63" + phone.slice(1);
+
+            }
+
+            if(
+                phone.startsWith("+63")
+            ){
+
+                phone =
+                    phone.replace("+","");
+
+            }
+
+            const response =
+                await fetch(
+
+                    "https://www.iprogsms.com/api/v1/sms_messages",
+
+                    {
+
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:JSON.stringify({
+
+                            api_token:
+                                process.env.IPROGSMS_API_TOKEN,
+
+                            phone_number:
+                                phone,
+
+                            message:
+                                message
+
+                        })
+
+                    }
+
+                );
+
+            const data =
+                await response.json();
+
+            console.log(data);
+
+            return res.json({
+
+                success:true,
+
+                data
+
+            });
+
+        }catch(error){
+
+            console.log(error);
+
+            return res.status(500).json({
+
+                success:false,
+
+                message:
+                    "SMS sending failed"
+
+            });
+
+        }
+
+    }
+);
+
+
+
 /*
     SERVER
 */
@@ -163,3 +281,4 @@ app.listen(PORT, ()=>{
     );
 
 });
+

@@ -271,7 +271,7 @@ async function sendTestSMS(){
         const res =
             await fetch(
 
-                `${API_BASE}/sms/test`,
+                `${API_BASE}/api/send-sms`,
 
                 {
 

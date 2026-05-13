@@ -4,9 +4,7 @@
 // ─────────────────────────────
 
 const API_BASE =
-
     "https://resq-app-xsb98.ondigitalocean.app";
-
 
 
 // ─────────────────────────────
@@ -19,52 +17,19 @@ document.addEventListener(
 
         lucide.createIcons();
 
-        const sidebarName =
-            document.getElementById(
-                "sidebarName"
-            );
-
-        const name =
-            localStorage.getItem(
-                "resq_user"
-            ) || "Admin";
-
-        if(sidebarName){
-            sidebarName.innerText =
-                name;
-        }
-
         loadUsers();
-        bindCharCounters();
+
+        bindCounters();
 
     }
 );
 
 
 // ─────────────────────────────
-// LOGOUT
+// COUNTERS
 // ─────────────────────────────
 
-function logout(){
-
-    localStorage.removeItem(
-        "resq_logged_in"
-    );
-
-    localStorage.removeItem(
-        "resq_user"
-    );
-
-    window.location.href =
-        "/LOGIN/login.html";
-}
-
-
-// ─────────────────────────────
-// CHARACTER COUNTERS
-// ─────────────────────────────
-
-function bindCharCounters(){
+function bindCounters(){
 
     const testMessage =
         document.getElementById(
@@ -119,18 +84,11 @@ let allUsers = [];
 
 async function loadUsers(){
 
-    const list =
-        document.getElementById(
-            "userList"
-        );
-
-    if(!list) return;
-
     try{
 
         const res =
             await fetch(
-                `${API_BASE}/users?status=verified`
+                `${API_BASE}/users`
             );
 
         const data =
@@ -140,16 +98,9 @@ async function loadUsers(){
 
         renderUsers(allUsers);
 
-    }catch(err){
+    }catch(error){
 
-        list.innerHTML = `
-            <div
-                class="user-list-loading"
-                style="color:#EF4444;"
-            >
-                Failed to load users
-            </div>
-        `;
+        console.log(error);
 
     }
 
@@ -171,12 +122,11 @@ function renderUsers(users){
 
     if(users.length === 0){
 
-        list.innerHTML =
-            `
+        list.innerHTML = `
             <div class="user-list-loading">
                 No verified users found.
             </div>
-            `;
+        `;
 
         return;
 
@@ -206,10 +156,6 @@ function renderUsers(users){
 
                 </div>
 
-                <span class="user-item-badge">
-                    Verified
-                </span>
-
             </label>
 
         `).join("");
@@ -229,22 +175,20 @@ function filterUsers(){
         ).value.toLowerCase();
 
     const filtered =
-        allUsers.filter(u =>
+        allUsers.filter(user =>
 
-            (u.name || "")
+            (user.name || "")
             .toLowerCase()
             .includes(query)
 
             ||
 
-            (u.phone || "")
+            (user.phone || "")
             .includes(query)
 
         );
 
     renderUsers(filtered);
-
-    updateSelectedCount();
 
 }
 
@@ -275,6 +219,7 @@ function updateSelectedCount(){
 function getSelectedUserIds(){
 
     return [
+
         ...document.querySelectorAll(
             ".user-checkbox:checked"
         )
@@ -285,7 +230,7 @@ function getSelectedUserIds(){
 
 
 // ─────────────────────────────
-// SEND TEST SMS
+// SINGLE SMS
 // ─────────────────────────────
 
 async function sendTestSMS(){
@@ -305,27 +250,21 @@ async function sendTestSMS(){
             "testResult"
         );
 
-    const btn =
-        document.querySelector(
-            ".card:first-child .btn-primary"
-        );
-
     if(!phone || !message){
 
         showResult(
+
             resultBox,
+
             "error",
-            "Please fill in both phone number and message."
+
+            "Please enter phone and message."
+
         );
 
         return;
 
     }
-
-    btn.disabled = true;
-
-    btn.innerHTML =
-        "Sending...";
 
     try{
 
@@ -360,51 +299,47 @@ async function sendTestSMS(){
         const data =
             await res.json();
 
+        console.log(data);
+
         if(res.ok){
 
             showResult(
+
                 resultBox,
+
                 "success",
-                "✓ SMS sent successfully!"
+
+                "SMS sent successfully."
+
             );
-
-            document.getElementById(
-                "testPhone"
-            ).value = "";
-
-            document.getElementById(
-                "testMessage"
-            ).value = "";
-
-            document.getElementById(
-                "testCharCount"
-            ).innerText = "0";
 
         }else{
 
             showResult(
+
                 resultBox,
+
                 "error",
-                data.message ||
+
                 "Failed to send SMS."
+
             );
 
         }
 
-    }catch(err){
+    }catch(error){
+
+        console.log(error);
 
         showResult(
+
             resultBox,
+
             "error",
+
             "Network error."
+
         );
-
-    }finally{
-
-        btn.disabled = false;
-
-        btn.innerHTML =
-            "Send Test SMS";
 
     }
 
@@ -412,7 +347,7 @@ async function sendTestSMS(){
 
 
 // ─────────────────────────────
-// SEND BULK SMS
+// BULK SMS
 // ─────────────────────────────
 
 async function sendBulkSMS(){
@@ -430,17 +365,16 @@ async function sendBulkSMS(){
             "bulkResult"
         );
 
-    const btn =
-        document.querySelector(
-            ".btn-full"
-        );
-
     if(user_ids.length === 0){
 
         showResult(
+
             resultBox,
+
             "error",
-            "Please select recipients."
+
+            "Select at least one user."
+
         );
 
         return;
@@ -450,19 +384,18 @@ async function sendBulkSMS(){
     if(!message){
 
         showResult(
+
             resultBox,
+
             "error",
-            "Please type a message."
+
+            "Please enter message."
+
         );
 
         return;
 
     }
-
-    btn.disabled = true;
-
-    btn.innerHTML =
-        "Sending...";
 
     try{
 
@@ -482,8 +415,11 @@ async function sendBulkSMS(){
 
                     body:JSON.stringify({
 
-                        user_ids,
-                        message
+                        user_ids:
+                            user_ids,
+
+                        message:
+                            message
 
                     })
 
@@ -494,47 +430,47 @@ async function sendBulkSMS(){
         const data =
             await res.json();
 
-        if(res.ok && data.success){
+        console.log(data);
+
+        if(res.ok){
 
             showResult(
+
                 resultBox,
+
                 "success",
-                `✓ SMS sent to ${data.sent_to} recipient(s).`
+
+                `SMS sent to ${data.sent_to} users.`
+
             );
-
-            document.getElementById(
-                "bulkMessage"
-            ).value = "";
-
-            document.getElementById(
-                "bulkCharCount"
-            ).innerText = "0";
 
         }else{
 
             showResult(
+
                 resultBox,
+
                 "error",
-                data.message ||
-                "Failed to send SMS."
+
+                "Failed to send bulk SMS."
+
             );
 
         }
 
-    }catch(err){
+    }catch(error){
+
+        console.log(error);
 
         showResult(
+
             resultBox,
+
             "error",
+
             "Network error."
+
         );
-
-    }finally{
-
-        btn.disabled = false;
-
-        btn.innerHTML =
-            "Send to Selected";
 
     }
 
@@ -542,32 +478,29 @@ async function sendBulkSMS(){
 
 
 // ─────────────────────────────
-// RESULT HELPER
+// RESULT UI
 // ─────────────────────────────
 
 function showResult(
-    box,
+    element,
     type,
     message
 ){
 
-    if(!box) return;
+    if(!element) return;
 
-    box.className =
+    element.className =
         `result-box ${type}`;
 
-    box.innerText =
+    element.innerText =
         message;
 
-    clearTimeout(box._timer);
+    setTimeout(() => {
 
-    box._timer =
-        setTimeout(() => {
+        element.className =
+            "result-box hidden";
 
-            box.className =
-                "result-box hidden";
-
-        }, 5000);
+    }, 5000);
 
 }
 

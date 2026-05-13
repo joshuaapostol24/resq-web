@@ -4,7 +4,7 @@ require("dotenv").config({
 });
 const fetch =
     require("node-fetch");
-    
+
 const express =
     require("express");
 
@@ -92,6 +92,14 @@ app.use(
     "/api/weather-risk",
     require("./server/routes/weatherRiskRoutes")
 );
+
+
+app.use(
+    "/api/sms",
+    require("./server/routes/smsRoutes")
+);
+
+
 /*
     SEND SMS
 */

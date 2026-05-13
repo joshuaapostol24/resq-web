@@ -332,7 +332,7 @@ async function sendTestSMS(){
         const res =
             await fetch(
 
-                `${API_BASE}/api/send-sms`,
+                `${API_BASE}/sms/test`,
 
                 {
 
@@ -345,7 +345,7 @@ async function sendTestSMS(){
 
                     body:JSON.stringify({
 
-                        number:
+                        phone:
                             phone,
 
                         message:

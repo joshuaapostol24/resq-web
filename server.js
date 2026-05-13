@@ -94,10 +94,6 @@ app.use(
 );
 
 
-app.use(
-    "/api/sms",
-    require("./server/routes/smsRoutes")
-);
 
 
 /*
@@ -174,6 +170,8 @@ app.post(
 
     }
 );
+
+app.use("/api/sms", require("./server/routes/smsRoutes"));
 /*
     LOGIN API
 */

@@ -180,27 +180,9 @@ router.get(
         try {
 
             const news =
-                await News.find()
-                .sort({ createdAt: -1 });
+                await News.collection.find({}).toArray();
 
-            const result =
-                news.map(item => ({
-
-                    _id: item._id.toString(),
-
-                    id: item._id.toString(),
-
-                    title: item.title,
-                    category: item.category,
-                    priority: item.priority,
-                    date: item.date,
-                    audience: item.audience,
-                    pinned: item.pinned,
-                    message: item.message
-
-                }));
-
-            res.json(result);
+            res.json(news);
 
         } catch (error) {
 

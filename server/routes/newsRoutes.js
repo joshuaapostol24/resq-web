@@ -78,13 +78,6 @@ async function notifyUsersOfNews(newsItem){
 
 
 
-module.exports = {
-
-    notifyUsersOfNews
-
-};
-
-
 const News =
     require("../models/News");
 
@@ -121,6 +114,65 @@ router.post(
         }
     }
 );
+
+
+
+/*
+    DELETE NEWS
+*/
+router.delete(
+    "/delete/:id",
+    async(req,res)=>{
+
+        try{
+
+            const deletedNews =
+                await News.findByIdAndDelete(
+                    req.params.id
+                );
+
+            if(!deletedNews){
+
+                return res.status(404).json({
+
+                    success:false,
+
+                    message:
+                        "News not found"
+
+                });
+
+            }
+
+            return res.json({
+
+                success:true,
+
+                message:
+                    "News deleted successfully"
+
+            });
+
+        }catch(error){
+
+            console.log(error);
+
+            return res.status(500).json({
+
+                success:false,
+
+                message:
+                    "Failed to delete news"
+
+            });
+
+        }
+
+    }
+);
+
+
+
 
 router.get(
     "/all",

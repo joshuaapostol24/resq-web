@@ -193,6 +193,7 @@ async function loadAnnouncements() {
 
             card.className = "news-card";
 
+            
             card.innerHTML = `
                 <div class="news-title-row">
 
@@ -225,7 +226,16 @@ async function loadAnnouncements() {
                     </span>
 
                 </div>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteAnnouncement('${news._id}')"
+                >
+                    Delete
+                </button>
             `;
+
+
 
             latestContainer.appendChild(card);
 
@@ -253,6 +263,70 @@ INITIAL LOAD
 */
 
 loadAnnouncements();
+
+
+/*
+=========================================================
+DELETE ANNOUNCEMENT
+=========================================================
+*/
+
+async function deleteAnnouncement(id){
+
+    const confirmed =
+        confirm(
+            "Delete this announcement?"
+        );
+
+    if(!confirmed) return;
+
+    try{
+
+        const response =
+            await fetch(
+
+                `${API_URL}/delete/${id}`,
+
+                {
+                    method:"DELETE"
+                }
+
+            );
+
+        const result =
+            await response.json();
+
+        console.log(result);
+
+        if(response.ok){
+
+            alert(
+                "Announcement deleted successfully"
+            );
+
+            loadAnnouncements();
+
+        }else{
+
+            alert(
+                "Failed to delete announcement"
+            );
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+        alert(
+            "Server error while deleting"
+        );
+
+    }
+
+}
+
+
 
 /*
 =========================================================

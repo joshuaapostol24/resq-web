@@ -48,10 +48,13 @@ async function loadAnnouncements() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/all`
-        );
-
+        const response = await fetch(${API_URL}/all);
+        const raw = await response.text(); // Get raw text first, not .json()
+        console.log("RAW RESPONSE:", raw);
+        const announcements = JSON.parse(raw);
+        console.log("FIRST ITEM:", announcements[0]);
+        console.log("FIRST ITEM id:", announcements[0]?.id);
+        console.log("FIRST ITEM _id:", announcements[0]?._id);
         if (!response.ok) {
             throw new Error(
                 "Failed to fetch announcements"

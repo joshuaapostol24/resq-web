@@ -185,7 +185,7 @@ async function loadAnnouncements() {
 
         announcements.forEach(news => {
 
-            
+        console.log("ID:", news._id, "| id:", news.id);
         console.log(news);
 
 
@@ -231,7 +231,7 @@ async function loadAnnouncements() {
                     </span>
 
                 </div>
-
+                
                 <button
                     class="delete-btn"
                     onclick="deleteAnnouncement('${news._id}')"

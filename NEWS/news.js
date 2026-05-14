@@ -234,8 +234,8 @@ async function loadAnnouncements() {
                 
                 <button
                     class="delete-btn"
-                    onclick="deleteAnnouncement('${news._id}')"
-                >
+                    onclick='deleteAnnouncement(${JSON.stringify(news)})'
+
                     Delete
                 </button>
             `;
@@ -276,12 +276,21 @@ DELETE ANNOUNCEMENT
 =========================================================
 */
 
-async function deleteAnnouncement(id){
+async function deleteAnnouncement(news){
+
+    console.log("DELETE NEWS:", news);
+
+    const id = news._id || news.id;
+
+    console.log("DELETE ID:", id);
+
+    if(!id){
+        alert("ID is undefined");
+        return;
+    }
 
     const confirmed =
-        confirm(
-            "Delete this announcement?"
-        );
+        confirm("Delete this announcement?");
 
     if(!confirmed) return;
 

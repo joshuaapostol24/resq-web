@@ -11,15 +11,19 @@ async function notifyUsersOfNews(newsItem){
 
         const response =
             await fetch(
-
-                "https://jpovamcznyzoemcnjrgs.supabase.co/functions/v1/send-news-push",
-
+                "https://jpovamcznyzoemcnjrgs.supabase.co/functions/v1/send-news-notification",
                 {
+                    method: "POST",
 
-                    method:"POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json",
 
-                    headers:{
-                        "Content-Type":"application/json"
+                        "Authorization":
+                            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwb3ZhbWN6bnl6b2VtY25qcmdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4ODMwMTcsImV4cCI6MjA5MzQ1OTAxN30.1WTdf3j4F6z-attUvvPi5Z7i8Q81hB4hhQtpyrgU8ao",
+
+                        "apikey":
+                            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwb3ZhbWN6bnl6b2VtY25qcmdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4ODMwMTcsImV4cCI6MjA5MzQ1OTAxN30.1WTdf3j4F6z-attUvvPi5Z7i8Q81hB4hhQtpyrgU8ao"
                     },
 
                     body: JSON.stringify({
@@ -39,7 +43,6 @@ async function notifyUsersOfNews(newsItem){
                     })
 
                 }
-
             );
 
         const result =

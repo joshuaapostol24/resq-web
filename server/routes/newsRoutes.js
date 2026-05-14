@@ -8,7 +8,7 @@ const router =
 
 
 async function notifyUsersOfNews(newsItem){
-
+    console.log("notifyUsersOfNews called with:", newsItem.title);
     try{
 
         const response =

@@ -276,11 +276,8 @@ DELETE ANNOUNCEMENT
 =========================================================
 */
 
-async function deleteAnnouncement(news){
 
-    console.log("DELETE NEWS:", news);
-
-    const id = news._id || news.id;
+async function deleteAnnouncement(id){
 
     console.log("DELETE ID:", id);
 
@@ -339,6 +336,8 @@ async function deleteAnnouncement(news){
     }
 
 }
+
+
 
 
 

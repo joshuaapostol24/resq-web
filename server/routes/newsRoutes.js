@@ -176,16 +176,12 @@ router.get(
     "/all",
     async (req, res) => {
         try {
-            const news = await News.find()
-                .lean()
-                .sort({ createdAt: -1 });
-
-            const result = news.map(item => ({
-                ...item,
-                id: item._id ? item._id.toString() : null,
-                _id: item._id ? item._id.toString() : null
-            }));
-
+            const news = await News.find().sort({ createdAt: -1 });
+            const result = news.map(item => {
+                const obj = item.toObject();
+                obj.id = item._id.toString();
+                return obj;
+            });
             res.json(result);
         } catch (error) {
             console.log(error);

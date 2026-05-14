@@ -91,7 +91,7 @@ router.post(
     "/create",
     async (req, res) => {
         try {
-            console.log("STEP 1 - route hit");
+            process.stdout.write("STEP 1 - route hit");
             
             const news = new News({
                 title: req.body.title,
@@ -104,15 +104,15 @@ router.post(
             });
 
             await news.save();
-            console.log("STEP 2 - saved");
+            process.stdout.write("STEP 2 - saved");
 
             await notifyUsersOfNews(news);
-            console.log("STEP 3 - notify called");
+            process.stdout.write("STEP 3 - notify called");
 
             res.json({ success: true });
 
         } catch (error) {
-            console.log("ERROR:", error.message);
+            process.stdout.write("ERROR: " + error.message);
             res.status(500).json({
                 success: false,
                 error: error.message

@@ -114,7 +114,7 @@ router.post(
                 "News saved successfully"
             );
 
-           // notifyUsersOfNews(news);
+           await notifyUsersOfNews(news);
 
             res.json({
                 success: true

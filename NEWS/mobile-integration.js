@@ -286,48 +286,55 @@ form.addEventListener(
         /*
             SEND PUSH NOTIFICATION
         */
-        await fetch(
+  form.addEventListener(
+    "submit",
+    async function(e) {
 
-            "https://jpovamcznyzoemcnjrgs.supabase.co/functions/v1/send-news-notification",
+        e.preventDefault();
 
+        const news = {
+            title:    document.getElementById("f-title").value,
+            category: document.getElementById("f-category").value,
+            priority: document.getElementById("f-priority").value,
+            date:     document.getElementById("f-date").value,
+            audience: document.getElementById("f-audience").value,
+            pinned:   document.getElementById("f-pin").value,
+            message:  document.getElementById("f-message").value
+        };
+
+        // ── Save news (backend handles notification automatically) ──
+        const response = await fetch(
+            "/api/news/create",
             {
-
-                method:"POST",
-
-                headers:{
-
-                    "Content-Type":
-                        "application/json",
-
-                    "Authorization":
-                        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwb3ZhbWN6bnl6b2VtY25qcmdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4ODMwMTcsImV4cCI6MjA5MzQ1OTAxN30.1WTdf3j4F6z-attUvvPi5Z7i8Q81hB4hhQtpyrgU8ao"
-
-                },
-
-                body:JSON.stringify({
-
-                    title:
-                        news.title,
-
-                    message:
-                        news.message,
-
-                    category:
-                        news.category,
-
-                    priority:
-                        news.priority
-
-                })
-
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(news)
             }
-
         );
 
+        if (!response.ok) {
+            alert("Failed to publish announcement");
+            return;
+        }
+
+        // ── SMS (keep as-is) ──
+        await fetch(
+            "/api/send-sms",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    phone: "639976857742",
+                    message: news.message
+                })
+            }
+        );
 
         form.reset();
-
         loadAnnouncements();
+        alert("Announcement published successfully");
+    }
+);
 
 
           await fetch(

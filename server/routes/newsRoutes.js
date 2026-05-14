@@ -5,6 +5,7 @@ const express =
 const router =
     express.Router();
 
+const fetch = require("node-fetch");
 
 
 async function notifyUsersOfNews(newsItem){

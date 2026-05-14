@@ -32,24 +32,25 @@ const NewsSchema =
 
 
 
+
 NewsSchema.virtual("id").get(function(){
 
     return this._id.toHexString();
 
 });
 
-
+NewsSchema.set(
+    "toJSON",
+    {
+        virtuals:true
+    }
+);
 
 NewsSchema.set(
-
-    "toJSON",
-
+    "toObject",
     {
-
         virtuals:true
-
     }
-
 );
 
 

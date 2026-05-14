@@ -185,66 +185,36 @@ async function loadAnnouncements() {
 
         announcements.forEach(news => {
 
-        console.log("ID:", news._id, "| id:", news.id);
-        console.log(news);
+    const formattedDate = news.date
+        ? new Date(news.date).toLocaleString()
+        : "No date";
 
+    const card = document.createElement("div");
+    card.className = "news-card";
 
+    card.innerHTML = `
+        <div class="news-title-row">
+            <h3>${news.title || ""}</h3>
+            <span class="badge">${news.priority || ""}</span>
+        </div>
+        <p>${news.message || ""}</p>
+        <div class="meta-row">
+            <span>${news.category || ""}</span>
+            <span>• ${news.audience || ""}</span>
+            <span>• ${formattedDate}</span>
+        </div>
+        <button class="delete-btn">Delete</button>
+    `;
 
-            const formattedDate = news.date
-                ? new Date(news.date).toLocaleString()
-                : "No date";
+    // ✅ Attach the ID via dataset, not inline onclick
+    const deleteBtn = card.querySelector(".delete-btn");
+    deleteBtn.dataset.id = news._id || news.id;  // fallback covers both
+    deleteBtn.addEventListener("click", function () {
+        deleteAnnouncement(this.dataset.id);
+    });
 
-            const card = document.createElement("div");
-
-            card.className = "news-card";
-
-            
-            card.innerHTML = `
-                <div class="news-title-row">
-
-                    <h3>
-                        ${news.title || ""}
-                    </h3>
-
-                    <span class="badge">
-                        ${news.priority || ""}
-                    </span>
-
-                </div>
-
-                <p>
-                    ${news.message || ""}
-                </p>
-
-                <div class="meta-row">
-
-                    <span>
-                        ${news.category || ""}
-                    </span>
-
-                    <span>
-                        • ${news.audience || ""}
-                    </span>
-
-                    <span>
-                        • ${formattedDate}
-                    </span>
-
-                </div>
-                
-                <button
-                    class="delete-btn"
-                    onclick="deleteAnnouncement('${news.id}')"
-                >
-                    Delete
-                </button>
-            `;
-
-
-
-            latestContainer.appendChild(card);
-
-        });
+    latestContainer.appendChild(card);
+});
 
     } catch (error) {
 
@@ -296,7 +266,7 @@ async function deleteAnnouncement(id){
         const response =
             await fetch(
 
-                `${API_URL}/delete/${id}`,
+                ${API_URL}/delete/${id},
 
                 {
                     method:"DELETE"

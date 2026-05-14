@@ -234,7 +234,7 @@ async function loadAnnouncements() {
                 
                 <button
                     class="delete-btn"
-                    onclick='deleteAnnouncement(${JSON.stringify(news)})'
+                    onclick="deleteAnnouncement('${news.id}')"
                 >
                     Delete
                 </button>

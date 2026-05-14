@@ -1,54 +1,62 @@
 const mongoose =
     require("mongoose");
 
-const newsSchema =
-    new mongoose.Schema({
+const NewsSchema =
+    new mongoose.Schema(
 
-        title:{
-            type:String,
-            required:true
+        {
+
+            title:String,
+
+            category:String,
+
+            priority:String,
+
+            date:String,
+
+            audience:String,
+
+            pinned:String,
+
+            message:String
+
         },
 
-        category:{
-            type:String
-        },
+        {
 
-        priority:{
-            type:String
-        },
+            timestamps:true
 
-        date:{
-            type:String
-        },
-
-        audience:{
-            type:String
-        },
-
-        pinned:{
-            type:String
-        },
-
-        message:{
-            type:String
         }
 
-    },
+    );
+
+
+
+NewsSchema.virtual("id").get(function(){
+
+    return this._id.toHexString();
+
+});
+
+
+
+NewsSchema.set(
+
+    "toJSON",
 
     {
-        timestamps:true
+
+        virtuals:true
+
     }
 
 );
 
+
+
 module.exports =
-
-    mongoose.models.news ||
-
     mongoose.model(
-
-        "news",
-
-        newsSchema
-
+        "News",
+        NewsSchema
     );
+

@@ -90,76 +90,34 @@ const News =
 router.post(
     "/create",
     async (req, res) => {
-
         try {
-
-            console.log(
-                "Incoming News:"
-            );
-
-            console.log(req.body);
-
-            const news =
-                new News({
-
-                    title:
-                        req.body.title,
-
-                    category:
-                        req.body.category,
-
-                    priority:
-                        req.body.priority,
-
-                    date:
-                        req.body.date,
-
-                    audience:
-                        req.body.audience,
-
-                    pinned:
-                        req.body.pinned,
-
-                    message:
-                        req.body.message
-
-                });
+            console.log("STEP 1 - route hit");
+            
+            const news = new News({
+                title: req.body.title,
+                category: req.body.category,
+                priority: req.body.priority,
+                date: req.body.date,
+                audience: req.body.audience,
+                pinned: req.body.pinned,
+                message: req.body.message
+            });
 
             await news.save();
+            console.log("STEP 2 - saved");
 
-            console.log(
-                "News saved successfully"
-            );
+            await notifyUsersOfNews(news);
+            console.log("STEP 3 - notify called");
 
-           await notifyUsersOfNews(news);
-
-            res.json({
-                success: true
-            });
+            res.json({ success: true });
 
         } catch (error) {
-
-            console.log(
-                "NEWS SAVE ERROR:"
-            );
-
-            console.log(error);
-
-            console.log(
-                error.message
-            );
-
+            console.log("ERROR:", error.message);
             res.status(500).json({
-
                 success: false,
-
-                error:
-                    error.message
-
+                error: error.message
             });
-
         }
-
     }
 );
 

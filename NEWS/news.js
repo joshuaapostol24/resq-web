@@ -234,7 +234,7 @@ async function loadAnnouncements() {
 
                 <button
                     class="delete-btn"
-                    onclick="deleteAnnouncement('${news.id}')"
+                    onclick="deleteAnnouncement('${news._id}')"
                 >
                     Delete
                 </button>

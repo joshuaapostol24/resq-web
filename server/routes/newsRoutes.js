@@ -182,9 +182,12 @@ router.get(
 
             const news =
                 await News.find()
+                .select("+_id")
                 .sort({
                     createdAt: -1
                 });
+
+
 
             res.json(news);
 

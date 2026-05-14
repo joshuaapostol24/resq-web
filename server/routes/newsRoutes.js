@@ -172,24 +172,49 @@ router.delete(
 );
 
 
+
 router.get(
     "/all",
     async (req, res) => {
+
         try {
-            const news = await News.find().sort({ createdAt: -1 });
-            const result = news.map(item => {
-                const obj = item.toObject();
-                obj.id = obj._id.toString();
-                obj._id = obj._id.toString();
-                return obj;
-            });
+
+            const news =
+                await News.find()
+                .sort({ createdAt: -1 });
+
+            const result =
+                news.map(item => ({
+
+                    _id: item._id.toString(),
+
+                    id: item._id.toString(),
+
+                    title: item.title,
+                    category: item.category,
+                    priority: item.priority,
+                    date: item.date,
+                    audience: item.audience,
+                    pinned: item.pinned,
+                    message: item.message
+
+                }));
+
             res.json(result);
+
         } catch (error) {
+
             console.log(error);
-            res.status(500).json({ success: false });
+
+            res.status(500).json({
+                success:false
+            });
+
         }
+
     }
 );
+
 
 router.get(
     "/public",

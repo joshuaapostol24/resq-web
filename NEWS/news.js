@@ -48,7 +48,7 @@ async function loadAnnouncements() {
 
     try {
 
-        const response = await fetch(${API_URL}/all);
+        const response = await fetch(`${API_URL}/all`);
         const raw = await response.text(); // Get raw text first, not .json()
         console.log("RAW RESPONSE:", raw);
         const announcements = JSON.parse(raw);

@@ -27,7 +27,7 @@ async function notifyUsersOfNews(newsItem){
                             "application/json",
 
                         "Authorization":
-                            `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`
+                            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impwb3ZhbWN6bnl6b2VtY25qcmdzIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Nzg4MzAxNywiZXhwIjoyMDkzNDU5MDE3fQ.A8XUmo61hrxr1nGm0kICPZsDvUAgUhcA5-Gz4Z6Qak0",
 
                     },
 

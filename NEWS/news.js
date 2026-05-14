@@ -185,6 +185,11 @@ async function loadAnnouncements() {
 
         announcements.forEach(news => {
 
+            
+        console.log(news);
+
+
+
             const formattedDate = news.date
                 ? new Date(news.date).toLocaleString()
                 : "No date";

@@ -266,7 +266,7 @@ async function deleteAnnouncement(id){
         const response =
             await fetch(
 
-                ${API_URL}/delete/${id},
+                `${API_URL}/delete/${id}`,
 
                 {
                     method:"DELETE"
@@ -306,8 +306,6 @@ async function deleteAnnouncement(id){
     }
 
 }
-
-
 
 
 

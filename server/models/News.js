@@ -42,7 +42,11 @@ NewsSchema.virtual("id").get(function(){
 NewsSchema.set(
     "toJSON",
     {
-        virtuals:true
+        virtuals: true,
+        transform: function(doc, ret) {
+            ret.id = ret._id.toString();
+            return ret;
+        }
     }
 );
 

@@ -182,6 +182,25 @@ router.get(
                 .lean()
                 .sort({ createdAt: -1 });
 
+            const result = news.map(item => ({
+                ...item,
+                id: item._id.toString()
+            }));
+
+            res.json(result);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ success: false });
+        }
+    }
+);router.get(
+    "/all",
+    async (req, res) => {
+        try {
+            const news = await News.find()
+                .lean()
+                .sort({ createdAt: -1 });
+
             res.json(news);
         } catch (error) {
             console.log(error);

@@ -43,9 +43,15 @@ NewsSchema.set(
     "toJSON",
     {
         virtuals: true,
+
         transform: function(doc, ret) {
+
             ret.id = ret._id.toString();
+
+            ret._id = ret._id.toString();
+
             return ret;
+
         }
     }
 );

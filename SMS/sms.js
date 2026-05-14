@@ -4,7 +4,7 @@
 // ─────────────────────────────
 
 const API_BASE =
-    "https://resq-app-xsb98.ondigitalocean.app";
+    "https://resq-sms-backend-f5c2x.ondigitalocean.app/";
 
 
 // ─────────────────────────────

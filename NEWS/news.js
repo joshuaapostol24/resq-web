@@ -57,9 +57,7 @@ async function loadAnnouncements() {
         console.log("RAW RESPONSE:", raw);
 
         let announcements = JSON.parse(raw);
-        console.log("FIRST ITEM:", announcements[0]);
-        console.log("FIRST ITEM id:", announcements[0]?.id);
-        console.log("FIRST ITEM _id:", announcements[0]?._id);
+        console.log("FIRST ITEM KEYS:", Object.keys(announcements[0]));
 
         /*
         -----------------------------------------

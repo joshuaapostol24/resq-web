@@ -172,8 +172,6 @@ router.delete(
 );
 
 
-
-
 router.get(
     "/all",
     async (req, res) => {
@@ -184,7 +182,8 @@ router.get(
 
             const result = news.map(item => ({
                 ...item,
-                id: item._id.toString()
+                id: item._id ? item._id.toString() : null,
+                _id: item._id ? item._id.toString() : null
             }));
 
             res.json(result);

@@ -178,7 +178,7 @@ router.get(
     async (req, res) => {
 
         try {
-
+            console.log("ALL ROUTE V2 - with id mapping");
             const news =
                 await News.find()
                 .sort({ createdAt: -1 });

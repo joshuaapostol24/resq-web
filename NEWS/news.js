@@ -1,4 +1,3 @@
-
 lucide.createIcons();
 
 /*
@@ -54,11 +53,14 @@ async function loadAnnouncements() {
             throw new Error("Failed to fetch announcements");
         }
 
-        let announcements = await response.json();
+        const raw = await response.text();
+        console.log("RAW RESPONSE:", raw);
 
-        if (!Array.isArray(announcements)) {
-            announcements = [];
-        }
+        let announcements = JSON.parse(raw);
+        console.log("FIRST ITEM:", announcements[0]);
+        console.log("FIRST ITEM id:", announcements[0]?.id);
+        console.log("FIRST ITEM _id:", announcements[0]?._id);
+
         /*
         -----------------------------------------
         CHECK IF ARRAY
@@ -183,36 +185,36 @@ async function loadAnnouncements() {
 
         announcements.forEach(news => {
 
-    const formattedDate = news.date
-        ? new Date(news.date).toLocaleString()
-        : "No date";
+            const formattedDate = news.date
+                ? new Date(news.date).toLocaleString()
+                : "No date";
 
-    const card = document.createElement("div");
-    card.className = "news-card";
+            const card = document.createElement("div");
+            card.className = "news-card";
 
-    card.innerHTML = `
-        <div class="news-title-row">
-            <h3>${news.title || ""}</h3>
-            <span class="badge">${news.priority || ""}</span>
-        </div>
-        <p>${news.message || ""}</p>
-        <div class="meta-row">
-            <span>${news.category || ""}</span>
-            <span>• ${news.audience || ""}</span>
-            <span>• ${formattedDate}</span>
-        </div>
-        <button class="delete-btn">Delete</button>
-    `;
+            card.innerHTML = `
+                <div class="news-title-row">
+                    <h3>${news.title || ""}</h3>
+                    <span class="badge">${news.priority || ""}</span>
+                </div>
+                <p>${news.message || ""}</p>
+                <div class="meta-row">
+                    <span>${news.category || ""}</span>
+                    <span>• ${news.audience || ""}</span>
+                    <span>• ${formattedDate}</span>
+                </div>
+                <button class="delete-btn">Delete</button>
+            `;
 
-    // ✅ Attach the ID via dataset, not inline onclick
-    const deleteBtn = card.querySelector(".delete-btn");
-    deleteBtn.dataset.id = news._id || news.id;  // fallback covers both
-    deleteBtn.addEventListener("click", function () {
-        deleteAnnouncement(this.dataset.id);
-    });
+            const deleteBtn = card.querySelector(".delete-btn");
+            deleteBtn.dataset.id = news._id || news.id;
+            deleteBtn.addEventListener("click", function () {
+                console.log("BUTTON CLICKED, dataset.id:", this.dataset.id);
+                deleteAnnouncement(this.dataset.id);
+            });
 
-    latestContainer.appendChild(card);
-});
+            latestContainer.appendChild(card);
+        });
 
     } catch (error) {
 
@@ -244,12 +246,11 @@ DELETE ANNOUNCEMENT
 =========================================================
 */
 
-
-async function deleteAnnouncement(id){
+async function deleteAnnouncement(id) {
 
     console.log("DELETE ID:", id);
 
-    if(!id){
+    if (!id) {
         alert("ID is undefined");
         return;
     }
@@ -257,9 +258,9 @@ async function deleteAnnouncement(id){
     const confirmed =
         confirm("Delete this announcement?");
 
-    if(!confirmed) return;
+    if (!confirmed) return;
 
-    try{
+    try {
 
         const response =
             await fetch(
@@ -267,7 +268,7 @@ async function deleteAnnouncement(id){
                 `${API_URL}/delete/${id}`,
 
                 {
-                    method:"DELETE"
+                    method: "DELETE"
                 }
 
             );
@@ -277,7 +278,7 @@ async function deleteAnnouncement(id){
 
         console.log(result);
 
-        if(response.ok){
+        if (response.ok) {
 
             alert(
                 "Announcement deleted successfully"
@@ -285,7 +286,7 @@ async function deleteAnnouncement(id){
 
             loadAnnouncements();
 
-        }else{
+        } else {
 
             alert(
                 "Failed to delete announcement"
@@ -293,7 +294,7 @@ async function deleteAnnouncement(id){
 
         }
 
-    }catch(error){
+    } catch (error) {
 
         console.log(error);
 
@@ -375,12 +376,8 @@ form.addEventListener(
 
             const result =
                 await response.json();
-            
-            
-
 
             console.log(result);
-
 
             alert(
                 "Announcement published successfully"
@@ -429,4 +426,3 @@ if (newAnnouncementBtn) {
         }
     );
 }
-

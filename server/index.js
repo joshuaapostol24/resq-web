@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 const Report = require("./models/Report");
 const RiskReport = require("./models/RiskReport");
 const News = require("./models/News");
-const { Admin, Resident, AppSettings, AuditLog, Notification } = require("./models/models");
+const { Admin, Resident, AuditLog, Notification } = require("./models/models");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -571,16 +571,7 @@ async function getReportsForDashboard() {
   }
 }
 
-function defaultSettingsPayload() {
-  const data = readData();
-  return {
-    barangays: data.barangays || [],
-    settings: {
-      moderation: data.settings?.moderation || { keywords: [], threshold: 5 },
-      reasons: data.settings?.reasons || { approval: [], rejection: [] }
-    }
-  };
-}
+
 
 function supabaseReportConfig() {
   const url = (
@@ -892,7 +883,6 @@ app.use(asyncRoute(async (req, res, next) => {
     "/api/reports",
     "/api/reports/debug",
     "/api/reports/summary",
-    "/api/settings",
     "/api/users",
     "/public/reports"
   ]);

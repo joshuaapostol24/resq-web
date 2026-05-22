@@ -27,149 +27,122 @@ body{
 }
 
 .scoped-banner{
-
-    background:#FFF7ED;
-    color:#C2410C;
-
-    padding:10px;
-
-    font-size:12px;
-    font-weight:700;
-
     display:flex;
     justify-content:center;
     align-items:center;
     gap:6px;
-
+    background:#FFF5E9;
+    color:#B45309;
+    border-bottom:1px solid #FFE4C4;
+    padding:6px 12px;
+    font-size:11px;
+    font-weight:800;
 }
 
 .top-nav{
-
-    background:white;
-
-    border-bottom:1px solid var(--border);
-
-    padding:18px 30px;
-
+    background:var(--white);
+    padding:12px 24px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-
+    border-bottom:1px solid var(--border);
+    gap:18px;
 }
 
-.nav-left,
-.nav-right{
-
+.nav-left{
     display:flex;
     align-items:center;
-    gap:18px;
+    gap:20px;
+}
 
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
 .logo-box{
-
-    width:42px;
-    height:42px;
-
+    width:30px;
+    height:30px;
     background:var(--orange);
     color:white;
-
-    border-radius:12px;
-
+    border-radius:8px;
     display:flex;
     justify-content:center;
     align-items:center;
-
 }
 
 .brand{
-
-    font-size:20px;
-    font-weight:700;
-
+    font-weight:800;
+    font-size:16px;
+    white-space:nowrap;
 }
 
 .nav-links{
-
     display:flex;
-    gap:18px;
-
+    align-items:center;
+    gap:15px;
 }
 
 .nav-links a{
-
-    text-decoration:none;
     color:var(--muted);
-    font-weight:600;
-
+    text-decoration:none;
+    font-size:13px;
+    font-weight:700;
+    padding:18px 0 16px;
+    border-bottom:2px solid transparent;
 }
 
 .nav-links .active{
-
     color:var(--orange);
-
+    border-bottom-color:var(--orange);
 }
 
 .btn-workspace,
 .btn-primary{
-
+    border:0;
+    border-radius:6px;
     background:var(--orange);
-
     color:white;
-
-    border:none;
-
-    border-radius:12px;
-
-    padding:12px 18px;
-
-    font-weight:700;
-
+    gap:7px;
+    font-size:12px;
+    font-weight:800;
+    padding:8px 12px;
     display:flex;
     align-items:center;
-    gap:8px;
-
     cursor:pointer;
-
 }
 
 .avatar{
-
-    width:40px;
-    height:40px;
-
+    width:32px;
+    height:32px;
     border-radius:50%;
-
 }
 
 .news-main{
-
-    max-width:1200px;
-
-    margin:auto;
-
-    padding:30px;
-
+    max-width:1280px;
+    margin:0 auto;
+    padding:24px;
 }
 
 .page-header{
-
-    margin-bottom:25px;
-
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:18px;
+    margin-bottom:18px;
 }
 
 .page-header h1{
-
-    font-size:38px;
-
-    margin-bottom:8px;
-
+    margin:0;
+    font-size:24px;
+    font-weight:800;
 }
 
 .page-header p{
-
+    margin:4px 0 0;
     color:var(--muted);
-
+    font-size:14px;
 }
 
 .card{

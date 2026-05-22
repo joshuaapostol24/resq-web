@@ -9,6 +9,11 @@
         content="width=device-width, initial-scale=1.0"
     >
 
+    <meta
+        name="resq-api-base"
+        content=""
+    >
+
     <title>
         ResQ Admin | Risk Report
     </title>
@@ -28,11 +33,13 @@
 
     <div class="scoped-banner">
 
-        <i data-lucide="lock"></i>
+        <i data-lucide="lock" size="10"></i>
 
         SCOPED VIEW: MUNICIPALITY OF MAMBURAO
 
     </div>
+
+    <!-- NAVIGATION -->
 
     <header class="top-nav">
 
@@ -40,55 +47,41 @@
 
             <div class="logo-box">
 
-                <i data-lucide="shield-alert"></i>
+                <i data-lucide="shield-alert" size="16"></i>
 
             </div>
 
             <span class="brand">
-
                 ResQ Admin
-
             </span>
 
             <nav class="nav-links">
 
                 <a href="../DASHBOARD/dashboard.html">
-
                     Dashboard
-
                 </a>
 
                 <a href="../REPORTS/reports.html">
-
                     Reports
-
                 </a>
 
                 <a
-                    href="../RISKREPORT/riskreport.html"
+                    href="riskreport.html"
                     class="active"
                 >
-
                     Risk Report
-
                 </a>
 
                 <a href="../NEWS/news.html">
-
                     News
-
                 </a>
 
                 <a href="../USERVER/user.html">
-
                     Users
-
                 </a>
 
                 <a href="../SMS/sms.html">
-
                     SMS
-
                 </a>
 
             </nav>
@@ -97,16 +90,41 @@
 
         <div class="nav-right">
 
-            <button class="btn-workspace">
+            <button
+                class="btn-workspace"
+                type="button"
+                onclick="location.href='../WORKSPACE/workspace.html'"
+            >
 
-                <i data-lucide="map-pin"></i>
+                <i data-lucide="map-pin" size="14"></i>
 
                 Mamburao
 
             </button>
 
+            <button
+                class="icon-btn"
+                type="button"
+                onclick="location.reload()"
+            >
+
+                <i data-lucide="refresh-cw" size="16"></i>
+
+            </button>
+
+            <button
+                class="icon-btn"
+                type="button"
+                data-action="logout"
+            >
+
+                <i data-lucide="log-out" size="16"></i>
+
+            </button>
+
             <img
                 src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff"
+                alt="Admin Avatar"
                 class="avatar"
             >
 
@@ -114,9 +132,13 @@
 
     </header>
 
+    <!-- MAIN -->
+
     <main class="risk-main">
 
-        <div class="page-header">
+        <!-- HEADER -->
+
+        <section class="page-header">
 
             <div>
 
@@ -126,27 +148,34 @@
 
                 <p>
                     ML-based disaster risk analysis,
-                    weather prediction, and emergency
-                    assessment monitoring for Mamburao.
+                    weather prediction,
+                    and emergency assessment
+                    monitoring for Mamburao.
                 </p>
 
             </div>
 
-            <button class="btn-primary">
+            <div class="header-actions">
 
-                <i data-lucide="refresh-cw"></i>
+                <button
+                    class="btn-primary"
+                    type="button"
+                    id="refreshBtn"
+                >
 
-                Refresh
+                    <i data-lucide="refresh-cw" size="14"></i>
 
-            </button>
+                    Refresh
 
-        </div>
+                </button>
 
-        <!-- =========================
-             LIVE WEATHER CARD
-        ========================== -->
+            </div>
 
-        <section class="card">
+        </section>
+
+        <!-- WEATHER RISK ASSESSMENT -->
+
+        <section class="card weather-risk-card">
 
             <div class="card-header">
 
@@ -156,39 +185,93 @@
 
             </div>
 
-            <div class="weather-actions">
+            <div class="weather-risk-toolbar">
 
                 <select id="barangaySelect">
 
-                    <option>
+                    <option value="">
                         Select Barangay
                     </option>
 
-                    <option>
-                        Balansay
+                    <option value="8">
+                        Poblacion 1
                     </option>
 
-                    <option>
+                    <option value="9">
+                        Poblacion 2
+                    </option>
+
+                    <option value="10">
+                        Poblacion 3
+                    </option>
+
+                    <option value="11">
+                        Poblacion 4
+                    </option>
+
+                    <option value="12">
+                        Poblacion 5
+                    </option>
+
+                    <option value="13">
+                        Poblacion 6
+                    </option>
+
+                    <option value="14">
+                        Poblacion 7
+                    </option>
+
+                    <option value="15">
+                        Poblacion 8
+                    </option>
+
+                    <option value="3">
                         Payompon
                     </option>
 
-                    <option>
+                    <option value="1">
+                        Balansay
+                    </option>
+
+                    <option value="2">
+                        Fatima
+                    </option>
+
+                    <option value="7">
+                        Tayamaan
+                    </option>
+
+                    <option value="6">
+                        Tangkalan
+                    </option>
+
+                    <option value="5">
+                        Talabaan
+                    </option>
+
+                    <option value="4">
                         San Luis
                     </option>
 
                 </select>
 
-                <button class="btn-primary">
+                <button
+                    class="btn-primary"
+                    id="weatherRiskBtn"
+                >
 
-                    <i data-lucide="cloud-rain"></i>
+                    <i data-lucide="cloud-rain" size="14"></i>
 
                     Get Weather Risk
 
                 </button>
 
-                <button class="btn-outline">
+                <button
+                    class="btn-secondary"
+                    id="viewHistoryBtn"
+                >
 
-                    <i data-lucide="history"></i>
+                    <i data-lucide="history" size="14"></i>
 
                     View History
 
@@ -196,207 +279,258 @@
 
             </div>
 
-            <div class="weather-card">
+            <div id="weatherRiskResult"></div>
 
-                <div class="weather-top">
+            <section id="historySection">
 
-                    <div>
+                <div class="card-header">
 
-                        <h2>
-                            Balansay
-                        </h2>
-
-                        <p>
-                            ML Based Disaster Risk Assessment
-                        </p>
-
-                    </div>
-
-                    <span class="risk-badge low">
-
-                        VERY LOW
-
-                    </span>
+                    <h3>
+                        Barangay Training Data History
+                    </h3>
 
                 </div>
 
-                <div class="weather-grid">
+                <div class="table-wrapper">
 
-                    <div class="weather-box">
+                    <table class="history-table">
 
-                        <span>
-                            Temperature
-                        </span>
+                        <thead>
 
-                        <strong>
-                            32.66°C
-                        </strong>
+                            <tr>
 
-                    </div>
+                                <th>
+                                    Timestamp
+                                </th>
 
-                    <div class="weather-box">
+                                <th>
+                                    Rainfall
+                                </th>
 
-                        <span>
-                            Rainfall
-                        </span>
+                                <th>
+                                    Humidity
+                                </th>
 
-                        <strong>
-                            0
-                        </strong>
+                                <th>
+                                    Flood
+                                </th>
 
-                    </div>
+                            </tr>
 
-                    <div class="weather-box">
+                        </thead>
 
-                        <span>
-                            Wind Speed
-                        </span>
+                        <tbody id="historyTableBody">
 
-                        <strong>
-                            4.2
-                        </strong>
+                            <tr>
 
-                    </div>
+                                <td colspan="4">
 
-                    <div class="weather-box">
+                                    No history data
 
-                        <span>
-                            Humidity
-                        </span>
+                                </td>
 
-                        <strong>
-                            66%
-                        </strong>
+                            </tr>
 
-                    </div>
+                        </tbody>
+
+                    </table>
 
                 </div>
 
-            </div>
+            </section>
 
         </section>
 
-        <!-- =========================
-             MAIN GRID
-        ========================== -->
+        <!-- GRID -->
 
         <section class="risk-grid">
 
-            <!-- =========================
-                 LEFT PANEL
-            ========================== -->
+            <!-- LEFT -->
 
-            <div class="left-panel">
+            <aside class="risk-sidebar">
+
+                <!-- SIMULATION -->
 
                 <div class="card simulation-card">
 
-                    <h3>
-                        Disaster Simulation
-                    </h3>
+                    <div class="card-header">
 
-                    <div class="field-group">
+                        <h3>
+                            Disaster Simulation
+                        </h3>
+
+                    </div>
+
+                    <div class="simulation-form">
 
                         <label>
+
                             Barangay
+
+                            <select id="simBarangay">
+
+                                <option value="">
+                                    Select Barangay
+                                </option>
+
+                                <option value="Poblacion 1">
+                                    Poblacion 1
+                                </option>
+
+                                <option value="Poblacion 2">
+                                    Poblacion 2
+                                </option>
+
+                                <option value="Poblacion 3">
+                                    Poblacion 3
+                                </option>
+
+                                <option value="Poblacion 4">
+                                    Poblacion 4
+                                </option>
+
+                                <option value="Poblacion 5">
+                                    Poblacion 5
+                                </option>
+
+                                <option value="Poblacion 6">
+                                    Poblacion 6
+                                </option>
+
+                                <option value="Poblacion 7">
+                                    Poblacion 7
+                                </option>
+
+                                <option value="Poblacion 8">
+                                    Poblacion 8
+                                </option>
+
+                                <option value="Payompon">
+                                    Payompon
+                                </option>
+
+                                <option value="Balansay">
+                                    Balansay
+                                </option>
+
+                                <option value="Fatima">
+                                    Fatima
+                                </option>
+
+                                <option value="Tayamaan">
+                                    Tayamaan
+                                </option>
+
+                                <option value="Tangkalan">
+                                    Tangkalan
+                                </option>
+
+                                <option value="Talabaan">
+                                    Talabaan
+                                </option>
+
+                                <option value="Ligang">
+                                    Ligang
+                                </option>
+
+                            </select>
+
                         </label>
 
-                        <select>
-
-                            <option>
-                                Poblacion 3
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <div class="field-group">
-
                         <label>
+
                             Disaster Type
+
+                            <select id="simDisasterType">
+
+                                <option>
+                                    Flood
+                                </option>
+
+                                <option>
+                                    Typhoon
+                                </option>
+
+                                <option>
+                                    Landslide
+                                </option>
+
+                                <option>
+                                    Earthquake
+                                </option>
+
+                                <option>
+                                    Storm Surge
+                                </option>
+
+                            </select>
+
                         </label>
 
-                        <select>
-
-                            <option>
-                                Flood
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <div class="field-group">
-
                         <label>
+
                             Rainfall (mm)
+
+                            <input
+                                type="number"
+                                id="simRainfall"
+                            >
+
                         </label>
 
-                        <input
-                            type="number"
-                            value="15"
-                        >
-
-                    </div>
-
-                    <div class="field-group">
-
                         <label>
+
                             Humidity (%)
+
+                            <input
+                                type="number"
+                                id="simHumidity"
+                            >
+
                         </label>
 
-                        <input
-                            type="number"
-                            value="32"
-                        >
-
-                    </div>
-
-                    <div class="field-group">
-
                         <label>
+
                             Wind Speed (km/h)
+
+                            <input
+                                type="number"
+                                id="simWind"
+                            >
+
                         </label>
-
-                        <input
-                            type="number"
-                            value="16"
-                        >
-
-                    </div>
-
-                    <div class="field-group">
 
                         <label>
+
                             Temperature (°C)
+
+                            <input
+                                type="number"
+                                id="simTemp"
+                            >
+
                         </label>
 
-                        <input
-                            type="number"
-                            value="32"
+                        <button
+                            class="btn-primary"
+                            id="runSimulationBtn"
                         >
 
+                            <i data-lucide="play" size="14"></i>
+
+                            Run Simulation
+
+                        </button>
+
                     </div>
-
-                    <button class="btn-primary full-btn">
-
-                        <i data-lucide="play"></i>
-
-                        Run Simulation
-
-                    </button>
 
                 </div>
 
-            </div>
+            </aside>
 
-            <!-- =========================
-                 RIGHT PANEL
-            ========================== -->
+            <!-- RIGHT -->
 
-            <div class="right-panel">
-
-                <!-- GRAPH -->
+            <section class="risk-results">
 
                 <div class="card">
 
@@ -412,113 +546,39 @@
 
                 </div>
 
-                <!-- RESULT -->
+                <div id="riskResultContainer">
 
-                <div class="card result-card">
+                    <div class="empty-state large">
 
-                    <div class="result-top">
+                        <i
+                            data-lucide="shield-alert"
+                            size="34"
+                        ></i>
 
-                        <div>
+                        <h2>
+                            No Risk Report Generated
+                        </h2>
 
-                            <h3>
-                                Select Barangay
-                            </h3>
-
-                            <p>
-                                Flood Simulation Result
-                            </p>
-
-                        </div>
-
-                        <span class="risk-badge moderate">
-
-                            MODERATE
-
-                        </span>
-
-                    </div>
-
-                    <div class="result-grid">
-
-                        <div class="result-box">
-
-                            <span>
-                                Estimated Severity
-                            </span>
-
-                            <strong>
-                                Moderate
-                            </strong>
-
-                        </div>
-
-                        <div class="result-box">
-
-                            <span>
-                                Flood Probability
-                            </span>
-
-                            <strong>
-                                32%
-                            </strong>
-
-                        </div>
-
-                        <div class="result-box">
-
-                            <span>
-                                Evacuation Need
-                            </span>
-
-                            <strong>
-                                MONITOR
-                            </strong>
-
-                        </div>
-
-                        <div class="result-box">
-
-                            <span>
-                                Temperature
-                            </span>
-
-                            <strong>
-                                32°C
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-                    <div class="recommendations">
-
-                        <div class="recommendation">
-
-                            Prepare response teams.
-
-                        </div>
-
-                        <div class="recommendation">
-
-                            Monitor incoming weather conditions.
-
-                        </div>
-
-                        <div class="recommendation">
-
-                            Advise residents to remain alert.
-
-                        </div>
+                        <p>
+                            Select a barangay and generate
+                            a disaster assessment report.
+                        </p>
 
                     </div>
 
                 </div>
 
-            </div>
+                <div id="simulationResults"></div>
+
+            </section>
 
         </section>
 
     </main>
+
+    <script src="../ADMIN/admin.js"></script>
+
+    <script src="riskreport.js"></script>
 
     <script>
 

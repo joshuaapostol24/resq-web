@@ -699,3 +699,85 @@ body{
     display:none;
 
 }
+
+.simulation-result-card{
+
+    background:white;
+
+    border:1px solid var(--border);
+
+    border-radius:16px;
+
+    padding:20px;
+
+    margin-top:20px;
+
+}
+
+.result-header{
+
+    display:flex;
+
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.result-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:14px;
+
+}
+
+.result-box{
+
+    background:#F8FAFC;
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:16px;
+
+}
+
+.result-box span{
+
+    display:block;
+
+    color:var(--muted);
+
+    font-size:12px;
+
+    margin-bottom:8px;
+
+}
+
+.result-box strong{
+
+    font-size:22px;
+    font-weight:800;
+
+}
+
+.risk-badge{
+
+    background:#FEF3C7;
+
+    color:#B45309;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    font-size:12px;
+    font-weight:800;
+
+}

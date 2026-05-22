@@ -6,80 +6,264 @@ document.addEventListener("DOMContentLoaded", async () => {
     // AUTH
     // =========================
 
-const API_BASE_URL =
-    "https://resq-app-xsb98.ondigitalocean.app/api";
-    /*
-    NEW AUTH SYSTEM
-*/
-const loggedIn =
-    localStorage.getItem(
-        "resq_logged_in"
-    );
+    const API_BASE_URL =
+        "https://resq-app-xsb98.ondigitalocean.app/api";
 
-if(loggedIn !== "true"){
+    const loggedIn =
+        localStorage.getItem(
+            "resq_logged_in"
+        );
 
-    window.location.href =
-        "/LOGIN/login.html";
+    if(loggedIn !== "true"){
 
-    return;
+        window.location.href =
+            "/LOGIN/login.html";
 
-}
+        return;
 
-/*
-    LOGOUT
-*/
-const logoutButton =
-    document.querySelector(
-        '[data-action="logout"]'
-    );
+    }
 
-if(logoutButton){
+    const logoutButton =
+        document.querySelector(
+            '[data-action="logout"]'
+        );
 
-    logoutButton.addEventListener(
-        "click",
-        () => {
+    if(logoutButton){
 
-            localStorage.removeItem(
-                "resq_logged_in"
-            );
+        logoutButton.addEventListener(
+            "click",
+            () => {
 
-            localStorage.removeItem(
-                "resq_user"
-            );
+                localStorage.removeItem(
+                    "resq_logged_in"
+                );
 
-            window.location.href =
-                "/LOGIN/login.html";
+                localStorage.removeItem(
+                    "resq_user"
+                );
 
-        }
-    );
+                window.location.href =
+                    "/LOGIN/login.html";
 
-}
+            }
+        );
 
-    if (window.lucide) {
+    }
+
+    if(window.lucide){
         lucide.createIcons();
     }
 
     // =========================
+    // ELEMENTS
+    // =========================
 
     const barangaySelect =
-    document.getElementById(
-        "barangaySelect"
-    );
+        document.getElementById(
+            "barangaySelect"
+        );
 
     const historySection =
-    document.getElementById(
-        "historySection"
-    );
+        document.getElementById(
+            "historySection"
+        );
 
     const historyTableBody =
-    document.getElementById(
-        "historyTableBody"
-    );
+        document.getElementById(
+            "historyTableBody"
+        );
 
     const viewHistoryBtn =
-    document.getElementById(
-        "viewHistoryBtn"
-    );
+        document.getElementById(
+            "viewHistoryBtn"
+        );
+
+    const runSimulationBtn =
+        document.getElementById(
+            "runSimulationBtn"
+        );
+
+    const simulationResults =
+        document.getElementById(
+            "simulationResults"
+        );
+
+    const weatherRiskBtn =
+        document.getElementById(
+            "weatherRiskBtn"
+        );
+
+    const weatherRiskResult =
+        document.getElementById(
+            "weatherRiskResult"
+        );
+
+    // =========================
+    // CHART
+    // =========================
+
+    const ctx =
+        document.getElementById(
+            "riskChart"
+        );
+
+    const riskChart =
+        new Chart(ctx, {
+
+            type:"bar",
+
+            data:{
+
+                labels:[],
+
+                datasets:[{
+
+                    label:"Risk Level",
+
+                    data:[],
+
+                    backgroundColor:[]
+
+                }]
+
+            },
+
+            options:{
+
+                responsive:true,
+
+                plugins:{
+
+                    legend:{
+                        display:false
+                    }
+
+                },
+
+                scales:{
+
+                    y:{
+
+                        beginAtZero:true,
+
+                        max:3,
+
+                        ticks:{
+
+                            callback:function(value){
+
+                                if(value === 1)
+                                    return "LOW";
+
+                                if(value === 2)
+                                    return "MODERATE";
+
+                                if(value === 3)
+                                    return "HIGH";
+
+                                return value;
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    // =========================
+    // HELPERS
+    // =========================
+
+    function escapeHtml(value = "") {
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    function authHeaders() {
+
+        const token = localStorage.getItem("token");
+
+        return {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+        };
+    }
+
+    function getRiskClass(level = "") {
+
+        level = String(level).toUpperCase();
+
+        if(level === "LOW") return "low";
+        if(level === "MODERATE") return "moderate";
+        if(level === "HIGH") return "high";
+
+        return "critical";
+    }
+
+    function riskToValue(level){
+
+        if(level === "HIGH")
+            return 3;
+
+        if(level === "MODERATE")
+            return 2;
+
+        return 1;
+
+    }
+
+    function riskColor(level){
+
+        if(level === "HIGH")
+            return "#EF4444";
+
+        if(level === "MODERATE")
+            return "#F59E0B";
+
+        return "#22C55E";
+
+    }
+
+    function updateRiskChart(result){
+
+        riskChart.data.labels.push(
+            result.barangay_name
+        );
+
+        riskChart.data.datasets[0].data.push(
+
+            riskToValue(
+                result.risk_level
+            )
+
+        );
+
+        riskChart.data.datasets[0]
+        .backgroundColor.push(
+
+            riskColor(
+                result.risk_level
+            )
+
+        );
+
+        riskChart.update();
+
+    }
+
+    // =========================
+    // LOAD BARANGAYS
+    // =========================
 
     async function loadBarangays(){
 
@@ -112,72 +296,14 @@ if(logoutButton){
 
             });
 
+        }
+        catch(error){
+
+            console.error(error);
+
+        }
+
     }
-    catch(error){
-
-        console.error(error);
-
-    }
-
-}
-
-
-    const generateRiskBtn = document.getElementById("generateRiskBtn");
-
-    const runSimulationBtn = document.getElementById("runSimulationBtn");
-
-    const riskResultContainer = document.getElementById("riskResultContainer");
-    const simulationResults = document.getElementById("simulationResults");
-
-    const historyContainer = document.getElementById("historyContainer");
-
-    const totalAssessments = document.getElementById("totalAssessments");
-    const highRiskCount = document.getElementById("highRiskCount");
-    const moderateRiskCount = document.getElementById("moderateRiskCount");
-    const safeCount = document.getElementById("safeCount");
-
-
-
-    function escapeHtml(value = "") {
-
-        return String(value)
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
-    }
-
-    function authHeaders() {
-
-        const token = localStorage.getItem("token");
-
-        return {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        };
-    }
-
-    function getRiskClass(level = "") {
-
-        level = String(level).toUpperCase();
-
-        if (level === "LOW") return "low";
-        if (level === "MODERATE") return "moderate";
-        if (level === "HIGH") return "high";
-
-        return "critical";
-    }
-
-    function showLoading(container, message = "Loading...") {
-
-        container.innerHTML = `
-            <div class="loading">
-                ${escapeHtml(message)}
-            </div>
-        `;
-    }
-
 
     // =========================
     // HISTORY
@@ -190,14 +316,17 @@ if(logoutButton){
         try {
 
             historySection.classList.remove("hidden");
-            
-            const endpoint = `${API_BASE_URL}/history/${barangay}`;
 
-            const response = await fetch(endpoint, {
-                headers: authHeaders()
-            });
+            const endpoint =
+                `${API_BASE_URL}/history/${barangay}`;
 
-            const history = await response.json();
+            const response =
+                await fetch(endpoint, {
+                    headers: authHeaders()
+                });
+
+            const history =
+                await response.json();
 
             if (!history.length) {
 
@@ -212,147 +341,207 @@ if(logoutButton){
                 return;
             }
 
-                historyTableBody.innerHTML = "";
+            historyTableBody.innerHTML = "";
 
-                history.forEach(item => {
+            history.forEach(item => {
 
-                    historyTableBody.innerHTML += `
-                        <tr>
-                            <td>
-                                ${
-                                    new Date(item.timestamp)
-                                    .toLocaleString()
-                                }
-                            </td>
+                historyTableBody.innerHTML += `
+                    <tr>
 
-                            <td>${item.rainfall}</td>
+                        <td>
+                            ${
+                                new Date(item.timestamp)
+                                .toLocaleString()
+                            }
+                        </td>
 
-                            <td>${item.humidity}</td>
+                        <td>
+                            ${item.rainfall}
+                        </td>
 
-                            <td>${item.final_risk}</td>
-                        </tr>
-                    `;
-                });
+                        <td>
+                            ${item.humidity}
+                        </td>
 
-        } catch (error) {
+                        <td>
+                            ${item.final_risk}
+                        </td>
 
-    console.error(error);
-
-    historyTableBody.innerHTML = `
-        <tr>
-            <td colspan="4">
-                Failed to load history
-            </td>
-        </tr>
-    `;
-    }
-
-    }
-
-
-    // =========================
-    // SAVE REPORT
-    // =========================
-
-    async function saveRiskReport(data) {
-
-        try {
-
-            await fetch("/api/risk-report", {
-                method: "POST",
-                headers: authHeaders(),
-                body: JSON.stringify(data)
+                    </tr>
+                `;
             });
 
-        } catch (error) {
+        }
+        catch(error){
 
             console.error(error);
 
+            historyTableBody.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        Failed to load history
+                    </td>
+                </tr>
+            `;
+
         }
 
     }
 
     // =========================
-    // RENDER RESULT
+    // WEATHER RISK
     // =========================
 
-    function renderRiskResult(data) {
+    if(weatherRiskBtn){
 
-        console.log("NEW CODE RUNNING");
+        weatherRiskBtn.addEventListener(
+            "click",
+            async () => {
 
-        const riskClass = getRiskClass(data.risk_level);
+                try{
 
-        riskResultContainer.innerHTML = `
+                    const city =
+                        barangaySelect.value;
 
-            <div class="result-card">
+                    if(!city){
 
-                <div class="result-header">
+                        alert(
+                            "Please select a barangay"
+                        );
 
-                    <div>
+                        return;
 
-                        <h2>
-                            ${
-                                barangaySelect.options[
-                                    barangaySelect.selectedIndex
-                                ].text
+                    }
+
+                    const response =
+                        await fetch(
+
+                            `${API_BASE_URL}/predict-risk`,
+
+                            {
+
+                                method:"POST",
+
+                                headers:{
+                                    "Content-Type":"application/json"
+                                },
+
+                                body:JSON.stringify({
+
+                                    barangay_id:
+                                        Number(city),
+
+                                    hazard_type:
+                                        "Flood"
+
+                                })
+
                             }
-                        </h2>
 
-                        <p>
-                            ML-Based Disaster Risk Assessment
-                        </p>
+                        );
 
-                    </div>
+                    const data =
+                        await response.json();
 
-                    <div class="risk-badge ${riskClass}">
-                        ${escapeHtml(data.risk_level)}
-                    </div>
+                    console.log(data);
 
-                </div>
+                    weatherRiskResult.innerHTML = `
 
-                <div class="weather-grid">
+                        <div class="result-card">
 
-                    <div class="weather-box">
-                        <span>Rainfall</span>
-                        <strong>${data.rainfall ?? 0} mm</strong>
-                    </div>
+                            <div class="result-header">
 
-                    <div class="weather-box">
-                        <span>Humidity</span>
-                        <strong>${data.humidity ?? 0}%</strong>
-                    </div>
+                                <div>
 
-                    <div class="weather-box">
-                        <span>Wind Speed</span>
-                        <strong>${data.wind_speed ?? 0} km/h</strong>
-                    </div>
+                                    <h2>
+                                        ${
+                                            barangaySelect.options[
+                                                barangaySelect.selectedIndex
+                                            ].text
+                                        }
+                                    </h2>
 
-                    <div class="weather-box">
-                        <span>Risk Score</span>
-                        <strong>${data.risk_score ?? 0}</strong>
-                    </div>
+                                    <p>
+                                        ML-Based Disaster Risk Assessment
+                                    </p>
 
-                </div>
+                                </div>
 
-                <div class="recommendation-list">
+                                <div class="risk-badge ${(data.risk_level || "low").toLowerCase()}">
 
-                    ${(data.recommendations || []).map(item => `
+                                    ${data.risk_level || "LOW"}
 
-                        <div class="recommendation-item">
-                            ${escapeHtml(item)}
+                                </div>
+
+                            </div>
+
+                            <div class="weather-grid">
+
+                                <div class="weather-box">
+
+                                    <span>
+                                        Temperature
+                                    </span>
+
+                                    <strong>
+                                        ${data.temperature}°C
+                                    </strong>
+
+                                </div>
+
+                                <div class="weather-box">
+
+                                    <span>
+                                        Rainfall
+                                    </span>
+
+                                    <strong>
+                                        ${data.rainfall}
+                                    </strong>
+
+                                </div>
+
+                                <div class="weather-box">
+
+                                    <span>
+                                        Wind Speed
+                                    </span>
+
+                                    <strong>
+                                        ${data.wind_speed}
+                                    </strong>
+
+                                </div>
+
+                                <div class="weather-box">
+
+                                    <span>
+                                        Humidity
+                                    </span>
+
+                                    <strong>
+                                        ${data.humidity}%
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
                         </div>
 
-                    `).join("")}
+                    `;
 
-                </div>
+                }
+                catch(error){
 
-            </div>
+                    console.error(error);
 
-        `;
+                    alert(error);
 
-        if (window.lucide) {
-            lucide.createIcons();
-        }
+                }
+
+            }
+        );
 
     }
 
@@ -360,140 +549,229 @@ if(logoutButton){
     // SIMULATION
     // =========================
 
-    runSimulationBtn.addEventListener("click", () => {
+    runSimulationBtn.addEventListener(
+        "click",
+        async () => {
 
-        const barangay = document.getElementById("simBarangay").value;
+            const barangay =
+                document.getElementById(
+                    "simBarangay"
+                ).value;
 
-        const disasterType =
-            document.getElementById("simDisasterType").value;
+            const disasterType =
+                document.getElementById(
+                    "simDisasterType"
+                ).value;
 
-        const rainfall =
-            Number(document.getElementById("simRainfall").value);
+            const rainfall =
+                Number(
+                    document.getElementById(
+                        "simRainfall"
+                    ).value
+                );
 
-        const humidity =
-            Number(document.getElementById("simHumidity").value);
+            const humidity =
+                Number(
+                    document.getElementById(
+                        "simHumidity"
+                    ).value
+                );
 
-        const wind =
-            Number(document.getElementById("simWind").value);
+            const wind =
+                Number(
+                    document.getElementById(
+                        "simWind"
+                    ).value
+                );
 
-        const temp =
-            Number(document.getElementById("simTemp").value);
+            const temp =
+                Number(
+                    document.getElementById(
+                        "simTemp"
+                    ).value
+                );
 
-        if (!barangay) {
+            if(!barangay){
 
-            alert("Barangay is required.");
+                alert(
+                    "Barangay is required."
+                );
 
-            return;
-        }
+                return;
 
-        let score = 0;
+            }
 
-        score += rainfall * 2;
-        score += humidity * 0.5;
-        score += wind * 1.2;
+            try{
 
-        let riskLevel = "LOW";
-        let severity = "Minor";
+                const response =
+                    await fetch(
 
-        if (score >= 160) {
+                        `${API_BASE_URL}/simulate/barangay/${barangay}`,
 
-            riskLevel = "CRITICAL";
-            severity = "Extreme";
+                        {
 
-        } else if (score >= 100) {
+                            method:"POST",
 
-            riskLevel = "HIGH";
-            severity = "Severe";
+                            headers:{
+                                "Content-Type":"application/json"
+                            },
 
-        } else if (score >= 60) {
+                            body:JSON.stringify({
 
-            riskLevel = "MODERATE";
-            severity = "Moderate";
-        }
+                                rainfall: rainfall,
+                                humidity: humidity,
+                                wind_speed: wind,
+                                temperature: temp
 
-        const riskClass = getRiskClass(riskLevel);
+                            })
 
-        const recommendations =
-            generateRecommendations(riskLevel);
+                        }
 
-        simulationResults.innerHTML = `
+                    );
 
-            <div class="result-card">
+                const data =
+                    await response.json();
 
-                <div class="result-header">
+                console.log(data);
 
-                    <div>
+                const result =
+                    data.barangay;
 
-                        <h2>
-                            ${escapeHtml(
-                                barangaySelect.options[
-                                    barangaySelect.selectedIndex
-                                ].text
-                            )}
-                        </h2>
+                const riskClass =
+                    getRiskClass(
+                        result.risk_level
+                    );
 
-                        <p>
-                            ${escapeHtml(disasterType)} Simulation Result
-                        </p>
+                const recommendations =
+                    generateRecommendations(
+                        result.risk_level
+                    );
 
-                    </div>
+                simulationResults.innerHTML = `
 
-                    <div class="risk-badge ${riskClass}">
-                        ${riskLevel}
-                    </div>
+                    <div class="result-card">
 
-                </div>
+                        <div class="result-header">
 
-                <div class="weather-grid">
+                            <div>
 
-                    <div class="weather-box">
-                        <span>Estimated Severity</span>
-                        <strong>${severity}</strong>
-                    </div>
+                                <h2>
 
-                    <div class="weather-box">
-                        <span>Flood Probability</span>
-                        <strong>
-                            ${Math.min(
-                                100,
-                                Math.floor(score / 2)
-                            )}%
-                        </strong>
-                    </div>
+                                    ${result.barangay_name}
 
-                    <div class="weather-box">
-                        <span>Evacuation Need</span>
-                        <strong>
-                            ${riskLevel === "HIGH" || riskLevel === "CRITICAL"
-                                ? "YES"
-                                : "MONITOR"}
-                        </strong>
-                    </div>
+                                </h2>
 
-                    <div class="weather-box">
-                        <span>Temperature</span>
-                        <strong>${temp}°C</strong>
-                    </div>
+                                <p>
 
-                </div>
+                                    ${escapeHtml(disasterType)}
+                                    Simulation Result
 
-                <div class="recommendation-list">
+                                </p>
 
-                    ${recommendations.map(item => `
+                            </div>
 
-                        <div class="recommendation-item">
-                            ${escapeHtml(item)}
+                            <div class="risk-badge ${riskClass}">
+
+                                ${result.risk_level}
+
+                            </div>
+
                         </div>
 
-                    `).join("")}
+                        <div class="weather-grid">
 
-                </div>
+                            <div class="weather-box">
 
-            </div>
+                                <span>
+                                    Final Score
+                                </span>
 
-        `;
+                                <strong>
 
-    });
+                                    ${result.final_score.toFixed(2)}
+
+                                </strong>
+
+                            </div>
+
+                            <div class="weather-box">
+
+                                <span>
+                                    Rule Score
+                                </span>
+
+                                <strong>
+
+                                    ${result.rule_score.toFixed(2)}
+
+                                </strong>
+
+                            </div>
+
+                            <div class="weather-box">
+
+                                <span>
+                                    ML Score
+                                </span>
+
+                                <strong>
+
+                                    ${result.ml_score.toFixed(2)}
+
+                                </strong>
+
+                            </div>
+
+                            <div class="weather-box">
+
+                                <span>
+                                    Risk Level
+                                </span>
+
+                                <strong>
+
+                                    ${result.risk_level}
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <div class="recommendation-list">
+
+                            ${recommendations.map(item => `
+
+                                <div class="recommendation-item">
+
+                                    ${escapeHtml(item)}
+
+                                </div>
+
+                            `).join("")}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+                updateRiskChart(result);
+
+            }
+
+            catch(error){
+
+                console.error(error);
+
+                alert(
+                    "Simulation failed."
+                );
+
+            }
+
+        }
+    );
 
     // =========================
     // RECOMMENDATIONS
@@ -501,7 +779,7 @@ if(logoutButton){
 
     function generateRecommendations(riskLevel) {
 
-        if (riskLevel === "CRITICAL") {
+        if(riskLevel === "CRITICAL"){
 
             return [
                 "Immediate evacuation is recommended.",
@@ -511,7 +789,7 @@ if(logoutButton){
             ];
         }
 
-        if (riskLevel === "HIGH") {
+        if(riskLevel === "HIGH"){
 
             return [
                 "Prepare evacuation facilities.",
@@ -520,7 +798,7 @@ if(logoutButton){
             ];
         }
 
-        if (riskLevel === "MODERATE") {
+        if(riskLevel === "MODERATE"){
 
             return [
                 "Prepare response teams.",
@@ -533,199 +811,29 @@ if(logoutButton){
             "Continue monitoring weather conditions.",
             "Maintain preparedness procedures."
         ];
+
     }
 
     // =========================
-// REFRESH
-// =========================
+    // REFRESH
+    // =========================
 
-document.getElementById("refreshBtn")
-    .addEventListener("click", () => {
+    document.getElementById("refreshBtn")
+        .addEventListener("click", () => {
 
-        loadHistory();
+            loadHistory();
 
-    });
+        });
 
-/*
-    getRisk()
-*/
+    // =========================
+    // INIT
+    // =========================
 
-// =========================
-// WEATHER RISK
-// =========================
+    loadBarangays();
 
-const weatherRiskBtn =
-    document.getElementById(
-        "weatherRiskBtn"
-    );
-
-if(weatherRiskBtn){
-
-    weatherRiskBtn.addEventListener(
+    viewHistoryBtn.addEventListener(
         "click",
-        async () => {
-
-            try{
-
-                const city =
-                    barangaySelect.value;
-
-                if(!city){
-
-                    alert(
-                        "Please select a barangay"
-                    );
-
-                    return;
-
-                }
-
-                
-
-               const response =
-                await fetch(
-
-                    `${API_BASE_URL}/predict-risk`,
-
-                {
-
-                        method:"POST",
-
-                        headers:{
-                            "Content-Type":"application/json"
-                        },
-
-                        body:JSON.stringify({
-
-                            barangay_id:
-                                Number(city),
-
-                            hazard_type:
-                                "Flood"
-
-                        })
-
-                }
-
-            );
-
-                const data =
-                    await response.json();
-
-                console.log(data);
-
-
-                document.getElementById(
-                    "weatherRiskResult"
-                ).innerHTML = `
-
-                    <div class="result-card">
-
-                        <div class="result-header">
-
-                            <div>
-
-                               <h2>
-                                 ${
-                                        barangaySelect.options[
-                                            barangaySelect.selectedIndex
-                                        ].text
-                                    }
-                                </h2>
-
-                                <p>
-                                    ML-Based Disaster Risk Assessment
-                                </p>
-
-                            </div>
-
-                            <div class="risk-badge ${(data.risk_level || "low").toLowerCase()}">
-
-                               ${data.risk_level || "LOW"}
-
-                            </div>
-
-                        </div>
-
-                        <div class="weather-grid">
-
-                            <div class="weather-box">
-
-                                <span>
-                                    Temperature
-                                </span>
-
-                                <strong>
-                                    ${data.temperature}°C
-                                </strong>
-
-                            </div>
-
-                            <div class="weather-box">
-
-                                <span>
-                                    Rainfall
-                                </span>
-
-                                <strong>
-                                    ${data.rainfall}
-                                </strong>
-
-                            </div>
-
-                            <div class="weather-box">
-
-                                <span>
-                                    Wind Speed
-                                </span>
-
-                                <strong>
-                                    ${data.wind_speed}
-                                </strong>
-
-                            </div>
-
-                            <div class="weather-box">
-
-                                <span>
-                                    Humidity
-                                </span>
-
-                                <strong>
-                                    ${data.humidity}%
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-            catch(error){
-
-                console.error(error);
-
-                alert(error);
-
-            }
-
-        }
+        loadHistory
     );
-
-}
-
-// =========================
-// INIT
-// =========================
-loadBarangays();
-
-viewHistoryBtn.addEventListener(
-    "click",
-    loadHistory
-);
 
 });
-

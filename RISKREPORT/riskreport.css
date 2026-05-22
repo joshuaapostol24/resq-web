@@ -500,11 +500,14 @@ body{
 @media(max-width:768px){
 
     .top-nav{
-        flex-direction:column;
-        height:auto;
-        padding:16px;
-        gap:14px;
-    }
+    background:#fff;
+    padding:12px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--border);
+    gap:18px;
+}
 
     .nav-left{
         flex-direction:column;

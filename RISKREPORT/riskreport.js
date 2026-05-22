@@ -465,9 +465,9 @@ runSimulationBtn.addEventListener(
 
             const result =
                 data.barangay;
-            
+                    
             const weights =
-                result.weights;
+            result.breakdown;
 
             const factorBars =
                 document.getElementById(
@@ -478,7 +478,7 @@ runSimulationBtn.addEventListener(
 
                 <div class="factor-bars">
 
-                    ${Object.entries(weights).map(([key, value]) => `
+                    ${Object.entries(weights).map(([key, item]) => `
 
                         <div class="factor-row">
 
@@ -492,14 +492,14 @@ runSimulationBtn.addEventListener(
 
                                 <div
                                     class="factor-fill"
-                                    style="width:${value * 100}%"
+                                    style="width:${item.weight * 100}%"
                                 ></div>
 
                             </div>
 
                             <div class="factor-value">
 
-                                ${Math.round(value * 100)}%
+                                ${Math.round(item.weight * 100)}%
 
                             </div>
 

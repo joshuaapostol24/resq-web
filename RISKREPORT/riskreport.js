@@ -466,6 +466,13 @@ runSimulationBtn.addEventListener(
             const result =
                 data.barangay;
                     
+            document
+                .getElementById(
+                    "chartCard"
+                )
+                .classList
+                .remove("hidden");
+
             const weights =
             result.breakdown;
 
@@ -628,20 +635,6 @@ runSimulationBtn.addEventListener(
                 </div>
 
             `;
-
-            // =========================
-            // UPDATE CHART
-            // =========================
-
-            if(window.riskChart){
-
-                window.riskChart.data.labels.push(
-                    result.barangay_name
-                );
-
-                
-
-            }
 
         }
 

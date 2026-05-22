@@ -532,7 +532,8 @@
 
             <section class="risk-results">
 
-                <div class="card">
+                <div class="card hidden"
+                     id="chartCard">
 
                     <div class="card-header">
 
@@ -580,89 +581,7 @@
 
     <script src="riskreport.js"></script>
 
-    <script>
 
-        lucide.createIcons();
-
-        const ctx =
-            document.getElementById("riskChart");
-
-        new Chart(ctx, {
-
-            type: "bar",
-
-            data: {
-
-                labels: [
-
-                    "Balansay",
-                    "Payompon",
-                    "San Luis",
-                    "Poblacion",
-                    "Tangkalan"
-
-                ],
-
-                datasets: [{
-
-                    label: "Risk Level",
-
-                    data: [1, 2, 3, 2, 1],
-
-                    backgroundColor: [
-
-                        "#22C55E",
-                        "#F59E0B",
-                        "#EF4444",
-                        "#F59E0B",
-                        "#22C55E"
-
-                    ]
-
-                }]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                scales: {
-
-                    y: {
-
-                        beginAtZero: true,
-
-                        max: 3,
-
-                        ticks: {
-
-                            callback: function(value){
-
-                                if(value === 1)
-                                    return "LOW";
-
-                                if(value === 2)
-                                    return "MODERATE";
-
-                                if(value === 3)
-                                    return "HIGH";
-
-                                return value;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        });
-
-    </script>
 
 </body>
 </html>

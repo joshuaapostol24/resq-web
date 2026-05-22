@@ -473,50 +473,80 @@ runSimulationBtn.addEventListener(
                 .classList
                 .remove("hidden");
 
-            const weights =
-            result.breakdown;
-
-            const factorBars =
+           const factorBars =
                 document.getElementById(
                     "factorBars"
                 );
 
-            factorBars.innerHTML = `
+            const simulationFactors = [
 
-                <div class="factor-bars">
+                    {
+                        label:"Rainfall",
+                        value: rainfall,
+                        max:500
+                    },
 
-                    ${Object.entries(weights).map(([key, item]) => `
+                    {
+                        label:"Humidity",
+                        value: humidity,
+                        max:100
+                    },
 
-                        <div class="factor-row">
+                    {
+                        label:"Wind Speed",
+                        value: wind,
+                        max:300
+                    },
 
-                            <div class="factor-label">
+                    {
+                        label:"Temperature",
+                        value: temp,
+                        max:60
+                    }
 
-                                ${key.replaceAll("_", " ")}
+                ];
+
+                factorBars.innerHTML = `
+
+                    <div class="factor-bars">
+
+                        ${simulationFactors.map(item => `
+
+                            <div class="factor-row">
+
+                                <div class="factor-label">
+
+                                    ${item.label}
+
+                                </div>
+
+                                <div class="factor-track">
+
+                                    <div
+                                        class="factor-fill"
+                                        style="
+                                            width:
+                                            ${(item.value / item.max) * 100}%
+                                        "
+                                    ></div>
+
+                                </div>
+
+                                <div class="factor-value">
+
+                                    ${item.value}
+
+                                </div>
 
                             </div>
 
-                            <div class="factor-track">
+                        `).join("")}
 
-                                <div
-                                    class="factor-fill"
-                                    style="width:${item.weight * 100}%"
-                                ></div>
+                    </div>
 
-                            </div>
+                `;
 
-                            <div class="factor-value">
-
-                                ${Math.round(item.weight * 100)}%
-
-                            </div>
-
-                        </div>
-
-                    `).join("")}
-
-                </div>
-
-            `;
+                
             const riskClass =
                 getRiskClass(
                     result.risk_level

@@ -356,9 +356,9 @@ if(logoutButton){
 
     }
 
-    // =========================
-    // SIMULATION
-    // =========================
+// =========================
+// SIMULATION
+// =========================
 
 runSimulationBtn.addEventListener(
     "click",
@@ -414,6 +414,16 @@ runSimulationBtn.addEventListener(
 
         try{
 
+            simulationResults.innerHTML = `
+
+                <div class="loading">
+
+                    Running simulation...
+
+                </div>
+
+            `;
+
             const response =
                 await fetch(
 
@@ -439,6 +449,14 @@ runSimulationBtn.addEventListener(
                     }
 
                 );
+
+            if(!response.ok){
+
+                throw new Error(
+                    "Simulation request failed"
+                );
+
+            }
 
             const data =
                 await response.json();
@@ -567,15 +585,57 @@ runSimulationBtn.addEventListener(
 
             `;
 
+            // =========================
+            // UPDATE CHART
+            // =========================
+
+            if(window.riskChart){
+
+                window.riskChart.data.labels.push(
+                    result.barangay_name
+                );
+
+                let riskValue = 1;
+
+                if(result.risk_level === "MODERATE")
+                    riskValue = 2;
+
+                if(result.risk_level === "HIGH")
+                    riskValue = 3;
+
+                window.riskChart.data.datasets[0]
+                    .data.push(riskValue);
+
+                let color = "#22C55E";
+
+                if(result.risk_level === "MODERATE")
+                    color = "#F59E0B";
+
+                if(result.risk_level === "HIGH")
+                    color = "#EF4444";
+
+                window.riskChart.data.datasets[0]
+                    .backgroundColor.push(color);
+
+                window.riskChart.update();
+
+            }
+
         }
 
         catch(error){
 
             console.error(error);
 
-            alert(
-                "Simulation failed."
-            );
+            simulationResults.innerHTML = `
+
+                <div class="error-state">
+
+                    Failed to run simulation.
+
+                </div>
+
+            `;
 
         }
 

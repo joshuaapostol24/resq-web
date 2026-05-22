@@ -781,3 +781,67 @@ body{
     font-weight:800;
 
 }
+
+.factor-bars{
+
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+    margin-top:20px;
+
+}
+
+.factor-row{
+
+    display:flex;
+    align-items:center;
+    gap:20px;
+
+}
+
+.factor-label{
+
+    width:160px;
+
+    font-weight:600;
+
+    color:#334155;
+
+}
+
+.factor-track{
+
+    flex:1;
+
+    height:22px;
+
+    background:#E2E8F0;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    position:relative;
+
+}
+
+.factor-fill{
+
+    height:100%;
+
+    border-radius:999px;
+
+    background:#F59E0B;
+
+}
+
+.factor-value{
+
+    width:60px;
+
+    font-weight:700;
+
+    color:#0F172A;
+
+}

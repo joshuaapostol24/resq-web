@@ -466,13 +466,50 @@ runSimulationBtn.addEventListener(
             const result =
                 data.barangay;
             
-            document
-                .getElementById(
-                    "chartCard"
-                )
-                .classList
-                .remove("hidden");
+            const weights =
+                result.weights;
 
+            const factorBars =
+                document.getElementById(
+                    "factorBars"
+                );
+
+            factorBars.innerHTML = `
+
+                <div class="factor-bars">
+
+                    ${Object.entries(weights).map(([key, value]) => `
+
+                        <div class="factor-row">
+
+                            <div class="factor-label">
+
+                                ${key.replaceAll("_", " ")}
+
+                            </div>
+
+                            <div class="factor-track">
+
+                                <div
+                                    class="factor-fill"
+                                    style="width:${value * 100}%"
+                                ></div>
+
+                            </div>
+
+                            <div class="factor-value">
+
+                                ${Math.round(value * 100)}%
+
+                            </div>
+
+                        </div>
+
+                    `).join("")}
+
+                </div>
+
+            `;
             const riskClass =
                 getRiskClass(
                     result.risk_level
@@ -602,29 +639,7 @@ runSimulationBtn.addEventListener(
                     result.barangay_name
                 );
 
-                let riskValue = 1;
-
-                if(result.risk_level === "MODERATE")
-                    riskValue = 2;
-
-                if(result.risk_level === "HIGH")
-                    riskValue = 3;
-
-                window.riskChart.data.datasets[0]
-                    .data.push(riskValue);
-
-                let color = "#22C55E";
-
-                if(result.risk_level === "MODERATE")
-                    color = "#F59E0B";
-
-                if(result.risk_level === "HIGH")
-                    color = "#EF4444";
-
-                window.riskChart.data.datasets[0]
-                    .backgroundColor.push(color);
-
-                window.riskChart.update();
+                
 
             }
 
@@ -874,79 +889,6 @@ if(weatherRiskBtn){
 // =========================
 // CHART
 // =========================
-
-const ctx =
-    document.getElementById(
-        "riskChart"
-    );
-
-window.riskChart =
-    new Chart(ctx, {
-
-        type:"bar",
-
-        data:{
-
-            labels:[],
-
-            datasets:[{
-
-                label:"Risk Level",
-
-                data:[],
-
-                backgroundColor:[]
-
-            }]
-
-        },
-
-        options:{
-
-            responsive:true,
-
-            plugins:{
-
-                legend:{
-                    display:false
-                }
-
-            },
-
-            scales:{
-
-                y:{
-
-                    beginAtZero:true,
-
-                    max:3,
-
-                    ticks:{
-
-                        callback:function(value){
-
-                            if(value === 1)
-                                return "LOW";
-
-                            if(value === 2)
-                                return "MODERATE";
-
-                            if(value === 3)
-                                return "HIGH";
-
-                            return value;
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    });
 
 
 // =========================

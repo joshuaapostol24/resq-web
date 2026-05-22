@@ -865,6 +865,84 @@ if(weatherRiskBtn){
 }
 
 // =========================
+// CHART
+// =========================
+
+const ctx =
+    document.getElementById(
+        "riskChart"
+    );
+
+window.riskChart =
+    new Chart(ctx, {
+
+        type:"bar",
+
+        data:{
+
+            labels:[],
+
+            datasets:[{
+
+                label:"Risk Level",
+
+                data:[],
+
+                backgroundColor:[]
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            plugins:{
+
+                legend:{
+                    display:false
+                }
+
+            },
+
+            scales:{
+
+                y:{
+
+                    beginAtZero:true,
+
+                    max:3,
+
+                    ticks:{
+
+                        callback:function(value){
+
+                            if(value === 1)
+                                return "LOW";
+
+                            if(value === 2)
+                                return "MODERATE";
+
+                            if(value === 3)
+                                return "HIGH";
+
+                            return value;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+// =========================
 // INIT
 // =========================
 loadBarangays();

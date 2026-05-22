@@ -465,6 +465,13 @@ runSimulationBtn.addEventListener(
 
             const result =
                 data.barangay;
+            
+            document
+                .getElementById(
+                    "chartCard"
+                )
+                .classList
+                .remove("hidden");
 
             const riskClass =
                 getRiskClass(

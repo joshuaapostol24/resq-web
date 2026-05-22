@@ -9,9 +9,14 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>ResQ Admin | Dashboard</title>
+    <title>
+        ResQ Admin | Dashboard
+    </title>
 
-    <link rel="stylesheet" href="dashboard.css">
+    <link
+        rel="stylesheet"
+        href="dashboard.css"
+    >
 
     <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -38,36 +43,48 @@
             </div>
 
             <span class="brand">
+
                 ResQ Admin
+
             </span>
 
             <nav class="nav-links">
 
                 <a
-                    href="dashboard.html"
+                    href="../DASHBOARD/dashboard.html"
                     class="active"
                 >
                     Dashboard
                 </a>
 
                 <a href="../REPORTS/reports.html">
+
                     Reports
+
                 </a>
 
                 <a href="../RISKREPORT/riskreport.html">
+
                     Risk Report
+
                 </a>
 
                 <a href="../NEWS/news.html">
+
                     News
+
                 </a>
 
                 <a href="../USERVER/user.html">
+
                     Users
+
                 </a>
 
                 <a href="../SMS/sms.html">
+
                     SMS
+
                 </a>
 
             </nav>
@@ -171,31 +188,127 @@
 
         </section>
 
-        <section class="hero-card">
+        <section class="dashboard-grid">
 
-            <h2>
-                ResQ Emergency Monitoring System
-            </h2>
+            <div class="map-panel">
 
-            <p>
-                This dashboard allows administrators to monitor emergencies,
-                publish announcements, track reports, manage users,
-                and coordinate disaster response activities.
-            </p>
+                <img
+                    src="../images/risk-map.png"
+                    alt="Mamburao Risk Map"
+                    class="risk-map"
+                >
 
-            <div class="hero-tags">
+            </div>
 
-                <span>
-                    Live Monitoring
-                </span>
+            <div class="widget-panel">
 
-                <span>
-                    Barangay-level
-                </span>
+                <div class="widget-card">
 
-                <span>
-                    Multi-hazard
-                </span>
+                    <div class="widget-top">
+
+                        <span class="widget-label">
+
+                            Flood Risk
+
+                        </span>
+
+                        <i data-lucide="waves"></i>
+
+                    </div>
+
+                    <h2 class="widget-value high">
+
+                        HIGH
+
+                    </h2>
+
+                    <p>
+                        Coastal barangays are currently
+                        at high flood risk.
+                    </p>
+
+                </div>
+
+                <div class="widget-card">
+
+                    <div class="widget-top">
+
+                        <span class="widget-label">
+
+                            Landslide Risk
+
+                        </span>
+
+                        <i data-lucide="mountain"></i>
+
+                    </div>
+
+                    <h2 class="widget-value moderate">
+
+                        MODERATE
+
+                    </h2>
+
+                    <p>
+                        Elevated rainfall detected
+                        in upland areas.
+                    </p>
+
+                </div>
+
+                <div class="widget-card">
+
+                    <div class="widget-top">
+
+                        <span class="widget-label">
+
+                            Emergency Alerts
+
+                        </span>
+
+                        <i data-lucide="bell-ring"></i>
+
+                    </div>
+
+                    <h2 class="widget-value">
+
+                        12
+
+                    </h2>
+
+                    <p>
+                        Active emergency notifications
+                        across Mamburao.
+                    </p>
+
+                </div>
+
+                <div class="widget-card">
+
+                    <div class="widget-top">
+
+                        <span class="widget-label">
+
+                            Evacuation Centers
+
+                        </span>
+
+                        <i data-lucide="building-2"></i>
+
+                    </div>
+
+                    <h2 class="widget-value">
+
+                        8
+
+                    </h2>
+
+                    <p>
+                        Available evacuation centers
+                        ready for deployment.
+                    </p>
+
+                </div>
 
             </div>
 

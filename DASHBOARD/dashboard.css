@@ -325,15 +325,13 @@ body{
 
     width:100%;
 
+    height:auto;
+
     display:block;
 
     object-fit:contain;
 
     background:#F8FAFC;
-
-    max-height:600px;
-
-    margin:auto;
 
 }
 
@@ -566,8 +564,6 @@ body{
 
     border-radius:18px;
 
-    overflow:hidden;
-
     display:flex;
 
     flex-direction:column;
@@ -602,14 +598,3 @@ body{
 
 }
 
-.risk-map{
-
-    width:100%;
-
-    display:block;
-
-    object-fit:cover;
-
-    max-height:520px;
-
-}

@@ -183,8 +183,6 @@ if(logoutButton){
     // HISTORY
     // =========================
 
-    const API_BASE =
-    "https://resq-app-xsb98.ondigitalocean.app/api";
 
     async function loadHistory(barangayId){
 
@@ -192,7 +190,7 @@ if(logoutButton){
 
             const response =
                 await fetch(
-                    `${API_BASE}/weather/history/${barangayId}`
+                    `${API_BASE_URL}/weather/history/${barangayId}`
                 );
 
             if(!response.ok){

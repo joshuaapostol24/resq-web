@@ -183,7 +183,6 @@ if(logoutButton){
     // HISTORY
     // =========================
 
-
     async function loadHistory(barangayId){
 
         try{
@@ -233,7 +232,11 @@ if(logoutButton){
 
                         <div class="history-risk">
 
-                            ${item.final_risk}
+                            ${
+                                barangaySelect.options[
+                                    barangaySelect.selectedIndex
+                                ].text
+                            }
 
                         </div>
 

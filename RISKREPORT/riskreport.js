@@ -467,11 +467,6 @@ runSimulationBtn.addEventListener(
                 "simBarangay"
             ).value;
 
-        const disasterType =
-            document.getElementById(
-                "simDisasterType"
-            ).value;
-
         const rainfall =
             Number(
                 document.getElementById(
@@ -671,7 +666,7 @@ runSimulationBtn.addEventListener(
 
                             <p>
 
-                                ${escapeHtml(disasterType)}
+                                Flood
                                 Simulation Result
 
                             </p>

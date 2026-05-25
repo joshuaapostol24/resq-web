@@ -845,3 +845,16 @@ body{
     color:#0F172A;
 
 }
+
+
+.readonly-input{
+
+    background:#F8FAFC;
+
+    color:#0F172A;
+
+    font-weight:700;
+
+    cursor:not-allowed;
+
+}

@@ -217,20 +217,58 @@ if(logoutButton){
                 history.forEach(item => {
 
                     historyTableBody.innerHTML += `
-                        <tr>
-                            <td>
-                                ${
-                                    new Date(item.timestamp)
-                                    .toLocaleString()
-                                }
-                            </td>
 
-                            <td>${item.rainfall}</td>
+                        <div class="history-card">
 
-                            <td>${item.humidity}</td>
+                            <div class="history-top">
 
-                            <td>${item.final_risk}</td>
-                        </tr>
+                                <strong>
+
+                                    ${item.final_risk}
+
+                                </strong>
+
+                                <span>
+
+                                    ${
+                                        new Date(item.timestamp)
+                                        .toLocaleString()
+                                    }
+
+                                </span>
+
+                            </div>
+
+                            <div class="history-values">
+
+                                <div>
+
+                                    <label>
+                                        Rainfall
+                                    </label>
+
+                                    <p>
+                                        ${item.rainfall} mm
+                                    </p>
+
+                                </div>
+
+                                <div>
+
+                                    <label>
+                                        Humidity
+                                    </label>
+
+                                    <p>
+                                        ${item.humidity}%
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     `;
                 });
 
@@ -546,7 +584,7 @@ runSimulationBtn.addEventListener(
 
                 `;
 
-                
+
             const riskClass =
                 getRiskClass(
                     result.risk_level

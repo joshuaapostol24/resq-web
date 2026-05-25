@@ -233,9 +233,11 @@ if(logoutButton){
                         <div class="history-risk">
 
                             ${
-                                barangaySelect.options[
-                                    barangaySelect.selectedIndex
-                                ].text
+                                item.risk_label >= 2.7
+                                ? "HIGH"
+                                : item.risk_label >= 2.3
+                                ? "MODERATE"
+                                : "LOW"
                             }
 
                         </div>

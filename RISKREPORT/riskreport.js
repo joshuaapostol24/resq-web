@@ -183,120 +183,161 @@ if(logoutButton){
     // HISTORY
     // =========================
 
-    async function loadHistory() {
+    async function loadHistory(barangayId){
 
-        const barangay = barangaySelect.value;
+        try{
 
-        try {
+            const response =
+                await fetch(
+                    `${API_BASE}/weather/history/${barangayId}`
+                );
 
-            historySection.classList.remove("hidden");
-            
-            const endpoint = `${API_BASE_URL}/history/${barangay}`;
+            if(!response.ok){
 
-            const response = await fetch(endpoint, {
-                headers: authHeaders()
-            });
+                throw new Error(
+                    "Failed to fetch history"
+                );
 
-            const history = await response.json();
+            }
 
-            if (!history.length) {
+            const history =
+                await response.json();
+
+            historyTableBody.innerHTML = "";
+
+            if(!history.length){
 
                 historyTableBody.innerHTML = `
-                    <tr>
-                        <td colspan="4">
-                            No assessment history available
-                        </td>
-                    </tr>
+
+                    <div class="history-empty">
+
+                        No history data
+
+                    </div>
+
                 `;
 
                 return;
+
             }
 
-                historyTableBody.innerHTML = "";
+            history.forEach((item, index) => {
 
-                history.forEach(item => {
+                historyTableBody.innerHTML += `
 
-                    historyTableBody.innerHTML += `
+                    <div class="
+                        history-row
+                        ${index >= 3 ? 'extra-history hidden-history' : ''}
+                    ">
 
-                            <div class="history-row">
+                        <div class="history-risk">
 
-                                <div class="history-risk">
+                            ${item.final_risk}
 
-                                    ${item.final_risk}
+                        </div>
 
-                                </div>
+                        <div class="history-date">
 
-                                <div class="history-date">
+                            ${
+                                new Date(item.timestamp)
+                                .toLocaleDateString()
+                            }
 
-                                    ${
-                                        new Date(item.timestamp)
-                                        .toLocaleDateString()
-                                    }
+                        </div>
 
-                                    <button
-                                        class="see-more-btn"
-                                        onclick="
-                                            this.nextElementSibling
-                                                .classList.toggle('show');
-                                        "
-                                    >
+                        <div class="history-metric">
 
-                                        See More
+                            <label>
+                                Rainfall
+                            </label>
 
-                                    </button>
+                            <span>
+                                ${item.rainfall} mm
+                            </span>
 
-                                    <div class="full-timestamp">
+                        </div>
 
-                                        ${
-                                            new Date(item.timestamp)
-                                            .toLocaleTimeString()
-                                        }
+                        <div class="history-metric">
 
-                                    </div>
+                            <label>
+                                Humidity
+                            </label>
 
-                                </div>
+                            <span>
+                                ${item.humidity}%
+                            </span>
 
-                                <div class="history-metric">
+                        </div>
 
-                                    <label>
-                                        Rainfall
-                                    </label>
+                    </div>
 
-                                    <span>
-                                        ${item.rainfall} mm
-                                    </span>
+                `;
 
-                                </div>
+            });
 
-                                <div class="history-metric">
+            if(history.length > 3){
 
-                                    <label>
-                                        Humidity
-                                    </label>
+                historyTableBody.innerHTML += `
 
-                                    <span>
-                                        ${item.humidity}%
-                                    </span>
+                    <button
+                        class="show-more-history-btn"
+                        id="showMoreHistoryBtn"
+                    >
 
-                                </div>
+                        See More History
 
-                            </div>
+                    </button>
 
-                        `;
-                });
+                `;
 
-        } catch (error) {
+            }
 
-    console.error(error);
+            const showMoreBtn =
+                document.getElementById(
+                    "showMoreHistoryBtn"
+                );
 
-    historyTableBody.innerHTML = `
-        <tr>
-            <td colspan="4">
-                Failed to load history
-            </td>
-        </tr>
-    `;
-    }
+            if(showMoreBtn){
+
+                showMoreBtn.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".extra-history"
+                            )
+
+                            .forEach(card => {
+
+                                card.classList.remove(
+                                    "hidden-history"
+                                );
+
+                            });
+
+                        showMoreBtn.remove();
+
+                    }
+                );
+
+            }
+
+        }catch(error){
+
+            console.error(error);
+
+            historyTableBody.innerHTML = `
+
+                <div class="history-empty">
+
+                    Failed to load history
+
+                </div>
+
+            `;
+
+        }
 
     }
 

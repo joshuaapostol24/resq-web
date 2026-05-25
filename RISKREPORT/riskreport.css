@@ -986,3 +986,39 @@ body{
     display:block;
 
 }
+
+.hidden-history{
+
+    display:none;
+
+}
+
+.show-more-history-btn{
+
+    width:100%;
+
+    border:none;
+
+    background:#FFF7ED;
+
+    color:#EA580C;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    margin-top:10px;
+
+    transition:0.2s;
+
+}
+
+.show-more-history-btn:hover{
+
+    background:#FED7AA;
+
+}

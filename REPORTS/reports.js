@@ -136,37 +136,17 @@ document.addEventListener(
         */
         function getFilteredReports(){
 
-            const search =
-                searchInput.value
-                    .toLowerCase()
-                    .trim();
-
             const type =
                 typeFilter.value;
 
             return reports.filter(report => {
-
-                const searchable = `
-                    ${report.title}
-                    ${report.location}
-                    ${report.reporter}
-                    ${report.type}
-                `
-                .toLowerCase();
-
-                const matchesSearch =
-                    searchable.includes(search);
 
                 const matchesType =
                     type === "all"
                     ||
                     report.type === type;
 
-                return (
-                    matchesSearch
-                    &&
-                    matchesType
-                );
+                return matchesType;
 
             });
 

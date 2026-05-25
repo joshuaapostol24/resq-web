@@ -96,25 +96,11 @@ document.addEventListener(
                 "summaryTotal"
             );
 
-        const summaryReceived =
-            document.getElementById(
-                "summaryReceived"
-            );
-
-        const summaryCritical =
-            document.getElementById(
-                "summaryCritical"
-            );
-
         const typeFilter =
             document.getElementById(
                 "typeFilter"
             );
 
-        const searchInput =
-            document.getElementById(
-                "reportSearch"
-            );
 
         const reportModal =
             document.getElementById(
@@ -142,20 +128,6 @@ document.addEventListener(
 
             summaryTotal.textContent =
                 reports.length;
-
-            summaryReceived.textContent =
-                reports.filter(
-                    report =>
-                        report.status ===
-                        "received"
-                ).length;
-
-            summaryCritical.textContent =
-                reports.filter(
-                    report =>
-                        report.priority ===
-                        "critical"
-                ).length;
 
         }
 
@@ -776,14 +748,6 @@ document.addEventListener(
         );
 
         /*
-            SEARCH
-        */
-        searchInput.addEventListener(
-            "input",
-            renderList
-        );
-
-        /*
             FILTER
         */
         typeFilter.addEventListener(
@@ -791,22 +755,6 @@ document.addEventListener(
             renderList
         );
 
-        /*
-            REFRESH
-        */
-        document
-            .querySelectorAll(
-                '[data-action="refresh"]'
-            )
-
-            .forEach(button => {
-
-                button.addEventListener(
-                    "click",
-                    loadReportsFromSupabase
-                );
-
-            });
 
         /*
             WORKSPACE

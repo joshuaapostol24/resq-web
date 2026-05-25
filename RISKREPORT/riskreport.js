@@ -183,6 +183,9 @@ if(logoutButton){
     // HISTORY
     // =========================
 
+    const API_BASE =
+    "https://resq-app-xsb98.ondigitalocean.app/api";
+
     async function loadHistory(barangayId){
 
         try{

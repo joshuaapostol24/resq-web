@@ -863,71 +863,111 @@ body{
 
     display:flex;
     flex-direction:column;
-    gap:14px;
+    gap:12px;
 
     margin-top:18px;
 
 }
 
-.history-card{
+.history-row{
+
+    display:grid;
+
+    grid-template-columns:
+        120px
+        220px
+        1fr
+        1fr;
+
+    align-items:center;
+
+    gap:18px;
+
+    padding:16px 18px;
 
     background:#F8FAFC;
 
     border:1px solid #E2E8F0;
 
-    border-radius:16px;
-
-    padding:16px;
+    border-radius:14px;
 
 }
 
-.history-top{
-
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-
-    margin-bottom:14px;
-
-}
-
-.history-top strong{
+.history-risk{
 
     font-size:15px;
+
     font-weight:800;
 
     color:#EA580C;
 
 }
 
-.history-time{
+.history-date{
 
     display:flex;
+
     flex-direction:column;
-    align-items:flex-end;
+
     gap:4px;
+
+    font-size:13px;
+
+    color:#475569;
 
 }
 
-.history-time span{
+.history-metric{
 
-    font-size:12px;
+    background:white;
 
-    color:#64748B;
+    border:1px solid #E2E8F0;
+
+    border-radius:10px;
+
+    padding:10px 14px;
+
+}
+
+.history-metric label{
+
+    display:block;
+
+    font-size:11px;
+
+    color:#94A3B8;
+
+    margin-bottom:4px;
+
+}
+
+.history-metric span{
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#0F172A;
 
 }
 
 .see-more-btn{
 
-    background:none;
     border:none;
+
+    background:none;
 
     color:#EA580C;
 
     font-size:11px;
+
     font-weight:700;
 
     cursor:pointer;
+
+    text-align:left;
+
+    padding:0;
 
 }
 
@@ -944,58 +984,5 @@ body{
 .full-timestamp.show{
 
     display:block;
-
-}
-
-.history-values{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:16px;
-
-}
-
-.history-values div{
-
-    background:white;
-
-    border:1px solid #E2E8F0;
-
-    border-radius:12px;
-
-    padding:12px;
-
-}
-
-.history-values label{
-
-    display:block;
-
-    margin-bottom:4px;
-
-    font-size:11px;
-
-    color:#64748B;
-
-}
-
-.history-values p{
-
-    font-size:16px;
-    font-weight:700;
-
-    color:#0F172A;
-
-}
-
-.history-empty{
-
-    text-align:center;
-
-    color:#64748B;
-
-    padding:20px;
 
 }

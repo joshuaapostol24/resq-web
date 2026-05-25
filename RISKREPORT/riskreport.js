@@ -218,58 +218,71 @@ if(logoutButton){
 
                     historyTableBody.innerHTML += `
 
-                        <div class="history-card">
+                            <div class="history-row">
 
-                            <div class="history-top">
-
-                                <strong>
+                                <div class="history-risk">
 
                                     ${item.final_risk}
 
-                                </strong>
+                                </div>
 
-                                <span>
+                                <div class="history-date">
 
                                     ${
                                         new Date(item.timestamp)
-                                        .toLocaleString()
+                                        .toLocaleDateString()
                                     }
 
-                                </span>
+                                    <button
+                                        class="see-more-btn"
+                                        onclick="
+                                            this.nextElementSibling
+                                                .classList.toggle('show');
+                                        "
+                                    >
 
-                            </div>
+                                        See More
 
-                            <div class="history-values">
+                                    </button>
 
-                                <div>
+                                    <div class="full-timestamp">
+
+                                        ${
+                                            new Date(item.timestamp)
+                                            .toLocaleTimeString()
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                                <div class="history-metric">
 
                                     <label>
                                         Rainfall
                                     </label>
 
-                                    <p>
+                                    <span>
                                         ${item.rainfall} mm
-                                    </p>
+                                    </span>
 
                                 </div>
 
-                                <div>
+                                <div class="history-metric">
 
                                     <label>
                                         Humidity
                                     </label>
 
-                                    <p>
+                                    <span>
                                         ${item.humidity}%
-                                    </p>
+                                    </span>
 
                                 </div>
 
                             </div>
 
-                        </div>
-
-                    `;
+                        `;
                 });
 
         } catch (error) {

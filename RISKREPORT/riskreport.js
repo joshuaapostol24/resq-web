@@ -1016,7 +1016,26 @@ loadBarangays();
 
 viewHistoryBtn.addEventListener(
     "click",
-    loadHistory
+    () => {
+
+        const barangayId =
+            barangaySelect.value;
+
+        if(!barangayId){
+
+            alert(
+                "Please select a barangay first."
+            );
+
+            return;
+
+        }
+
+        loadHistory(
+            barangayId
+        );
+
+    }
 );
 
 });

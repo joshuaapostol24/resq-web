@@ -689,10 +689,7 @@ document.addEventListener(
 
                 const report = {
 
-                    user_id:
-                        JSON.parse(
-                            localStorage.getItem("resq_user")
-                        )?.id,
+                    user_id: null,
 
                     title:
                         formData.get("type"),
@@ -707,14 +704,10 @@ document.addEventListener(
                         "pending",
 
                     reporter:
-                        JSON.parse(
-                            localStorage.getItem("resq_user")
-                        )?.full_name || "Unknown",
+                        formData.get("reporter"),
 
                     mobile:
-                        JSON.parse(
-                            localStorage.getItem("resq_user")
-                        )?.phone_number || "N/A",
+                        formData.get("mobile"),
 
                     location:
                         formData.get("location"),

@@ -365,3 +365,39 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
     .top-nav, .sms-main { padding: 16px; }
     .nav-links { width: 100%; overflow-x: auto; }
 }
+
+.recipient-dropdown{
+
+    width:100%;
+
+    height:42px;
+
+    padding:0 12px;
+
+    border:1px solid #dbe2ea;
+
+    border-radius:10px;
+
+    background:#f8fafc;
+
+    color:#1e293b;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    outline:none;
+
+    transition:0.2s ease;
+
+    margin-bottom:12px;
+
+}
+
+.recipient-dropdown:focus{
+
+    border-color:#f59e0b;
+
+    background:#fff;
+
+}

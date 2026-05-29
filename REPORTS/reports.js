@@ -507,7 +507,6 @@ document.addEventListener(
         */
         async function loadReportsFromSupabase(){
 
-            // ✅ CHANGED: Added users join to get name and mobile_number
             const {
                 data,
                 error
@@ -515,13 +514,7 @@ document.addEventListener(
 
                 .from("reports")
 
-                .select(`
-                    *,
-                    users (
-                        name,
-                        mobile_number
-                    )
-                `)
+                .select("*")
 
                 .order(
                     "created_at",
@@ -555,17 +548,13 @@ document.addEventListener(
                 status:
                     report.status || "received",
 
-                // ✅ CHANGED: Falls back to users.name if reporter field is empty
                 reporter:
-                    report.reporter
-                    || report.users?.name
-                    || "Anonymous",
 
-                // ✅ CHANGED: Falls back to users.mobile_number if mobile field is empty
+                    report.reporter || "Private User",
+
                 mobile:
-                    report.mobile
-                    || report.users?.mobile_number
-                    || "Not provided",
+
+                    report.mobile || "Not provided",
 
                 location:
                     report.location || "Unknown location",
@@ -573,8 +562,10 @@ document.addEventListener(
                 description:
                     report.description || "No description provided.",
 
+            
                 image:
                    report.image_url || "",
+
 
                 assignedTo:
                     report.assigned_to || "Unassigned",
@@ -857,59 +848,61 @@ document.addEventListener(
 
                     }
 
-                    loadReportsFromSupabase();
 
-                }catch(error){
 
-                    console.log(error);
+        loadReportsFromSupabase();
 
-                }
+    }catch(error){
 
-            };
+        console.log(error);
 
-            window.deleteReport = async function(id){
+    }
 
-                const confirmed = confirm(
-                    "Delete this report permanently?"
-                );
+};
 
-                if(!confirmed){
-                    return;
-                }
+window.deleteReport = async function(id){
 
-                try{
+    const confirmed = confirm(
+        "Delete this report permanently?"
+    );
 
-                    const {
-                        error
-                    } = await supabaseClient
+    if(!confirmed){
+        return;
+    }
 
-                        .from("reports")
+    try{
 
-                        .delete()
+        const {
+            error
+        } = await supabaseClient
 
-                        .eq("id", id);
+            .from("reports")
 
-                    if(error){
+            .delete()
 
-                        console.log(error);
+            .eq("id", id);
 
-                        alert("Failed to delete report");
+        if(error){
 
-                        return;
+            console.log(error);
 
-                    }
+            alert("Failed to delete report");
 
-                    selectedReport = null;
+            return;
 
-                    loadReportsFromSupabase();
+        }
 
-                }catch(error){
+        selectedReport = null;
 
-                    console.log(error);
+        loadReportsFromSupabase();
 
-                }
+    }catch(error){
 
-            };
+        console.log(error);
+
+    }
+
+};
 
 
             function initializeReportMap(){
@@ -1026,8 +1019,15 @@ document.addEventListener(
             }
 
             /*
+
                 INIT
+
             */
+
             loadReportsFromSupabase();
 
+
+        
+
     });
+

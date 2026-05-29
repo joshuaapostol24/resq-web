@@ -65,21 +65,21 @@
                 <div
                     id="loginMessage"
                     class="login-feedback hidden"
+                    role="alert"
+                    aria-live="polite"
                 ></div>
 
                 <form id="loginForm">
 
                     <div class="input-group">
 
-                        <label>
+                        <label for="username">
                             Username
                         </label>
 
                         <div class="input-wrapper">
 
-                            <i
-                                data-lucide="user"
-                            ></i>
+                            <i data-lucide="user"></i>
 
                             <input
                                 type="text"
@@ -93,15 +93,13 @@
 
                     <div class="input-group">
 
-                        <label>
+                        <label for="password">
                             Password
                         </label>
 
                         <div class="input-wrapper">
 
-                            <i
-                                data-lucide="lock"
-                            ></i>
+                            <i data-lucide="lock"></i>
 
                             <input
                                 type="password"

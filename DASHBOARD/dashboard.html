@@ -13,12 +13,21 @@
         ResQ Admin | Dashboard
     </title>
 
-    <link
+ <link
         rel="stylesheet"
         href="dashboard.css"
     >
+    
+<script src="https://unpkg.com/lucide@latest"></script>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet/dist/leaflet.css"
+    >
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </head>
 
@@ -265,11 +274,7 @@
 
                 </div>
 
-                <img
-                    src="../images/risk-map.png"
-                    alt="Mamburao Map"
-                    class="risk-map"
-                >
+                <div id="map"></div>
 
             </div>
 
@@ -283,5 +288,334 @@
     </script>
 
     <script src="dashboard.js"></script>
+    <script>
+
+lucide.createIcons();
+
+var map = L.map('map').setView([13.223,120.596], 13);
+
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+{
+maxZoom:19
+}).addTo(map);
+
+/* =========================
+   FLOOD HAZARD
+========================= */
+
+fetch('../ASSETS/flood_hazard.geojson')
+.then(response => response.json())
+.then(data => {
+
+L.geoJSON(data, {
+
+style: function(feature){
+
+const floodLevel =
+String(feature.properties?.Flood || "").toLowerCase();
+
+let floodColor =
+"#FF8C00";
+
+if(floodLevel === "low"){
+
+floodColor =
+"#FACC15";
+
+}
+
+if(floodLevel === "moderate"){
+
+floodColor =
+"#E07800";
+
+}
+
+if(floodLevel === "high"){
+
+floodColor =
+"#DC2626";
+
+}
+
+return{
+color:floodColor,
+weight:2,
+fillColor:floodColor,
+fillOpacity:0.4
+};
+
+},
+
+onEachFeature: function(feature, layer){
+
+layer.bindPopup(`
+<strong>Flood Hazard</strong><br>
+Level: ${feature.properties?.Flood || "N/A"}<br>
+Province: ${feature.properties?.Province || "N/A"}
+`);
+
+}
+
+}).addTo(map);
+
+});
+
+/* =========================
+   STORM SURGE
+========================= */
+
+fetch('../ASSETS/stormsurge_hazard.geojson')
+.then(response => response.json())
+.then(data => {
+
+L.geoJSON(data, {
+
+style: function(feature){
+
+return{
+color:'orange',
+weight:2,
+fillOpacity:0.3
+};
+
+}
+
+}).addTo(map);
+
+});
+
+/* =========================
+   COORDINATE POINTS
+========================= */
+
+fetch('../ASSETS/coordinates.geojson')
+.then(response => response.json())
+.then(data => {
+
+const coordinateLayer =
+L.layerGroup();
+
+(data.features || []).forEach(feature => {
+
+const latitude =
+Number(feature.properties?.latitude);
+
+const longitude =
+Number(feature.properties?.longitude);
+
+if(
+!Number.isFinite(latitude) ||
+!Number.isFinite(longitude)
+){
+
+return;
+
+}
+
+const marker =
+L.circleMarker(
+[latitude,longitude],
+{
+
+
+radius:5,
+fillColor:'yellow',
+color:'#333',
+weight:1,
+fillOpacity:1
+
+}
+);
+
+marker.bindPopup(`
+<strong>${feature.properties?.Barangay || "Coordinate Point"}</strong><br>
+Sitio: ${feature.properties?.Sitio || "N/A"}<br>
+Flood: ${feature.properties?.Flood || "N/A"}<br>
+Storm Surge: ${feature.properties?.Stormsurge || "N/A"}<br>
+Landslide: ${feature.properties?.Landslide || "N/A"}
+`);
+
+marker.addTo(coordinateLayer);
+
+});
+
+coordinateLayer.addTo(map);
+
+});
+
+/* =========================
+   LIVE REPORTS
+========================= */
+
+const SUPABASE_URL =
+"https://jpovamcznyzoemcnjrgs.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
+
+const supabaseClient =
+supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+const liveReportsLayer =
+L.layerGroup().addTo(map);
+
+function getReportColor(report){
+
+const priority =
+String(report.priority || "").toLowerCase();
+
+const status =
+String(report.status || "").toLowerCase();
+
+if(
+status === "rejected" ||
+status === "false_report"
+){
+
+return "#64748B";
+
+}
+
+if(
+priority === "critical" ||
+priority === "high"
+){
+
+return "#DC2626";
+
+}
+
+if(priority === "medium"){
+
+return "#F59E0B";
+
+}
+
+return "#FF8C00";
+
+}
+
+function formatReportDate(value){
+
+const date =
+new Date(value);
+
+if(Number.isNaN(date.getTime())){
+
+return "";
+
+}
+
+return date.toLocaleString();
+
+}
+
+async function loadLiveReports(){
+
+const {
+data,
+error
+} = await supabaseClient
+
+.from("reports")
+
+.select("*")
+
+.not("lat","is",null)
+
+.not("lng","is",null)
+
+.order(
+"created_at",
+{
+ascending:false
+}
+);
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+liveReportsLayer.clearLayers();
+
+(data || []).forEach(report => {
+
+const lat =
+Number(report.lat);
+
+const lng =
+Number(report.lng);
+
+if(
+!Number.isFinite(lat) ||
+!Number.isFinite(lng)
+){
+
+return;
+
+}
+
+const color =
+getReportColor(report);
+
+const marker =
+L.circleMarker(
+[lat,lng],
+{
+radius:8,
+color:color,
+weight:2,
+fillColor:color,
+fillOpacity:0.9
+}
+);
+
+marker.bindPopup(`
+<strong>${report.type || report.title || "Emergency Report"}</strong><br>
+Priority: ${report.priority || "N/A"}<br>
+Status: ${report.status || "received"}<br>
+${formatReportDate(report.created_at)}
+`);
+
+marker.addTo(liveReportsLayer);
+
+});
+
+}
+
+loadLiveReports();
+
+setInterval(
+loadLiveReports,
+10000
+);
+
+supabaseClient
+.channel("dashboard-live-reports")
+.on(
+"postgres_changes",
+{
+event:"*",
+schema:"public",
+table:"reports"
+},
+() => {
+
+loadLiveReports();
+
+}
+)
+.subscribe();
+
+</script>
 </body>
 </html>

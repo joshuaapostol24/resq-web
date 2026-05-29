@@ -82,7 +82,7 @@
 
                 <button class="btn-primary" onclick="sendTestSMS()">
                     <i data-lucide="send" size="14"></i>
-                    Send Test SMS
+                    Send SMS
                 </button>
 
                 <div id="testResult" class="result-box hidden"></div>
@@ -91,7 +91,7 @@
             <!-- BULK SMS -->
             <div class="card">
                 <div class="card-header">
-                    <h3><i data-lucide="users" size="14"></i> Send to Selected Users</h3>
+                    <h3><i data-lucide="users" size="14"></i> Bulk SMS Broadcast</h3>
                     <p>Broadcast to verified residents</p>
                 </div>
 
@@ -116,19 +116,6 @@
 
                 </select>
 
-                <div class="input-wrap">
-                        <i data-lucide="search" class="input-icon" size="14"></i>
-                        <input type="text" id="userSearch" placeholder="Search users..." oninput="filterUsers()">
-                    </div>
-                    <div class="user-list" id="userList">
-                        <div class="user-list-loading">
-                            <i data-lucide="loader" size="14"></i>
-                            Loading users...
-                        </div>
-                    </div>
-                    <div class="selected-count">
-                        <span id="selectedCount">0</span> user(s) selected
-                    </div>
                 </div>
 
                 <div class="form-group">

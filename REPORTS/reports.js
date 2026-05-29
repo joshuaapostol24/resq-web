@@ -464,6 +464,30 @@ document.addEventListener(
 
                             </div>
 
+                                <div class="meta-item">
+
+                                    <span>
+                                        Latitude
+                                    </span>
+
+                                    <strong>
+                                        ${selectedReport.coordinates.lat}
+                                    </strong>
+
+                                </div>
+
+                                <div class="meta-item">
+
+                                    <span>
+                                        Longitude
+                                    </span>
+
+                                    <strong>
+                                        ${selectedReport.coordinates.lng}
+                                    </strong>
+
+                                </div>
+
                         </section>
 
                     </aside>
@@ -509,7 +533,7 @@ document.addEventListener(
                     report.id || "N/A",
 
                 title:
-                    report.title || "Untitled Report",
+                    report.title || report.type || "Untitled Report",
 
                 type:
                     report.type || "OTHER",
@@ -545,10 +569,10 @@ document.addEventListener(
 
                 coordinates:{
                     lat:
-                        report.lat || 13.2233,
+                        report.lat,
 
                     lng:
-                        report.lng || 120.5960
+                        report.lng
                 },
 
                 dispatch:{

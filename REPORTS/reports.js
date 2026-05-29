@@ -549,10 +549,10 @@ document.addEventListener(
                     report.status || "received",
 
                 reporter:
-                     report.users?.full_name || "Anonymous",
+                    report.users?.full_name || report.reporter || "Anonymous",
 
                 mobile:
-                     report.users?.phone_number || "Not provided",
+                     report.users?.phone_number || report.mobile || "Not Provided",
 
                 location:
                     report.location || "Unknown location",

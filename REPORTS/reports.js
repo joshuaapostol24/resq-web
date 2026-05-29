@@ -549,10 +549,10 @@ document.addEventListener(
                     report.status || "received",
 
                 reporter:
-                    report.users?.full_name || report.reporter || "Anonymous",
+                    report.reporter || "Anonymous",
 
                 mobile:
-                     report.users?.phone_number || report.mobile || "Not Provided",
+                    report.mobile || "Not provided",
 
                 location:
                     report.location || "Unknown location",
@@ -686,10 +686,14 @@ document.addEventListener(
                         "pending",
 
                     reporter:
-                        formData.get("reporter"),
+                        JSON.parse(
+                            localStorage.getItem("resq_user")
+                        )?.full_name || "Unknown",
 
                     mobile:
-                        formData.get("mobile"),
+                        JSON.parse(
+                            localStorage.getItem("resq_user")
+                        )?.phone_number || "N/A",
 
                     location:
                         formData.get("location"),

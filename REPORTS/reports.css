@@ -320,10 +320,19 @@ button { cursor: pointer; }
 }
 
 .detail-body{
-    display:grid;
-    grid-template-columns: 2fr 1fr;
+    display:flex;
     gap:24px;
-    align-items:start;
+    align-items:flex-start;
+}
+
+.detail-body > div{
+    flex:2;
+    min-width:0;
+}
+
+.detail-body > aside{
+    flex:1;
+    min-width:320px;
 }
 
 .panel {
@@ -354,13 +363,16 @@ button { cursor: pointer; }
 }
 
 .meta-item span {
-    display: block;
-    color: var(--text-muted);
-    font-size: 10px;
-    font-weight: 900;
-    text-transform: uppercase;
+    display:block;
+    color:var(--text-muted);
+    font-size:10px;
+    font-weight:900;
+    text-transform:uppercase;
+    margin-bottom:4px;
+}
+
+.meta-item{
     min-width:0;
-    word-break:break-word;
 }
 
 .meta-item strong {

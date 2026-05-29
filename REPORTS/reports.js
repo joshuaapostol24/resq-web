@@ -689,6 +689,11 @@ document.addEventListener(
 
                 const report = {
 
+                    user_id:
+                        JSON.parse(
+                            localStorage.getItem("resq_user")
+                        )?.id,
+
                     title:
                         formData.get("type"),
 

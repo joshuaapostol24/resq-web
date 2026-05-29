@@ -514,7 +514,21 @@ document.addEventListener(
 
                 .from("reports")
 
-                .select("*")
+                .select(`
+
+                        *,
+
+                        users:user_id (
+
+                            name,
+
+                            mobile_number,
+
+                            email
+
+                        )
+
+                    `)
 
                 .order(
                     "created_at",
@@ -549,10 +563,12 @@ document.addEventListener(
                     report.status || "received",
 
                 reporter:
-                    report.reporter || "Anonymous",
+
+                    report.users?.name || "Private User",
 
                 mobile:
-                    report.mobile || "Not provided",
+
+                    report.users?.mobile_number || "Not provided",
 
                 location:
                     report.location || "Unknown location",

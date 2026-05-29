@@ -199,6 +199,7 @@ body {
     width: 100%;
     padding: 8px 10px 8px 32px;
     border: 1px solid var(--border);
+    box-sizing: border-box;
     border-radius: 6px;
     font-size: 13px;
     font-family: inherit;

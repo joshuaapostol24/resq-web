@@ -297,213 +297,208 @@ document.addEventListener(
 
             detailPanel.innerHTML = `
 
-                <div class="detail-header">
+    <div class="detail-header">
 
-                    <div>
+        <div class="detail-left">
 
-                        <h2>
-                            ${selectedReport.title}
-                        </h2>
+            <h2>
+                ${selectedReport.title}
+            </h2>
 
-                        <p>
-                            ${selectedReport.location}
-                        </p>
+            <p>
+                ${selectedReport.location}
+            </p>
 
-                    </div>
+            ${getStatusBadge(
+                selectedReport.status
+            )}
 
-                    ${getStatusBadge(
-                        selectedReport.status
-                    )}
-                                
-                <div class="detail-actions">
+        </div>
 
-                    <button
-                        class="action-btn btn-approve"
-                        onclick="approveReport('${selectedReport.id}')"
-                    >
+        <div class="detail-right">
 
-                        Approve
+            <div class="detail-actions">
 
-                    </button>
+                <button
+                    class="action-btn btn-approve"
+                    onclick="approveReport('${selectedReport.id}')"
+                >
 
-                    <button
-                        class="action-btn btn-reject"
-                        onclick="rejectReport('${selectedReport.id}')"
-                    >
+                    Approve
 
-                        Reject
+                </button>
 
-                    </button>
+                <button
+                    class="action-btn btn-reject"
+                    onclick="rejectReport('${selectedReport.id}')"
+                >
 
-                    <button
-                        class="action-btn btn-delete"
-                        onclick="deleteReport('${selectedReport.id}')"
-                    >
+                    Reject
 
-                        Delete
+                </button>
 
-                    </button>
+                <button
+                    class="action-btn btn-delete"
+                    onclick="deleteReport('${selectedReport.id}')"
+                >
 
+                    Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="detail-content">
+
+        <section class="panel">
+
+            <h3>
+                Description
+            </h3>
+
+            <p class="description">
+                ${selectedReport.description}
+            </p>
+
+            ${selectedReport.image
+            ? `
+                <img
+                    src="${selectedReport.image}"
+                    class="report-image"
+                    alt="Report Image"
+                >
+            `
+            : ""}
+
+        </section>
+
+        <section class="panel">
+
+            <h3>
+                Incident Information
+            </h3>
+
+            <div class="meta-grid">
+
+                <div class="meta-item">
+
+                    <span>
+                        Type
+                    </span>
+
+                    <strong>
+                        ${selectedReport.type}
+                    </strong>
 
                 </div>
 
-                                    
+                <div class="meta-item">
 
-                <div class="detail-body">
+                    <span>
+                        Priority
+                    </span>
 
-                    <div>
-
-                        <section class="panel">
-
-                            <h3>
-                                Description
-                            </h3>
-
-                            <p class="description">
-                                ${selectedReport.description}
-                            </p>
-
-                            ${selectedReport.image
-                            ? `
-                                 <img
-                                    src="${selectedReport.image}"
-                                    class="report-image"
-                                    alt="Report Image"
-                                >
-                            `
-                            : ""}
-
-                        </section>
-
-                        <section class="panel">
-
-                            <h3>
-                                Reporter Information
-                            </h3>
-
-                            <div class="meta-grid">
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        Reporter
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.reporter}
-                                    </strong>
-
-                                </div>
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        Mobile
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.mobile}
-                                    </strong>
-
-                                </div>
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        Assigned Unit
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.assignedTo}
-                                    </strong>
-
-                                </div>
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        ETA
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.dispatch.etaMinutes} mins
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-                        </section>
-
-                    </div>
-
-                    <aside>
-
-                        <section class="panel">
-
-                            <h3>
-                                Incident Information
-                            </h3>
-
-                            <div class="meta-grid">
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        Type
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.type}
-                                    </strong>
-
-                                </div>
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        Priority
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.priority}
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        Latitude
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.coordinates.lat}
-                                    </strong>
-
-                                </div>
-
-                                <div class="meta-item">
-
-                                    <span>
-                                        Longitude
-                                    </span>
-
-                                    <strong>
-                                        ${selectedReport.coordinates.lng}
-                                    </strong>
-
-                                </div>
-
-                        </section>
-
-                    </aside>
+                    <strong>
+                        ${selectedReport.priority}
+                    </strong>
 
                 </div>
 
-            `;
+                <div class="meta-item">
+
+                    <span>
+                        Latitude
+                    </span>
+
+                    <strong>
+                        ${selectedReport.coordinates.lat}
+                    </strong>
+
+                </div>
+
+                <div class="meta-item">
+
+                    <span>
+                        Longitude
+                    </span>
+
+                    <strong>
+                        ${selectedReport.coordinates.lng}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="panel">
+
+            <h3>
+                Reporter Information
+            </h3>
+
+            <div class="meta-grid">
+
+                <div class="meta-item">
+
+                    <span>
+                        Reporter
+                    </span>
+
+                    <strong>
+                        ${selectedReport.reporter}
+                    </strong>
+
+                </div>
+
+                <div class="meta-item">
+
+                    <span>
+                        Mobile
+                    </span>
+
+                    <strong>
+                        ${selectedReport.mobile}
+                    </strong>
+
+                </div>
+
+                <div class="meta-item">
+
+                    <span>
+                        Assigned Unit
+                    </span>
+
+                    <strong>
+                        ${selectedReport.assignedTo}
+                    </strong>
+
+                </div>
+
+                <div class="meta-item">
+
+                    <span>
+                        ETA
+                    </span>
+
+                    <strong>
+                        ${selectedReport.dispatch.etaMinutes} mins
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+`;
 
         }
 

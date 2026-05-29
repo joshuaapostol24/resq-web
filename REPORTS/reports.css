@@ -290,14 +290,23 @@ button { cursor: pointer; }
     flex-direction: column;
 }
 
-.detail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 18px;
-    border-bottom: 1px solid var(--border);
-    padding: 16px 18px;
+.detail-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:24px;
+    padding:20px;
+    border-bottom:1px solid var(--border);
 }
+
+.detail-left{
+    flex:1;
+}
+
+.detail-right{
+    width:180px;
+}
+
 
 .detail-header h2 {
     margin: 0;
@@ -310,13 +319,17 @@ button { cursor: pointer; }
     font-size: 12px;
 }
 
-.detail-actions {
-    display: flex;
-    grid-template-columns: repeat(2, minmax(130px, 1fr));
-    gap: 12px;
-    width: min(360px, 100%);
-    flex-wrap:wrap;
-    margin-top:16px;
+.detail-actions{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.detail-content{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+    padding:20px;
 }
 
 .detail-body{

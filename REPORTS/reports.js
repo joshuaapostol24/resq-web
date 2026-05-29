@@ -514,21 +514,7 @@ document.addEventListener(
 
                 .from("reports")
 
-                .select(`
-
-                        *,
-
-                        users:user_id (
-
-                            name,
-
-                            mobile_number,
-
-                            email
-
-                        )
-
-                    `)
+                .select("*")
 
                 .order(
                     "created_at",
@@ -564,11 +550,11 @@ document.addEventListener(
 
                 reporter:
 
-                    report.users?.name || "Private User",
+                    report.reporter || "Private User",
 
                 mobile:
 
-                    report.users?.mobile_number || "Not provided",
+                    report.mobile || "Not provided",
 
                 location:
                     report.location || "Unknown location",
@@ -689,7 +675,6 @@ document.addEventListener(
 
                 const report = {
 
-                    user_id: null,
 
                     title:
                         formData.get("type"),

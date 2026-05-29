@@ -335,10 +335,19 @@ document.addEventListener(
 
                     </button>
 
+                    <button
+                        class="action-btn btn-delete"
+                        onclick="deleteReport('${selectedReport.id}')"
+                    >
+
+                        Delete
+
+                    </button>
+
+
                 </div>
 
                                     
-                </div>
 
                 <div class="detail-body">
 
@@ -852,6 +861,49 @@ document.addEventListener(
 
 };
 
+window.deleteReport = async function(id){
+
+    const confirmed = confirm(
+        "Delete this report permanently?"
+    );
+
+    if(!confirmed){
+        return;
+    }
+
+    try{
+
+        const {
+            error
+        } = await supabaseClient
+
+            .from("reports")
+
+            .delete()
+
+            .eq("id", id);
+
+        if(error){
+
+            console.log(error);
+
+            alert("Failed to delete report");
+
+            return;
+
+        }
+
+        selectedReport = null;
+
+        loadReportsFromSupabase();
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+};
 
 
             function initializeReportMap(){

@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <span class="rank-badge" style="color:${riskColor(b.risk_level)}">
                                 ${riskEmoji(b.risk_level)} ${b.risk_level}
                             </span>
-                            <span class="rank-score">${b.final_risk}%</span>
+                            <span class="rank-score">${b.final_risk}</span>
                         </li>
                     `).join("");
                 }

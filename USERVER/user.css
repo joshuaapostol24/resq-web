@@ -396,3 +396,32 @@ td {
     .nav-links { width: 100%; overflow-x: auto; }
     .summary-grid { grid-template-columns: 1fr; }
 }
+
+/* =========================
+   BANNED STATUS
+========================= */
+
+.b-banned  { background: #FEE2E2; color: #7F1D1D; }
+
+/* =========================
+   BAN / UNBAN BUTTONS
+========================= */
+
+.btn-ban   { background: #7C3AED; }
+.btn-unban { background: #0891B2; }
+
+.no-action { color: var(--text-muted); font-size: 12px; }
+
+/* =========================
+   SUMMARY GRID — 5 COLS
+========================= */
+
+.summary-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

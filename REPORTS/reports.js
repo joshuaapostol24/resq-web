@@ -419,6 +419,10 @@ document.addEventListener(
 
             }
 
+            // Always use fresh data from reports array
+            const fresh = reports.find(r => String(r.id) === String(selectedReport.id));
+            if(fresh) selectedReport = fresh;
+
             detailPanel.innerHTML = `
 
     <div class="detail-header">

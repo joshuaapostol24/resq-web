@@ -17,6 +17,12 @@ const cors =
 const path =
     require("path");
 
+const {
+    createClient
+} = require(
+    "@supabase/supabase-js"
+);
+
 const newsRoutes =
     require("./server/routes/newsRoutes");
 

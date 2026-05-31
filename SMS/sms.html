@@ -67,7 +67,30 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Phone Number</label>
+
+                    <label>
+                        Select User
+                    </label>
+
+                    <select
+                        id="userSelect"
+                        class="recipient-dropdown"
+                        onchange="fillPhoneNumber()"
+                    >
+
+                        <option value="">
+                            Select a user
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number
+                    </label>
                     <div class="input-wrap">
                         <i data-lucide="phone" class="input-icon" size="14"></i>
                         <input type="text" id="testPhone" placeholder="+639XXXXXXXXX">

@@ -17,7 +17,7 @@ document.addEventListener(
 
         lucide.createIcons();
 
-        //loadUsers();
+        loadUsers();
 
         bindCounters();
 
@@ -96,7 +96,7 @@ async function loadUsers(){
 
         allUsers = data;
 
-        renderUsers(allUsers);
+        populateUserDropdown();
 
     }catch(error){
 
@@ -106,7 +106,55 @@ async function loadUsers(){
 
 }
 
+function populateUserDropdown(){
 
+    const dropdown =
+        document.getElementById(
+            "userSelect"
+        );
+
+    if(!dropdown) return;
+
+    dropdown.innerHTML = `
+        <option value="">
+            Select a user
+        </option>
+    `;
+
+    allUsers.forEach(user => {
+
+        dropdown.innerHTML += `
+
+            <option
+                value="${user.phone}"
+            >
+
+                ${user.name}
+
+            </option>
+
+        `;
+
+    });
+
+}
+
+function fillPhoneNumber(){
+
+    const dropdown =
+        document.getElementById(
+            "userSelect"
+        );
+
+    const phoneInput =
+        document.getElementById(
+            "testPhone"
+        );
+
+    phoneInput.value =
+        dropdown.value;
+
+}
 // ─────────────────────────────
 // RENDER USERS
 // ─────────────────────────────

@@ -23,6 +23,15 @@ const newsRoutes =
 const app =
     express();
 
+const supabase =
+    createClient(
+
+        process.env.SUPABASE_URL,
+
+        process.env.SUPABASE_KEY
+
+    );
+
 /*
     MIDDLEWARE
 */
@@ -147,6 +156,57 @@ app.get("/", (req,res)=>{
     );
 
 });
+
+/*
+    USERS API
+*/
+app.get(
+    "/users",
+    async(req,res)=>{
+
+        try{
+
+            const {
+                data,
+                error
+            } = await supabase
+                .from("users")
+                .select("*");
+
+            if(error){
+
+                console.log(error);
+
+                return res.status(500).json({
+
+                    success:false,
+
+                    message:
+                        "Failed to load users"
+
+                });
+
+            }
+
+            return res.json(data);
+
+        }catch(error){
+
+            console.log(error);
+
+            return res.status(500).json({
+
+                success:false,
+
+                message:
+                    "Server error"
+
+            });
+
+        }
+
+    }
+);
 
 /*
     SEND SMS

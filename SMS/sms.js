@@ -4,7 +4,7 @@
 // ─────────────────────────────
 
 const API_BASE =
-    "https://resq-sms-backend-f5c2x.ondigitalocean.app";
+    window.location.origin;
 
 
 // ─────────────────────────────
@@ -126,10 +126,10 @@ function populateUserDropdown(){
         dropdown.innerHTML += `
 
             <option
-                value="${user.phone_number}"
+                value="${user.mobile_number}"
             >
 
-                ${user.full_name}
+                ${user.name}
 
             </option>
 

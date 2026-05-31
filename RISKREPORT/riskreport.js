@@ -651,22 +651,18 @@ function showAnnouncementModal(payload, simulationSnapshot) {
         document.getElementById("modalPublishBtn").textContent = "Publishing...";
         document.getElementById("modalPublishBtn").disabled    = true;
 
-        try {
-            // ── POST /simulate/publish-announcement ────────────────────────
-            // This saves to MongoDB news feed + sends FCM push in one call.
-            const body = {
-                title:               payload.title,
-                message:             payload.message,
-                category:            payload.category    || "Weather",
-                priority:            payload.priority    || "High",
-                audience:            payload.audience    || "All Residents",
-                pinned:              payload.pinned      || "No",
-                date:                payload.date        || new Date().toISOString(),
-                target_barangays:    [],          // empty = notify all users
-                simulation_snapshot: simulationSnapshot || {},
-            };
-
-            const response = await fetch(`${API_BASE_URL}/simulate/publish-announcement`, {
+      try {
+    const body = {
+        title:    payload.title,
+        message:  payload.message,
+        category: payload.category || "Weather",
+        priority: payload.priority || "High",
+        audience: payload.audience || "All Residents",
+        pinned:   payload.pinned   || "No",
+        date:     payload.date     || new Date().toISOString(),
+    };
+            // CORRECT — matches POST /news/create in news_routes.py
+            const response = await fetch(`${API_BASE_URL}/news/create`, {
                 method:  "POST",
                 headers: { "Content-Type": "application/json" },
                 body:    JSON.stringify(body),
@@ -678,10 +674,7 @@ function showAnnouncementModal(payload, simulationSnapshot) {
             modal.remove();
 
             // Show success toast
-            showToast(
-                `✅ Published! ${result.fcm?.success_count ?? 0} device(s) notified.`,
-                "success"
-            );
+            showToast("✅ Announcement published successfully.", "success");
 
         } catch (error) {
             console.error("publishAnnouncement:", error);

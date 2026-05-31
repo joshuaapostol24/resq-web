@@ -121,6 +121,9 @@ document.addEventListener(
         let selectedReport =
             null;
 
+        let pendingSelectedId =
+            null;
+
         function firstTextValue(source, fields){
 
             for(const field of fields){
@@ -804,6 +807,15 @@ document.addEventListener(
 
             renderSummary();
 
+            // Re-select the report that was acted on so detail panel updates
+            if(pendingSelectedId){
+                const updated = reports.find(r => String(r.id) === String(pendingSelectedId));
+                if(updated){
+                    selectedReport = updated;
+                }
+                pendingSelectedId = null;
+            }
+
             renderList();
 
             renderDetail();
@@ -1023,7 +1035,8 @@ document.addEventListener(
 
                     }
 
-                    loadReportsFromSupabase();
+                    pendingSelectedId = id;
+                    await loadReportsFromSupabase();
 
                 }catch(error){
 
@@ -1061,7 +1074,8 @@ document.addEventListener(
 
 
 
-        loadReportsFromSupabase();
+        pendingSelectedId = id;
+        await loadReportsFromSupabase();
 
     }catch(error){
 
@@ -1104,8 +1118,8 @@ window.deleteReport = async function(id){
         }
 
         selectedReport = null;
-
-        loadReportsFromSupabase();
+        pendingSelectedId = null;
+        await loadReportsFromSupabase();
 
     }catch(error){
 

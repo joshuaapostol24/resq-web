@@ -3,8 +3,11 @@
 // CONFIG
 // ─────────────────────────────
 
-const API_BASE =
-    window.location.origin;
+const USERS_API =
+    "https://resq-app-xsb98.ondigitalocean.app";
+
+const SMS_API =
+    "https://resq-sms-backend-f5c2x.ondigitalocean.app";
 
 
 // ─────────────────────────────
@@ -88,7 +91,7 @@ async function loadUsers(){
 
         const res =
             await fetch(
-                `${API_BASE}/users`
+                `${USERS_API}/users`
             );
 
         const data =
@@ -319,7 +322,7 @@ async function sendTestSMS(){
         const res =
             await fetch(
 
-                `${API_BASE}/api/send-sms`,
+                `${SMS_API}/api/send-sms`
 
                 {
 

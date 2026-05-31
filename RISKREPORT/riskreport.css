@@ -1022,3 +1022,186 @@ body{
     background:#FED7AA;
 
 }
+
+/* =========================
+   SIMULATION HISTORY ROWS
+========================= */
+
+.sim-history-row {
+    grid-template-columns: 160px 1fr 1fr 1fr 1fr 1fr auto;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.sim-history-row:hover {
+    background: #fff7ed;
+    border-color: var(--primary);
+}
+
+.btn-view-sim-run {
+    padding: 6px 14px;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    background: #fff7ed;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.15s;
+}
+
+.btn-view-sim-run:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* =========================
+   BARANGAY LIST (all-barangay results)
+========================= */
+
+.barangay-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.barangay-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+.barangay-name {
+    font-weight: 700;
+    min-width: 140px;
+    color: var(--text);
+}
+
+.barangay-score,
+.barangay-rule,
+.barangay-ml,
+.barangay-rain,
+.barangay-wind {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* =========================
+   COMPARISON ROWS
+========================= */
+
+.comparison-row {
+    border-left: 3px solid transparent;
+}
+
+.comparison-row:has(.delta-direction span[style*="#e74c3c"]) {
+    border-left-color: #e74c3c;
+}
+
+.comparison-row:has(.delta-direction span[style*="#27ae60"]) {
+    border-left-color: #27ae60;
+}
+
+.prev-risk {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.prev-risk em {
+    font-style: normal;
+    font-weight: 600;
+}
+
+.delta-direction {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.delta-score {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.no-prev {
+    color: var(--muted);
+    font-size: 12px;
+    font-style: italic;
+}
+
+/* =========================
+   SUMMARY ROW
+========================= */
+
+.summary-row {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.summary-row strong {
+    font-weight: 800;
+    color: var(--text);
+}
+
+.summary-badges {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
+
+/* =========================
+   PREV INPUTS NOTE
+========================= */
+
+.prev-inputs-note {
+    font-size: 12px;
+    color: var(--muted);
+    background: #fef9f0;
+    border: 1px solid #f6d6b8;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+}
+
+/* =========================
+   TOAST
+========================= */
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* =========================
+   HISTORY EMPTY
+========================= */
+
+.history-empty {
+    padding: 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* =========================
+   RISK BADGE OVERRIDES
+   (ensure correct colours for
+    VERY HIGH / HIGH etc.)
+========================= */
+
+.risk-badge.low      { background: var(--success); color: #fff; }
+.risk-badge.moderate { background: var(--warning);  color: #fff; }
+.risk-badge.high     { background: var(--danger);   color: #fff; }
+.risk-badge.critical { background: var(--critical); color: #fff; }

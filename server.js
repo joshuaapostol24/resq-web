@@ -1,176 +1,23 @@
-
-<<<<<<< HEAD
-require("dotenv").config({
-    quiet:true
-});
-const fetch =
-    require("node-fetch");
-=======
-console.log("SERVER STARTING...");
-
-
 require("dotenv").config();
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 
 const express =
     require("express");
 
-<<<<<<< HEAD
-const mongoose =
-    require("mongoose");
-
-const cors =
-    require("cors");
-
-const path =
-    require("path");
-
-const newsRoutes =
-    require("./server/routes/newsRoutes");
-=======
 const cors =
     require("cors");
 
 const fetch =
     require("node-fetch");
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 
 const app =
     express();
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 /*
     MIDDLEWARE
 */
 app.use(cors());
 
 app.use(express.json());
-
-<<<<<<< HEAD
-app.use(express.urlencoded({
-    extended:true
-}));
-
-/*
-    SERVE ENTIRE PROJECT
-*/
-app.use(
-    express.static(__dirname)
-);
-
-/*
-    MONGODB
-*/
-
-
-mongoose.connect(
-    process.env.MONGODB_URL,
-    {
-        family:4
-    }
-)
-.then(() => {
-
-    console.log(
-        "MongoDB Connected"
-    );
-
-})
-.catch(err => {
-
-    console.log(
-        "MongoDB Error:"
-    );
-
-    console.log(err);
-
-});
-
-/*
-    NEWS API
-*/
-app.use(
-    "/api/news",
-    newsRoutes
-);
-
-/*
-    RISK REPORT ROUTE
-*/
-app.use(
-    "/api/risk-report",
-    require("./server/routes/riskReportRoutes")
-);
-
-/*
-    WEATHER RISK API
-*/
-app.use(
-    "/api/weather-risk",
-    require("./server/routes/weatherRiskRoutes")
-);
-
-
-/*
-    LOGIN API
-*/
-app.post(
-    "/api/login",
-    async(req,res)=>{
-
-        const {
-            email,
-            password
-        } = req.body;
-
-        if(
-
-            email === "admin@resq.com"
-
-            &&
-
-            password === "admin123"
-
-        ){
-
-            return res.json({
-
-                success:true,
-
-                role:"admin"
-
-            });
-
-        }
-
-        return res.status(401).json({
-
-            success:false,
-            message:"Invalid credentials"
-
-        });
-
-    }
-);
-
-/*
-    START WITH LOGIN PAGE
-*/
-app.get("/", (req,res)=>{
-
-    res.sendFile(
-        path.join(
-            __dirname,
-            "LOGIN",
-            "login.html"
-        )
-    );
-=======
-
 
 /*
     ROOT
@@ -183,11 +30,8 @@ app.get("/", (req,res)=>{
             "SMS Backend Running"
 
     });
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 
 });
-
-
 
 /*
     SEND SMS
@@ -222,15 +66,11 @@ app.post(
             phone =
                 phone.trim();
 
-<<<<<<< HEAD
-=======
             /*
-                FORMAT:
                 09xxxxxxxxx
                 =>
                 639xxxxxxxxx
             */
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
             if(
                 phone.startsWith("09")
             ){
@@ -240,15 +80,11 @@ app.post(
 
             }
 
-<<<<<<< HEAD
-=======
             /*
-                FORMAT:
                 +639xxxxxxxxx
                 =>
                 639xxxxxxxxx
             */
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
             if(
                 phone.startsWith("+63")
             ){
@@ -320,8 +156,6 @@ app.post(
     }
 );
 
-
-
 /*
     SERVER
 */
@@ -331,12 +165,7 @@ const PORT =
 app.listen(PORT, ()=>{
 
     console.log(
-<<<<<<< HEAD
-        `Server running on port ${PORT}`
-=======
         `SMS Server running on port ${PORT}`
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
     );
 
 });
-

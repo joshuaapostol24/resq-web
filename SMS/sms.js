@@ -4,7 +4,7 @@
 // ─────────────────────────────
 
 const API_BASE =
-    window.location.origin;
+    "https://resq-sms-backend-f5c2x.ondigitalocean.app";
 
 
 // ─────────────────────────────

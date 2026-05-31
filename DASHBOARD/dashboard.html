@@ -12,16 +12,9 @@
 </head>
 <body>
 
-    <div class="scoped-banner">
-        <i data-lucide="lock"></i>
-        SCOPED VIEW: MUNICIPALITY OF MAMBURAO
-    </div>
-
     <header class="top-nav">
         <div class="nav-left">
-            <div class="logo-box">
-                <i data-lucide="shield-alert"></i>
-            </div>
+            <div class="logo-box"><i data-lucide="shield-alert"></i></div>
             <span class="brand">ResQ Admin</span>
             <nav class="nav-links">
                 <a href="../DASHBOARD/dashboard.html" class="active">Dashboard</a>
@@ -37,10 +30,7 @@
                 <i data-lucide="map-pin"></i>
                 Mamburao
             </button>
-            <img
-                src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff"
-                class="avatar"
-            >
+            <img src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff" class="avatar">
         </div>
     </header>
 
@@ -51,13 +41,13 @@
                 <h1>Dashboard</h1>
                 <p>Welcome back, admin@resq.com</p>
             </div>
-            <button class="btn-primary">
+            <button class="btn-primary btn-logout">
                 <i data-lucide="log-out"></i>
                 Logout
             </button>
         </div>
 
-        <!-- ROW 1: Users, Reports, Assessments, Barangays at Risk -->
+        <!-- ROW 1: Summary Cards -->
         <section class="summary-grid">
             <div class="summary-card">
                 <span>TOTAL RESIDENTS</span>
@@ -71,54 +61,50 @@
                 <span>TOTAL ASSESSMENTS</span>
                 <strong id="totalAssessments">—</strong>
             </div>
-            <div class="summary-card">
-                <span>BARANGAYS AT RISK</span>
-                <strong id="barangaysAtRisk">—</strong>
-            </div>
+            <!-- Pending Reports Card — clickable -->
+            <a href="../REPORTS/reports.html" class="summary-card summary-card-pending">
+                <span>PENDING REPORTS</span>
+                <strong id="pendingCount">—</strong>
+                <div class="pending-latest">
+                    <p id="pendingLatestTitle">—</p>
+                    <small id="pendingLatestTime"></small>
+                </div>
+            </a>
         </section>
 
-        <!-- ROW 2: Highest Risk + Risk Breakdown + Latest Simulation -->
-        <section class="summary-grid summary-grid-3">
+        <!-- ROW 2: Latest Simulation + Latest News -->
+        <section class="middle-grid">
 
-            <div class="summary-card">
-                <span>HIGHEST RISK LEVEL</span>
-                <strong id="highestRiskLevel">—</strong>
-                <div class="summary-sub" style="margin-top:8px; font-size:13px; color:var(--text-muted);">
-                    Across all barangays
+            <!-- Latest Simulation -->
+            <div class="panel-card">
+                <div class="panel-header">
+                    <span class="eyebrow">LATEST SIMULATION</span>
                 </div>
+                <div class="sim-meta">
+                    <div class="sim-meta-row"><label>Date</label><span id="simDate">—</span></div>
+                    <div class="sim-meta-row"><label>Rainfall</label><span id="simRainfall">—</span></div>
+                    <div class="sim-meta-row"><label>Humidity</label><span id="simHumidity">—</span></div>
+                </div>
+                <div class="rank-header">Priority Rankings</div>
+                <ul class="rank-list" id="simRankings">
+                    <li class="rank-empty">Loading...</li>
+                </ul>
             </div>
 
-            <div class="summary-card">
-                <span>LIVE RISK BREAKDOWN</span>
-                <div class="risk-breakdown">
-                    <div class="risk-row">🔴 Very High <strong id="riskVeryHigh">—</strong></div>
-                    <div class="risk-row">🟠 High      <strong id="riskHigh">—</strong></div>
-                    <div class="risk-row">🟡 Moderate  <strong id="riskModerate">—</strong></div>
-                    <div class="risk-row">🟢 Low       <strong id="riskLow">—</strong></div>
+            <!-- Latest News -->
+            <div class="panel-card">
+                <div class="panel-header">
+                    <span class="eyebrow">LATEST NEWS</span>
+                    <a href="../NEWS/news.html" class="panel-link">View all →</a>
                 </div>
-            </div>
-
-            <div class="summary-card">
-                <span>LATEST SIMULATION</span>
-                <div class="sim-detail">
-                    <div class="sim-row"><label>Date</label><span id="simDate">—</span></div>
-                    <div class="sim-row"><label>Rainfall</label><span id="simRainfall">—</span></div>
-                    <div class="sim-row"><label>Humidity</label><span id="simHumidity">—</span></div>
-                    <div class="sim-row">
-                        <label>Results</label>
-                        <span>
-                            🔴 <span id="simVeryHigh">—</span>
-                            🟠 <span id="simHigh">—</span>
-                            🟡 <span id="simModerate">—</span>
-                            🟢 <span id="simLow">—</span>
-                        </span>
-                    </div>
-                </div>
+                <ul class="news-list" id="newsList">
+                    <li class="news-empty">Loading...</li>
+                </ul>
             </div>
 
         </section>
 
-        <!-- WIDGETS -->
+        <!-- ROW 3: Quick Access Widgets -->
         <section class="dashboard-widgets">
             <a href="../REPORTS/reports.html" class="dashboard-widget">
                 <i data-lucide="triangle-alert"></i>
@@ -168,7 +154,6 @@
         var map = L.map('map').setView([13.223, 120.596], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
 
-        /* FLOOD HAZARD */
         fetch('../ASSETS/flood_hazard.geojson')
             .then(r => r.json())
             .then(data => {
@@ -182,25 +167,17 @@
                         return { color, weight: 2, fillColor: color, fillOpacity: 0.4 };
                     },
                     onEachFeature: function (feature, layer) {
-                        layer.bindPopup(`
-                            <strong>Flood Hazard</strong><br>
-                            Level: ${feature.properties?.Flood || "N/A"}<br>
-                            Province: ${feature.properties?.Province || "N/A"}
-                        `);
+                        layer.bindPopup(`<strong>Flood Hazard</strong><br>Level: ${feature.properties?.Flood || "N/A"}<br>Province: ${feature.properties?.Province || "N/A"}`);
                     }
                 }).addTo(map);
             });
 
-        /* STORM SURGE */
         fetch('../ASSETS/stormsurge_hazard.geojson')
             .then(r => r.json())
             .then(data => {
-                L.geoJSON(data, {
-                    style: () => ({ color: 'orange', weight: 2, fillOpacity: 0.3 })
-                }).addTo(map);
+                L.geoJSON(data, { style: () => ({ color: 'orange', weight: 2, fillOpacity: 0.3 }) }).addTo(map);
             });
 
-        /* COORDINATES */
         fetch('../ASSETS/coordinates.geojson')
             .then(r => r.json())
             .then(data => {
@@ -209,21 +186,13 @@
                     const lat = Number(f.properties?.latitude);
                     const lng = Number(f.properties?.longitude);
                     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-                    L.circleMarker([lat, lng], {
-                        radius: 5, fillColor: 'yellow',
-                        color: '#333', weight: 1, fillOpacity: 1
-                    }).bindPopup(`
-                        <strong>${f.properties?.Barangay || "Coordinate Point"}</strong><br>
-                        Sitio: ${f.properties?.Sitio || "N/A"}<br>
-                        Flood: ${f.properties?.Flood || "N/A"}<br>
-                        Storm Surge: ${f.properties?.Stormsurge || "N/A"}<br>
-                        Landslide: ${f.properties?.Landslide || "N/A"}
-                    `).addTo(layer);
+                    L.circleMarker([lat, lng], { radius: 5, fillColor: 'yellow', color: '#333', weight: 1, fillOpacity: 1 })
+                        .bindPopup(`<strong>${f.properties?.Barangay || "Coordinate Point"}</strong><br>Sitio: ${f.properties?.Sitio || "N/A"}<br>Flood: ${f.properties?.Flood || "N/A"}`)
+                        .addTo(layer);
                 });
                 layer.addTo(map);
             });
 
-        /* LIVE REPORTS */
         const SUPABASE_URL = "https://jpovamcznyzoemcnjrgs.supabase.co";
         const SUPABASE_KEY = "sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -240,36 +209,25 @@
 
         async function loadLiveReports() {
             const { data, error } = await supabaseClient
-                .from("reports")
-                .select("*")
-                .not("lat", "is", null)
-                .not("lng", "is", null)
+                .from("reports").select("*")
+                .not("lat", "is", null).not("lng", "is", null)
                 .order("created_at", { ascending: false });
-
             if (error) { console.error(error); return; }
-
             liveReportsLayer.clearLayers();
             (data || []).forEach(report => {
                 const lat = Number(report.lat);
                 const lng = Number(report.lng);
                 if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
                 const color = getReportColor(report);
-                L.circleMarker([lat, lng], {
-                    radius: 8, color, weight: 2, fillColor: color, fillOpacity: 0.9
-                }).bindPopup(`
-                    <strong>${report.type || report.title || "Emergency Report"}</strong><br>
-                    Priority: ${report.priority || "N/A"}<br>
-                    Status: ${report.status || "received"}<br>
-                    ${report.created_at ? new Date(report.created_at).toLocaleString() : ""}
-                `).addTo(liveReportsLayer);
+                L.circleMarker([lat, lng], { radius: 8, color, weight: 2, fillColor: color, fillOpacity: 0.9 })
+                    .bindPopup(`<strong>${report.type || report.title || "Emergency Report"}</strong><br>Priority: ${report.priority || "N/A"}<br>Status: ${report.status || "received"}`)
+                    .addTo(liveReportsLayer);
             });
         }
 
         loadLiveReports();
         setInterval(loadLiveReports, 10000);
-
-        supabaseClient
-            .channel("dashboard-live-reports")
+        supabaseClient.channel("dashboard-live-reports")
             .on("postgres_changes", { event: "*", schema: "public", table: "reports" }, loadLiveReports)
             .subscribe();
     </script>

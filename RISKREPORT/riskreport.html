@@ -1,510 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="resq-api-base"
-        content=""
-    >
-
-    <title>
-        ResQ Admin | Risk Report
-    </title>
-
-    <link
-        rel="stylesheet"
-        href="riskreport.css"
-    >
-
-    <script src="https://unpkg.com/lucide@latest">
-        
-    </script>
-
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="resq-api-base" content="">
+    <title>ResQ Admin | Risk Report</title>
+    <link rel="stylesheet" href="riskreport.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body>
 
     <div class="scoped-banner">
-
         <i data-lucide="lock" size="10"></i>
-
         SCOPED VIEW: MUNICIPALITY OF MAMBURAO
-
     </div>
 
     <!-- NAVIGATION -->
-
     <header class="top-nav">
-
         <div class="nav-left">
-
             <div class="logo-box">
-
                 <i data-lucide="shield-alert" size="16"></i>
-
             </div>
-
-            <span class="brand">
-                ResQ Admin
-            </span>
-
+            <span class="brand">ResQ Admin</span>
             <nav class="nav-links">
-
-                <a href="../DASHBOARD/dashboard.html">
-                    Dashboard
-                </a>
-
-                <a href="../REPORTS/reports.html">
-                    Reports
-                </a>
-
-                <a
-                    href="riskreport.html"
-                    class="active"
-                >
-                    Risk Report
-                </a>
-
-                <a href="../NEWS/news.html">
-                    News
-                </a>
-
-                <a href="../USERVER/user.html">
-                    Users
-                </a>
-
-                <a href="../SMS/sms.html">
-                    SMS
-                </a>
-
+                <a href="../DASHBOARD/dashboard.html">Dashboard</a>
+                <a href="../REPORTS/reports.html">Reports</a>
+                <a href="riskreport.html" class="active">Risk Report</a>
+                <a href="../NEWS/news.html">News</a>
+                <a href="../USERVER/user.html">Users</a>
+                <a href="../SMS/sms.html">SMS</a>
             </nav>
-
         </div>
 
         <div class="nav-right">
-
-            <button
-                class="btn-workspace"
-                type="button"
-                onclick="location.href='../WORKSPACE/workspace.html'"
-            >
-
+            <button class="btn-workspace" type="button" onclick="location.href='../WORKSPACE/workspace.html'">
                 <i data-lucide="map-pin" size="14"></i>
-
                 Mamburao
-
             </button>
-
-            <button
-                class="icon-btn"
-                type="button"
-                onclick="location.reload()"
-            >
-
+            <button class="icon-btn" type="button" onclick="location.reload()">
                 <i data-lucide="refresh-cw" size="16"></i>
-
             </button>
-
-            <button
-                class="icon-btn"
-                type="button"
-                data-action="logout"
-            >
-
+            <button class="icon-btn" type="button" data-action="logout">
                 <i data-lucide="log-out" size="16"></i>
-
             </button>
-
             <img
                 src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff"
                 alt="Admin Avatar"
                 class="avatar"
             >
-
         </div>
-
     </header>
 
     <!-- MAIN -->
-
     <main class="risk-main">
 
-        <!-- HEADER -->
-
+        <!-- PAGE HEADER -->
         <section class="page-header">
-
             <div>
-
-                <h1>
-                    Barangay Risk Assessment
-                </h1>
-
-                <p>
-                    ML-based disaster risk analysis,
-                    weather prediction,
-                    and emergency assessment
-                    monitoring for Mamburao.
-                </p>
-
+                <h1>Barangay Risk Assessment</h1>
+                <p>ML-based disaster risk analysis, weather prediction, and emergency assessment monitoring for Mamburao.</p>
             </div>
-
             <div class="header-actions">
-
-                <button
-                    class="btn-primary"
-                    type="button"
-                    id="refreshBtn"
-                >
-
+                <button class="btn-primary" type="button" id="refreshBtn">
                     <i data-lucide="refresh-cw" size="14"></i>
-
                     Refresh
-
                 </button>
-
             </div>
-
         </section>
 
         <!-- WEATHER RISK ASSESSMENT -->
-
         <section class="card weather-risk-card">
-
             <div class="card-header">
-
-                <h3>
-                    Live Weather Risk Assessment
-                </h3>
-
+                <h3>Live Weather Risk Assessment</h3>
             </div>
 
             <div class="weather-risk-toolbar">
-
                 <select id="barangaySelect">
-
-                    <option value="">
-                        Select Barangay
-                    </option>
-
-                    <option value="8">
-                        Poblacion 1
-                    </option>
-
-                    <option value="9">
-                        Poblacion 2
-                    </option>
-
-                    <option value="10">
-                        Poblacion 3
-                    </option>
-
-                    <option value="11">
-                        Poblacion 4
-                    </option>
-
-                    <option value="12">
-                        Poblacion 5
-                    </option>
-
-                    <option value="13">
-                        Poblacion 6
-                    </option>
-
-                    <option value="14">
-                        Poblacion 7
-                    </option>
-
-                    <option value="15">
-                        Poblacion 8
-                    </option>
-
-                    <option value="3">
-                        Payompon
-                    </option>
-
-                    <option value="1">
-                        Balansay
-                    </option>
-
-                    <option value="2">
-                        Fatima
-                    </option>
-
-                    <option value="7">
-                        Tayamaan
-                    </option>
-
-                    <option value="6">
-                        Tangkalan
-                    </option>
-
-                    <option value="5">
-                        Talabaan
-                    </option>
-
-                    <option value="4">
-                        San Luis
-                    </option>
-
+                    <option value="">Select Barangay</option>
+                    <option value="8">Poblacion 1</option>
+                    <option value="9">Poblacion 2</option>
+                    <option value="10">Poblacion 3</option>
+                    <option value="11">Poblacion 4</option>
+                    <option value="12">Poblacion 5</option>
+                    <option value="13">Poblacion 6</option>
+                    <option value="14">Poblacion 7</option>
+                    <option value="15">Poblacion 8</option>
+                    <option value="3">Payompon</option>
+                    <option value="1">Balansay</option>
+                    <option value="2">Fatima</option>
+                    <option value="7">Tayamaan</option>
+                    <option value="6">Tangkalan</option>
+                    <option value="5">Talabaan</option>
+                    <option value="4">San Luis</option>
                 </select>
 
-                <button
-                    class="btn-primary"
-                    id="weatherRiskBtn"
-                >
-
+                <button class="btn-primary" id="weatherRiskBtn">
                     <i data-lucide="cloud-rain" size="14"></i>
-
                     Get Weather Risk
-
                 </button>
 
-                <button
-                    class="btn-secondary"
-                    id="viewHistoryBtn"
-                >
-
+                <button class="btn-secondary" id="viewHistoryBtn">
                     <i data-lucide="history" size="14"></i>
-
                     View History
-
                 </button>
-
             </div>
 
             <div id="weatherRiskResult"></div>
 
             <section id="historySection">
-
                 <div class="card-header">
-
-                    <h3>
-                        Barangay Training Data History
-                    </h3>
-
+                    <h3>Barangay Training Data History</h3>
                 </div>
-
-                <div
-                    class="history-cards"
-                    id="historyTableBody"
-                >
-
-                    <div class="history-empty">
-
-                        No history data
-
-                    </div>
-
+                <div class="history-cards" id="historyTableBody">
+                    <div class="history-empty">No history data</div>
                 </div>
-
             </section>
-
         </section>
 
         <!-- GRID -->
-
         <section class="risk-grid">
 
-            <!-- LEFT -->
-
+            <!-- LEFT: SIMULATION FORM -->
             <aside class="risk-sidebar">
-
-                <!-- SIMULATION -->
-
-            <div class="card simulation-card">
-
-                <div class="card-header">
-
-                    <h3>
-                        Flood Simulation
-                    </h3>
-
-                </div>
-
-                <div class="simulation-form">
-
-                    <label>
-
-                        Barangay
-
-                        <select id="simBarangay">
-
-                            <option value="">
-                                Select Barangay
-                            </option>
-
-                            <option value="8">
-                                Poblacion 1
-                            </option>
-
-                            <option value="9">
-                                Poblacion 2
-                            </option>
-
-                            <option value="10">
-                                Poblacion 3
-                            </option>
-
-                            <option value="11">
-                                Poblacion 4
-                            </option>
-
-                            <option value="12">
-                                Poblacion 5
-                            </option>
-
-                            <option value="13">
-                                Poblacion 6
-                            </option>
-
-                            <option value="14">
-                                Poblacion 7
-                            </option>
-
-                            <option value="15">
-                                Poblacion 8
-                            </option>
-
-                            <option value="3">
-                                Payompon
-                            </option>
-
-                            <option value="1">
-                                Balansay
-                            </option>
-
-                            <option value="2">
-                                Fatima
-                            </option>
-
-                            <option value="7">
-                                Tayamaan
-                            </option>
-
-                            <option value="6">
-                                Tangkalan
-                            </option>
-
-                            <option value="5">
-                                Talabaan
-                            </option>
-
-                            <option value="4">
-                                San Luis
-                            </option>
-
-                        </select>
-
-                    </label>
-
-                    <label>
-
-                        Disaster Type
-
-                        <input
-                            type="text"
-                            value="Flood"
-                            readonly
-                            class="readonly-input"
-                        >
-
-                    </label>
-
-                    <label>
-
-                        Rainfall (mm)
-
-                        <input
-                            type="number"
-                            id="simRainfall"
-                            placeholder="Enter rainfall"
-                        >
-
-                    </label>
-
-                    <label>
-
-                        Humidity (%)
-
-                        <input
-                            type="number"
-                            id="simHumidity"
-                            placeholder="Enter humidity"
-                        >
-
-                    </label>
-
-                    <label>
-
-                        Wind Speed (km/h)
-
-                        <input
-                            type="number"
-                            id="simWind"
-                            placeholder="Enter wind speed"
-                        >
-
-                    </label>
-
-                    <label>
-
-                        Temperature (°C)
-
-                        <input
-                            type="number"
-                            id="simTemp"
-                            placeholder="Enter temperature"
-                        >
-
-                    </label>
-
-                    <button
-                        class="btn-primary"
-                        id="runSimulationBtn"
-                    >
-
-                        <i data-lucide="play" size="14"></i>
-
-                        Run Flood Simulation
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            </aside>
-
-            <!-- RIGHT -->
-
-            <section class="risk-results">
-
-                <div class="card hidden"
-                     id="chartCard">
-
+                <div class="card simulation-card">
                     <div class="card-header">
-
-                        <h3>
-                            Risk Visualization
-                        </h3>
-
+                        <h3>Flood Simulation</h3>
                     </div>
 
-                    <div id="factorBars"></div>
+                    <div class="simulation-form">
+                        <label>
+                            Barangay
+                            <select id="simBarangay">
+                                <option value="">Select Barangay</option>
+                                <option value="8">Poblacion 1</option>
+                                <option value="9">Poblacion 2</option>
+                                <option value="10">Poblacion 3</option>
+                                <option value="11">Poblacion 4</option>
+                                <option value="12">Poblacion 5</option>
+                                <option value="13">Poblacion 6</option>
+                                <option value="14">Poblacion 7</option>
+                                <option value="15">Poblacion 8</option>
+                                <option value="3">Payompon</option>
+                                <option value="1">Balansay</option>
+                                <option value="2">Fatima</option>
+                                <option value="7">Tayamaan</option>
+                                <option value="6">Tangkalan</option>
+                                <option value="5">Talabaan</option>
+                                <option value="4">San Luis</option>
+                            </select>
+                        </label>
 
+                        <label>
+                            Disaster Type
+                            <input type="text" value="Flood" readonly class="readonly-input">
+                        </label>
+
+                        <label>
+                            Rainfall (mm)
+                            <input type="number" id="simRainfall" placeholder="Enter rainfall">
+                        </label>
+
+                        <label>
+                            Humidity (%)
+                            <input type="number" id="simHumidity" placeholder="Enter humidity">
+                        </label>
+
+                        <label>
+                            Wind Speed (km/h)
+                            <input type="number" id="simWind" placeholder="Enter wind speed">
+                        </label>
+
+                        <label>
+                            Temperature (°C)
+                            <input type="number" id="simTemp" placeholder="Enter temperature">
+                        </label>
+
+                        <button class="btn-primary" id="runSimulationBtn">
+                            <i data-lucide="play" size="14"></i>
+                            Run Flood Simulation
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- RIGHT: RESULTS -->
+            <section class="risk-results">
+                <div class="card hidden" id="chartCard">
+                    <div class="card-header">
+                        <h3>Risk Visualization</h3>
+                    </div>
+                    <div id="factorBars"></div>
                 </div>
 
-
                 <div id="simulationResults"></div>
-
             </section>
 
         </section>
@@ -512,10 +201,7 @@
     </main>
 
     <script src="../ADMIN/admin.js"></script>
-
     <script src="riskreport.js"></script>
-
-
 
 </body>
 </html>

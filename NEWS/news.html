@@ -1,380 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<link rel="icon" href="data:,">
-
-
+    <link rel="icon" href="data:,">
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ResQ Admin | News</title>
-
     <link rel="stylesheet" href="news.css">
-
     <script src="https://unpkg.com/lucide@latest"></script>
-
 </head>
-
 <body>
 
     <div class="scoped-banner">
-
         <i data-lucide="lock"></i>
-
         SCOPED VIEW: MUNICIPALITY OF MAMBURAO
-
     </div>
 
     <header class="top-nav">
-
         <div class="nav-left">
-
             <div class="logo-box">
-
                 <i data-lucide="shield-alert"></i>
-
             </div>
-
-            <span class="brand">
-                ResQ Admin
-            </span>
-
+            <span class="brand">ResQ Admin</span>
             <nav class="nav-links">
-
-                <a href="../DASHBOARD/dashboard.html">
-                    Dashboard
-                </a>
-
-                <a href="../REPORTS/reports.html">
-                    Reports
-                </a>
-
-                <a href="../RISKREPORT/riskreport.html">
-                    Risk Report
-                </a>
-
-                <a
-                    href="news.html"
-                    class="active"
-                >
-                    News
-                </a>
-
-                <a href="../USERVER/user.html">
-                    Users
-                </a>
-
-
-                <a href="../SMS/sms.html">
-                    SMS
-                </a>
-
+                <a href="../DASHBOARD/dashboard.html">Dashboard</a>
+                <a href="../REPORTS/reports.html">Reports</a>
+                <a href="../RISKREPORT/riskreport.html">Risk Report</a>
+                <a href="news.html" class="active">News</a>
+                <a href="../USERVER/user.html">Users</a>
+                <a href="../SMS/sms.html">SMS</a>
             </nav>
-
         </div>
-
         <div class="nav-right">
-
             <button class="btn-workspace">
-
                 <i data-lucide="map-pin"></i>
-
                 Mamburao
-
             </button>
-
             <img
                 src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff"
                 class="avatar"
             >
-
         </div>
-
     </header>
 
     <main class="news-main">
 
         <div class="page-header">
-
             <div>
-
-                <h1>
-                    News and Announcements
-                </h1>
-
-                <p>
-                    Publish emergency alerts,
-                    advisories, weather updates,
-                    and community announcements.
-                </p>
-
+                <h1>News and Announcements</h1>
+                <p>Publish emergency alerts, advisories, weather updates, and community announcements.</p>
             </div>
-
-            <button
-                class="btn-primary"
-                id="newAnnouncementBtn"
-            >
-
+            <button class="btn-primary" id="newAnnouncementBtn">
                 <i data-lucide="plus"></i>
-
                 New Announcement
-
             </button>
-
         </div>
 
         <!-- PINNED -->
-
         <section class="card">
-
             <div class="card-heading">
-
-                <span class="eyebrow">
-                    PINNED
-                </span>
-
-                <h2>
-                    📌 Pinned Announcement
-                </h2>
-
+                <span class="eyebrow">PINNED</span>
+                <h2>📌 Pinned Announcement</h2>
             </div>
-
             <div id="pinnedAnnouncement">
-
                 <div class="empty-state">
-
-                    <h3>
-                        No pinned announcement
-                    </h3>
-
+                    <h3>No pinned announcement</h3>
                 </div>
-
             </div>
-
         </section>
 
         <!-- LATEST -->
-
         <section class="card">
-
             <div class="card-heading">
-
-                <span class="eyebrow">
-                    LATEST
-                </span>
-
-                <h2>
-                    📰 Latest Announcement
-                </h2>
-
+                <span class="eyebrow">LATEST</span>
+                <h2>📰 Latest Announcements</h2>
             </div>
-
-            <div
-                class="news-grid"
-                id="latestAnnouncements"
-            ></div>
-
+            <div class="news-grid" id="latestAnnouncements"></div>
         </section>
 
         <!-- CREATE -->
-
-        <section
-            class="card"
-            id="createAnnouncementSection"
-        >
-
+        <section class="card" id="createAnnouncementSection">
             <div class="card-heading">
-
-                <span class="eyebrow">
-                    CREATE ANNOUNCEMENT
-                </span>
-
-                <h2>
-                    Publish News
-                </h2>
-
+                <span class="eyebrow">CREATE ANNOUNCEMENT</span>
+                <h2>Publish News</h2>
             </div>
-
             <form id="newsForm">
-
                 <div class="form-row-3">
-
                     <div class="field-group">
-
-                        <label>
-                            Title
-                        </label>
-
-                        <input
-                            type="text"
-                            id="f-title"
-                            placeholder="Type title here..."
-                            required
-                        >
-
+                        <label>Title</label>
+                        <input type="text" id="f-title" placeholder="Type title here..." required>
                     </div>
-
                     <div class="field-group">
-
-                        <label>
-                            Category
-                        </label>
-
+                        <label>Category</label>
                         <select id="f-category">
-
-                            <option>
-                                General News
-                            </option>
-
-                            <option>
-                                Emergency
-                            </option>
-
-                            <option>
-                                Weather
-                            </option>
-
-                            <option>
-                                Advisory
-                            </option>
-
+                            <option>General News</option>
+                            <option>Emergency</option>
+                            <option>Weather</option>
+                            <option>Advisory</option>
                         </select>
-
                     </div>
-
                     <div class="field-group">
-
-                        <label>
-                            Priority
-                        </label>
-
+                        <label>Priority</label>
                         <select id="f-priority">
-
-                            <option>
-                                Low
-                            </option>
-
-                            <option>
-                                Moderate
-                            </option>
-
-                            <option>
-                                High
-                            </option>
-
+                            <option>Low</option>
+                            <option>Moderate</option>
+                            <option>High</option>
                         </select>
-
                     </div>
-
                 </div>
-
                 <div class="form-row-3">
-
                     <div class="field-group">
-
-                        <label>
-                            Publish Date
-                        </label>
-
-                        <input
-                            type="datetime-local"
-                            id="f-date"
-                        >
-
+                        <label>Publish Date</label>
+                        <input type="datetime-local" id="f-date">
                     </div>
-
                     <div class="field-group">
-
-                        <label>
-                            Target Audience
-                        </label>
-
+                        <label>Target Audience</label>
                         <select id="f-audience">
-
-                            <option>
-                                All Residents
-                            </option>
-
-                            <option>
-                                Emergency Responders
-                            </option>
-
-                            <option>
-                                Barangay Officials
-                            </option>
-
-                            <option>
-                                Students
-                            </option>
-
+                            <option>All Residents</option>
+                            <option>Emergency Responders</option>
+                            <option>Barangay Officials</option>
+                            <option>Students</option>
                         </select>
-
                     </div>
-
                     <div class="field-group">
-
-                        <label>
-                            Pin Announcement
-                        </label>
-
+                        <label>Pin Announcement</label>
                         <select id="f-pin">
-
-                            <option>
-                                No
-                            </option>
-
-                            <option>
-                                Yes
-                            </option>
-
+                            <option>No</option>
+                            <option>Yes</option>
                         </select>
-
                     </div>
-
                 </div>
-
                 <div class="field-group">
-
-                    <label>
-                        Message
-                    </label>
-
-                    <textarea
-                        id="f-message"
-                        rows="6"
-                        placeholder="Write your announcement here..."
-                        required
-                    ></textarea>
-
+                    <label>Message</label>
+                    <textarea id="f-message" rows="6" placeholder="Write your announcement here..." required></textarea>
                 </div>
-
                 <div class="form-actions">
-
-                    <button
-                        type="submit"
-                        class="btn-primary"
-                    >
-
+                    <button type="submit" class="btn-primary">
                         <i data-lucide="send"></i>
-
                         Save Announcement
-
                     </button>
-
                 </div>
-
             </form>
-
         </section>
 
     </main>
 
-    <script src="news.js"></script>
+    <!-- EDIT MODAL -->
+    <div class="modal-overlay hidden" id="editModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Edit Announcement</h2>
+                <button class="btn-close" id="closeEditModal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="edit-id">
+                <div class="form-row-3">
+                    <div class="field-group">
+                        <label>Title</label>
+                        <input type="text" id="edit-title" placeholder="Title">
+                    </div>
+                    <div class="field-group">
+                        <label>Category</label>
+                        <select id="edit-category">
+                            <option>General News</option>
+                            <option>Emergency</option>
+                            <option>Weather</option>
+                            <option>Advisory</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Priority</label>
+                        <select id="edit-priority">
+                            <option>Low</option>
+                            <option>Moderate</option>
+                            <option>High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row-3">
+                    <div class="field-group">
+                        <label>Publish Date</label>
+                        <input type="datetime-local" id="edit-date">
+                    </div>
+                    <div class="field-group">
+                        <label>Target Audience</label>
+                        <select id="edit-audience">
+                            <option>All Residents</option>
+                            <option>Emergency Responders</option>
+                            <option>Barangay Officials</option>
+                            <option>Students</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label>Pin Announcement</label>
+                        <select id="edit-pin">
+                            <option>No</option>
+                            <option>Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label>Message</label>
+                    <textarea id="edit-message" rows="6" placeholder="Write your announcement here..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelEditBtn">Cancel</button>
+                    <button type="submit" class="btn-primary">
+                        <i data-lucide="save"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
+    <script src="news.js"></script>
 </body>
 </html>

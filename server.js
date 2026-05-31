@@ -1,13 +1,21 @@
 
+<<<<<<< HEAD
 require("dotenv").config({
     quiet:true
 });
 const fetch =
     require("node-fetch");
+=======
+console.log("SERVER STARTING...");
+
+
+require("dotenv").config();
+>>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 
 const express =
     require("express");
 
+<<<<<<< HEAD
 const mongoose =
     require("mongoose");
 
@@ -19,10 +27,22 @@ const path =
 
 const newsRoutes =
     require("./server/routes/newsRoutes");
+=======
+const cors =
+    require("cors");
+
+const fetch =
+    require("node-fetch");
+>>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 
 const app =
     express();
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 /*
     MIDDLEWARE
 */
@@ -30,6 +50,7 @@ app.use(cors());
 
 app.use(express.json());
 
+<<<<<<< HEAD
 app.use(express.urlencoded({
     extended:true
 }));
@@ -148,6 +169,21 @@ app.get("/", (req,res)=>{
             "login.html"
         )
     );
+=======
+
+
+/*
+    ROOT
+*/
+app.get("/", (req,res)=>{
+
+    res.json({
+
+        message:
+            "SMS Backend Running"
+
+    });
+>>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
 
 });
 
@@ -186,6 +222,15 @@ app.post(
             phone =
                 phone.trim();
 
+<<<<<<< HEAD
+=======
+            /*
+                FORMAT:
+                09xxxxxxxxx
+                =>
+                639xxxxxxxxx
+            */
+>>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
             if(
                 phone.startsWith("09")
             ){
@@ -195,6 +240,15 @@ app.post(
 
             }
 
+<<<<<<< HEAD
+=======
+            /*
+                FORMAT:
+                +639xxxxxxxxx
+                =>
+                639xxxxxxxxx
+            */
+>>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
             if(
                 phone.startsWith("+63")
             ){
@@ -277,7 +331,11 @@ const PORT =
 app.listen(PORT, ()=>{
 
     console.log(
+<<<<<<< HEAD
         `Server running on port ${PORT}`
+=======
+        `SMS Server running on port ${PORT}`
+>>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa
     );
 
 });

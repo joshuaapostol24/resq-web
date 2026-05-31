@@ -1,5 +1,9 @@
+# DASHBOARD/dashboard.html
+
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
@@ -10,40 +14,209 @@
     >
 
     <title>
-        ResQ Admin | Dashboard
+        ResQ Dashboard
     </title>
 
- <link
-        rel="stylesheet"
-        href="dashboard.css"
-    >
-    
-<script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css"
-    >
+    <style>
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        body{
+            font-family:Arial,sans-serif;
+            background:#F1F5F9;
+            color:#0F172A;
+        }
+
+        .sidebar{
+            position:fixed;
+            left:0;
+            top:0;
+            width:260px;
+            height:100vh;
+            background:#FFFFFF;
+            border-right:1px solid #E2E8F0;
+            padding:25px;
+        }
+
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            margin-bottom:40px;
+        }
+
+        .logo-box{
+            width:50px;
+            height:50px;
+            border-radius:14px;
+            background:#FF8C00;
+            color:white;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+
+        .logo h2{
+            font-size:24px;
+        }
+
+        .menu{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+        }
+
+        .menu a{
+            text-decoration:none;
+            color:#334155;
+            padding:14px;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            gap:12px;
+            font-weight:600;
+            transition:0.2s;
+        }
+
+        .menu a:hover,
+        .menu .active{
+            background:#FFF5E9;
+            color:#FF8C00;
+        }
+
+        .main{
+            margin-left:260px;
+            padding:30px;
+        }
+
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:30px;
+        }
+
+        .topbar h1{
+            font-size:34px;
+            margin-bottom:5px;
+        }
+
+        .topbar p{
+            color:#64748B;
+        }
+
+        .logout-btn{
+            background:#FF8C00;
+            color:white;
+            border:none;
+            padding:12px 20px;
+            border-radius:12px;
+            cursor:pointer;
+            font-weight:700;
+        }
+
+        .stats{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:20px;
+            margin-bottom:30px;
+        }
+
+        .card{
+            background:white;
+            border-radius:18px;
+            padding:24px;
+            box-shadow:0 4px 14px rgba(0,0,0,0.05);
+        }
+
+        .card h3{
+            color:#64748B;
+            margin-bottom:12px;
+            font-size:16px;
+        }
+
+        .card p{
+            font-size:34px;
+            font-weight:700;
+            color:#FF8C00;
+        }
+
+        .welcome{
+            background:white;
+            border-radius:20px;
+            padding:30px;
+            box-shadow:0 4px 14px rgba(0,0,0,0.05);
+        }
+
+        .welcome h2{
+            margin-bottom:12px;
+        }
+
+        .welcome p{
+            color:#64748B;
+            line-height:1.7;
+        }
+
+        @media(max-width:1000px){
+
+            .stats{
+                grid-template-columns:1fr 1fr;
+            }
+
+        }
+
+        @media(max-width:700px){
+
+            .sidebar{
+                position:relative;
+                width:100%;
+                height:auto;
+            }
+
+            .main{
+                margin-left:0;
+            }
+
+            .stats{
+                grid-template-columns:1fr;
+            }
+
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-    <div class="scoped-banner">
+    <script>
 
-        <i data-lucide="lock"></i>
+        /*
+            SESSION CHECK
+        */
+        const loggedIn =
+            localStorage.getItem(
+                "resq_logged_in"
+            );
 
-        SCOPED VIEW: MUNICIPALITY OF MAMBURAO
+        if(loggedIn !== "true"){
 
-    </div>
+            window.location.href =
+                "/LOGIN/login.html";
 
-    <header class="top-nav">
+        }
 
-        <div class="nav-left">
+    </script>
+
+    <aside class="sidebar">
+
+        <div class="logo">
 
             <div class="logo-box">
 
@@ -51,77 +224,54 @@
 
             </div>
 
-            <span class="brand">
-
-                ResQ Admin
-
-            </span>
-
-            <nav class="nav-links">
-
-                <a
-                    href="../DASHBOARD/dashboard.html"
-                    class="active"
-                >
-                    Dashboard
-                </a>
-
-                <a href="../REPORTS/reports.html">
-
-                    Reports
-
-                </a>
-
-                <a href="../RISKREPORT/riskreport.html">
-
-                    Risk Report
-
-                </a>
-
-                <a href="../NEWS/news.html">
-
-                    News
-
-                </a>
-
-                <a href="../USERVER/user.html">
-
-                    Users
-
-                </a>
-
-                <a href="../SMS/sms.html">
-
-                    SMS
-
-                </a>
-
-            </nav>
+            <h2>
+                ResQ
+            </h2>
 
         </div>
 
-        <div class="nav-right">
+        <nav class="menu">
 
-            <button class="btn-workspace">
-
-                <i data-lucide="map-pin"></i>
-
-                Mamburao
-
-            </button>
-
-            <img
-                src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff"
-                class="avatar"
+            <a
+                href="dashboard.html"
+                class="active"
             >
+                <i data-lucide="layout-dashboard"></i>
+                Dashboard
+            </a>
 
-        </div>
+            <a href="../NEWS/news.html">
+                <i data-lucide="newspaper"></i>
+                News
+            </a>
 
-    </header>
+            <a href="../REPORTS/reports.html">
+                <i data-lucide="file-text"></i>
+                Reports
+            </a>
 
-    <main class="dashboard-main">
+            <a href="../RISKREPORT/riskreport.html">
+                <i data-lucide="triangle-alert"></i>
+                Risk Report
+            </a>
 
-        <div class="page-header">
+            <a href="../USERVER/user.html">
+                <i data-lucide="users"></i>
+                Users
+            </a>
+
+            <a href="../SETTINGS/settings.html">
+                <i data-lucide="settings"></i>
+                Settings
+            </a>
+
+        </nav>
+
+    </aside>
+
+    <main class="main">
+
+        <div class="topbar">
 
             <div>
 
@@ -130,492 +280,98 @@
                 </h1>
 
                 <p>
-                    Welcome back, admin@resq.com
+                    Welcome back,
+                    <span id="adminName"></span>
                 </p>
 
             </div>
 
-            <button class="btn-primary">
-
-                <i data-lucide="log-out"></i>
-
+            <button
+                class="logout-btn"
+                onclick="logout()"
+            >
                 Logout
-
             </button>
 
         </div>
 
-        <section class="summary-grid">
+        <section class="stats">
 
-                <div class="summary-card">
+            <div class="card">
+                <h3>Total Residents</h3>
+                <p>1,248</p>
+            </div>
 
-                    <span>
-                        TOTAL RESIDENTS
-                    </span>
+            <div class="card">
+                <h3>Active Alerts</h3>
+                <p>12</p>
+            </div>
 
-                    <strong id="totalResidents">
-                        0
-                    </strong>
+            <div class="card">
+                <h3>Emergency Reports</h3>
+                <p>86</p>
+            </div>
 
-                </div>
-
-                <div class="summary-card">
-
-                    <span>
-                        ACTIVE ALERTS
-                    </span>
-
-                    <strong id="activeAlerts">
-                        0
-                    </strong>
-
-                </div>
-
-            </section>
-
-            <section class="dashboard-widgets">
-
-                <a
-                    href="../REPORTS/reports.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="triangle-alert"></i>
-
-                    <h3>
-                        Reports
-                    </h3>
-
-                    <p>
-                        View emergency reports
-                    </p>
-
-                </a>
-
-                <a
-                    href="../RISKREPORT/riskreport.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="cloud-rain"></i>
-
-                    <h3>
-                        Risk Report
-                    </h3>
-
-                    <p>
-                        Weather & flood analysis
-                    </p>
-
-                </a>
-
-                <a
-                    href="../NEWS/news.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="newspaper"></i>
-
-                    <h3>
-                        News
-                    </h3>
-
-                    <p>
-                        Manage announcements
-                    </p>
-
-                </a>
-
-                <a
-                    href="../USERVER/user.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="users"></i>
-
-                    <h3>
-                        Users
-                    </h3>
-
-                    <p>
-                        Manage residents
-                    </p>
-
-                </a>
-
-                <a
-                    href="../SMS/sms.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="message-square"></i>
-
-                    <h3>
-                        SMS
-                    </h3>
-
-                    <p>
-                        Send emergency alerts
-                    </p>
-
-                </a>
-
-            </section>
-
-            <section class="map-section">
-
-            <div class="map-card">
-
-                <div class="card-header">
-
-                    <h3>
-                        Municipality Risk Monitoring Map
-                    </h3>
-
-                </div>
-
-                <div id="map"></div>
-
+            <div class="card">
+                <h3>Risk Zones</h3>
+                <p>9</p>
             </div>
 
         </section>
+
+        <section class="welcome">
+
+            <h2>
+                ResQ Emergency Monitoring System
+            </h2>
+
+            <p>
+                This dashboard allows administrators to monitor emergencies,
+                publish announcements, track reports, manage users,
+                and coordinate disaster response activities.
+            </p>
+
+        </section>
+
     </main>
 
     <script>
 
+        /*
+            LOAD ICONS
+        */
         lucide.createIcons();
+
+        /*
+            SHOW USERNAME
+        */
+        document.getElementById(
+            "adminName"
+        ).innerText =
+            localStorage.getItem(
+                "resq_user"
+            ) || "Admin";
+
+        /*
+            LOGOUT
+        */
+        function logout(){
+
+            localStorage.removeItem(
+                "resq_logged_in"
+            );
+
+            localStorage.removeItem(
+                "resq_user"
+            );
+
+            window.location.href =
+                "/LOGIN/login.html";
+
+        }
 
     </script>
 
-    <script src="dashboard.js"></script>
-    <script>
-
-lucide.createIcons();
-
-var map = L.map('map').setView([13.223,120.596], 13);
-
-L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{
-maxZoom:19
-}).addTo(map);
-
-/* =========================
-   FLOOD HAZARD
-========================= */
-
-fetch('../ASSETS/flood_hazard.geojson')
-.then(response => response.json())
-.then(data => {
-
-L.geoJSON(data, {
-
-style: function(feature){
-
-const floodLevel =
-String(feature.properties?.Flood || "").toLowerCase();
-
-let floodColor =
-"#FF8C00";
-
-if(floodLevel === "low"){
-
-floodColor =
-"#FACC15";
-
-}
-
-if(floodLevel === "moderate"){
-
-floodColor =
-"#E07800";
-
-}
-
-if(floodLevel === "high"){
-
-floodColor =
-"#DC2626";
-
-}
-
-return{
-color:floodColor,
-weight:2,
-fillColor:floodColor,
-fillOpacity:0.4
-};
-
-},
-
-onEachFeature: function(feature, layer){
-
-layer.bindPopup(`
-<strong>Flood Hazard</strong><br>
-Level: ${feature.properties?.Flood || "N/A"}<br>
-Province: ${feature.properties?.Province || "N/A"}
-`);
-
-}
-
-}).addTo(map);
-
-});
-
-/* =========================
-   STORM SURGE
-========================= */
-
-fetch('../ASSETS/stormsurge_hazard.geojson')
-.then(response => response.json())
-.then(data => {
-
-L.geoJSON(data, {
-
-style: function(feature){
-
-return{
-color:'orange',
-weight:2,
-fillOpacity:0.3
-};
-
-}
-
-}).addTo(map);
-
-});
-
-/* =========================
-   COORDINATE POINTS
-========================= */
-
-fetch('../ASSETS/coordinates.geojson')
-.then(response => response.json())
-.then(data => {
-
-const coordinateLayer =
-L.layerGroup();
-
-(data.features || []).forEach(feature => {
-
-const latitude =
-Number(feature.properties?.latitude);
-
-const longitude =
-Number(feature.properties?.longitude);
-
-if(
-!Number.isFinite(latitude) ||
-!Number.isFinite(longitude)
-){
-
-return;
-
-}
-
-const marker =
-L.circleMarker(
-[latitude,longitude],
-{
-
-
-radius:5,
-fillColor:'yellow',
-color:'#333',
-weight:1,
-fillOpacity:1
-
-}
-);
-
-marker.bindPopup(`
-<strong>${feature.properties?.Barangay || "Coordinate Point"}</strong><br>
-Sitio: ${feature.properties?.Sitio || "N/A"}<br>
-Flood: ${feature.properties?.Flood || "N/A"}<br>
-Storm Surge: ${feature.properties?.Stormsurge || "N/A"}<br>
-Landslide: ${feature.properties?.Landslide || "N/A"}
-`);
-
-marker.addTo(coordinateLayer);
-
-});
-
-coordinateLayer.addTo(map);
-
-});
-
-/* =========================
-   LIVE REPORTS
-========================= */
-
-const SUPABASE_URL =
-"https://jpovamcznyzoemcnjrgs.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
-
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-const liveReportsLayer =
-L.layerGroup().addTo(map);
-
-function getReportColor(report){
-
-const priority =
-String(report.priority || "").toLowerCase();
-
-const status =
-String(report.status || "").toLowerCase();
-
-if(
-status === "rejected" ||
-status === "false_report"
-){
-
-return "#64748B";
-
-}
-
-if(
-priority === "critical" ||
-priority === "high"
-){
-
-return "#DC2626";
-
-}
-
-if(priority === "medium"){
-
-return "#F59E0B";
-
-}
-
-return "#FF8C00";
-
-}
-
-function formatReportDate(value){
-
-const date =
-new Date(value);
-
-if(Number.isNaN(date.getTime())){
-
-return "";
-
-}
-
-return date.toLocaleString();
-
-}
-
-async function loadLiveReports(){
-
-const {
-data,
-error
-} = await supabaseClient
-
-.from("reports")
-
-.select("*")
-
-.not("lat","is",null)
-
-.not("lng","is",null)
-
-.order(
-"created_at",
-{
-ascending:false
-}
-);
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-liveReportsLayer.clearLayers();
-
-(data || []).forEach(report => {
-
-const lat =
-Number(report.lat);
-
-const lng =
-Number(report.lng);
-
-if(
-!Number.isFinite(lat) ||
-!Number.isFinite(lng)
-){
-
-return;
-
-}
-
-const color =
-getReportColor(report);
-
-const marker =
-L.circleMarker(
-[lat,lng],
-{
-radius:8,
-color:color,
-weight:2,
-fillColor:color,
-fillOpacity:0.9
-}
-);
-
-marker.bindPopup(`
-<strong>${report.type || report.title || "Emergency Report"}</strong><br>
-Priority: ${report.priority || "N/A"}<br>
-Status: ${report.status || "received"}<br>
-${formatReportDate(report.created_at)}
-`);
-
-marker.addTo(liveReportsLayer);
-
-});
-
-}
-
-loadLiveReports();
-
-setInterval(
-loadLiveReports,
-10000
-);
-
-supabaseClient
-.channel("dashboard-live-reports")
-.on(
-"postgres_changes",
-{
-event:"*",
-schema:"public",
-table:"reports"
-},
-() => {
-
-loadLiveReports();
-
-}
-)
-.subscribe();
-
-</script>
 </body>
 </html>
+```

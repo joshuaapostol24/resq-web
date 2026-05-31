@@ -121,6 +121,9 @@ document.addEventListener(
         let selectedReport =
             null;
 
+        let pendingSelectedId =
+            null;
+
         function firstTextValue(source, fields){
 
             for(const field of fields){
@@ -1316,7 +1319,8 @@ window.deleteReport = async function(id){
 
             */
 
-            loadReportsFromSupabase();
+            typeFilter.value = "all";
+        loadReportsFromSupabase();
 
 
         

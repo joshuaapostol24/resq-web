@@ -126,10 +126,10 @@ function populateUserDropdown(){
         dropdown.innerHTML += `
 
             <option
-                value="${user.phone}"
+                value="${user.phone_number}"
             >
 
-                ${user.name}
+                ${user.full_name}
 
             </option>
 

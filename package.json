@@ -1,43 +1,18 @@
-<<<<<<< HEAD
-{
-  "name": "resq-system-main",
-  "version": "1.0.0",
-  "description": "ResQ News System",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "mongodb": "4.1",
-    "mongoose": "^9.6.2",
-    "node-fetch": "^2.7.0",
-    "nodemon": "^3.1.14"
-  }
-}
-=======
-
 {
   "name": "sms-backend",
   "version": "1.0.0",
   "description": "ResQ SMS Backend",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
+  "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.2",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "nodemon": "^3.1.14"
   }
 }
-
->>>>>>> b4d369c2e53f075a08570f78b040bc59fe20a6fa

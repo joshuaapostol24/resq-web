@@ -121,6 +121,127 @@ document.addEventListener(
         let selectedReport =
             null;
 
+        function firstTextValue(source, fields){
+
+            for(const field of fields){
+
+                const value =
+                    source?.[field];
+
+                const normalizedValue =
+                    String(value || "").trim();
+
+                const isPlaceholder =
+                    [
+                        "private user",
+                        "not provided",
+                        "n/a"
+                    ].includes(
+                        normalizedValue.toLowerCase()
+                    );
+
+                if(
+                    value !== undefined
+                    &&
+                    value !== null
+                    &&
+                    normalizedValue !== ""
+                    &&
+                    !isPlaceholder
+                ){
+
+                    return normalizedValue;
+
+                }
+
+            }
+
+            return "";
+
+        }
+
+        function getReporterInfo(report, userMap){
+
+            const userId =
+                firstTextValue(
+                    report,
+                    [
+                        "user_id",
+                        "resident_id",
+                        "reporter_id",
+                        "userId",
+                        "uid"
+                    ]
+                );
+
+            const user =
+                userMap.get(userId)
+                ||
+                report.user
+                ||
+                report.users
+                ||
+                report.profile
+                ||
+                report.profiles
+                ||
+                {};
+
+            const reporter =
+                firstTextValue(
+                    report,
+                    [
+                        "reporter",
+                        "reporter_name",
+                        "full_name",
+                        "name"
+                    ]
+                )
+                ||
+                firstTextValue(
+                    user,
+                    [
+                        "name",
+                        "full_name",
+                        "fullName",
+                        "username"
+                    ]
+                )
+                ||
+                "Private User";
+
+            const mobile =
+                firstTextValue(
+                    report,
+                    [
+                        "mobile",
+                        "mobile_number",
+                        "phone",
+                        "contact",
+                        "contact_number"
+                    ]
+                )
+                ||
+                firstTextValue(
+                    user,
+                    [
+                        "mobile_number",
+                        "mobile",
+                        "phone",
+                        "contact",
+                        "contact_number"
+                    ]
+                )
+                ||
+                "Not provided";
+
+            return {
+                reporter,
+                mobile
+            };
+
+        }
+
         /*
             SUMMARY
         */
@@ -507,31 +628,107 @@ document.addEventListener(
         */
         async function loadReportsFromSupabase(){
 
-            const {
-                data,
-                error
-            } = await supabaseClient
+            const reportsResult =
+                await supabaseClient
 
-                .from("reports")
+                    .from("reports")
 
-                .select("*")
+                    .select("*")
 
-                .order(
-                    "created_at",
-                    {
-                        ascending:false
-                    }
+                    .order(
+                        "created_at",
+                        {
+                            ascending:false
+                        }
+                    );
+
+            if(reportsResult.error){
+
+                console.log(
+                    reportsResult.error
                 );
-
-            if(error){
-
-                console.log(error);
 
                 return;
 
             }
 
-            reports = data.map(report => ({
+            const reportRows =
+                reportsResult.data || [];
+
+            const userIds =
+                [
+                    ...new Set(
+                        reportRows
+                            .map(report =>
+                                firstTextValue(
+                                    report,
+                                    [
+                                        "user_id",
+                                        "resident_id",
+                                        "reporter_id",
+                                        "userId",
+                                        "uid"
+                                    ]
+                                )
+                            )
+                            .filter(Boolean)
+                    )
+                ];
+
+            let usersResult = {
+                data:[],
+                error:null
+            };
+
+            if(userIds.length){
+
+                usersResult =
+                    await supabaseClient
+
+                        .from("users")
+
+                        .select("*")
+
+                        .in(
+                            "id",
+                            userIds
+                        );
+
+            }
+
+            if(usersResult.error){
+
+                console.log(
+                    usersResult.error
+                );
+
+            }
+
+            const userMap =
+                new Map();
+
+            (usersResult.data || []).forEach(user => {
+
+                if(user.id){
+
+                    userMap.set(
+                        String(user.id),
+                        user
+                    );
+
+                }
+
+            });
+
+            reports = reportRows.map(report => {
+
+                const reporterInfo =
+                    getReporterInfo(
+                        report,
+                        userMap
+                    );
+
+                return {
 
                 id:
                     report.id || "N/A",
@@ -550,11 +747,11 @@ document.addEventListener(
 
                 reporter:
 
-                    report.reporter || "Private User",
+                    reporterInfo.reporter,
 
                 mobile:
 
-                    report.mobile || "Not provided",
+                    reporterInfo.mobile,
 
                 location:
                     report.location || "Unknown location",
@@ -589,7 +786,9 @@ document.addEventListener(
                         report.eta_minutes || 0
                 }
 
-            }));
+                };
+
+            });
 
             renderSummary();
 

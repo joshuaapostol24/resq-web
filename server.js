@@ -1,13 +1,24 @@
-require("dotenv").config();
+require("dotenv").config({
+    quiet:true
+});
+
+const fetch =
+    require("node-fetch");
 
 const express =
     require("express");
 
+const mongoose =
+    require("mongoose");
+
 const cors =
     require("cors");
 
-const fetch =
-    require("node-fetch");
+const path =
+    require("path");
+
+const newsRoutes =
+    require("./server/routes/newsRoutes");
 
 const app =
     express();
@@ -19,17 +30,121 @@ app.use(cors());
 
 app.use(express.json());
 
+app.use(express.urlencoded({
+    extended:true
+}));
+
 /*
-    ROOT
+    SERVE ENTIRE PROJECT
+*/
+app.use(
+    express.static(__dirname)
+);
+
+/*
+    MONGODB
+*/
+mongoose.connect(
+    process.env.MONGODB_URL,
+    {
+        family:4
+    }
+)
+.then(() => {
+
+    console.log(
+        "MongoDB Connected"
+    );
+
+})
+.catch(err => {
+
+    console.log(
+        "MongoDB Error:"
+    );
+
+    console.log(err);
+
+});
+
+/*
+    NEWS API
+*/
+app.use(
+    "/api/news",
+    newsRoutes
+);
+
+/*
+    RISK REPORT ROUTE
+*/
+app.use(
+    "/api/risk-report",
+    require("./server/routes/riskReportRoutes")
+);
+
+/*
+    WEATHER RISK API
+*/
+app.use(
+    "/api/weather-risk",
+    require("./server/routes/weatherRiskRoutes")
+);
+
+/*
+    LOGIN API
+*/
+app.post(
+    "/api/login",
+    async(req,res)=>{
+
+        const {
+            email,
+            password
+        } = req.body;
+
+        if(
+
+            email === "admin@resq.com"
+
+            &&
+
+            password === "admin123"
+
+        ){
+
+            return res.json({
+
+                success:true,
+
+                role:"admin"
+
+            });
+
+        }
+
+        return res.status(401).json({
+
+            success:false,
+            message:"Invalid credentials"
+
+        });
+
+    }
+);
+
+/*
+    START WITH LOGIN PAGE
 */
 app.get("/", (req,res)=>{
 
-    res.json({
-
-        message:
-            "SMS Backend Running"
-
-    });
+    res.sendFile(
+        path.join(
+            __dirname,
+            "LOGIN",
+            "login.html"
+        )
+    );
 
 });
 
@@ -165,7 +280,7 @@ const PORT =
 app.listen(PORT, ()=>{
 
     console.log(
-        `SMS Server running on port ${PORT}`
+        `Server running on port ${PORT}`
     );
 
 });

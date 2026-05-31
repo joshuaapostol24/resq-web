@@ -522,7 +522,8 @@ button { cursor: pointer; }
 }
 
 .btn-approve { background: var(--green); }
-.btn-reject { background: var(--red); }
+.btn-reject  { background: var(--red); }
+.btn-edit    { background: var(--blue); }
 .btn-escalate { background: #EA580C; }
 .btn-resolve { background: var(--blue); }
 

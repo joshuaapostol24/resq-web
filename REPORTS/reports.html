@@ -421,6 +421,100 @@
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+    <!-- EDIT MODAL -->
+    <div class="modal-backdrop hidden" id="editModal" aria-hidden="true">
+        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+            <div class="modal-header">
+                <div>
+                    <span class="report-id">EDIT REPORT</span>
+                    <h2 id="editModalTitle">Edit Report Details</h2>
+                </div>
+                <button class="icon-btn" type="button" id="closeEditModal" title="Close">
+                    <i data-lucide="x" size="16"></i>
+                </button>
+            </div>
+            <div class="report-form">
+                <input type="hidden" id="edit-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="edit-title" placeholder="Report title">
+                    </div>
+                    <div class="form-group">
+                        <label>Incident Type</label>
+                        <select id="edit-type">
+                            <option value="FIRE">FIRE</option>
+                            <option value="FLOOD">FLOOD</option>
+                            <option value="MEDICAL">MEDICAL</option>
+                            <option value="ACCIDENT">ACCIDENT</option>
+                            <option value="LANDSLIDE">LANDSLIDE</option>
+                            <option value="RESCUE">RESCUE</option>
+                            <option value="OTHER">OTHER</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="edit-priority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                            <option value="critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <select id="edit-location">
+                            <option value="">Select Barangay</option>
+                            <option value="Balansay">Balansay</option>
+                            <option value="Fatima">Fatima</option>
+                            <option value="Tayamaan">Tayamaan</option>
+                            <option value="Payompon">Payompon</option>
+                            <option value="Poblacion 1">Poblacion 1</option>
+                            <option value="Poblacion 2">Poblacion 2</option>
+                            <option value="Poblacion 3">Poblacion 3</option>
+                            <option value="Poblacion 4">Poblacion 4</option>
+                            <option value="Poblacion 5">Poblacion 5</option>
+                            <option value="Poblacion 6">Poblacion 6</option>
+                            <option value="Poblacion 7">Poblacion 7</option>
+                            <option value="Poblacion 8">Poblacion 8</option>
+                            <option value="San Luis">San Luis</option>
+                            <option value="Tangkalan">Tangkalan</option>
+                            <option value="Talabaan">Talabaan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Assigned Unit</label>
+                        <input type="text" id="edit-assigned" placeholder="MDRRMO / Rescue Team">
+                    </div>
+                    <div class="form-group">
+                        <label>Responder</label>
+                        <input type="text" id="edit-responder" placeholder="Responder name">
+                    </div>
+                    <div class="form-group">
+                        <label>ETA Minutes</label>
+                        <input type="number" id="edit-eta" placeholder="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Latitude</label>
+                        <input type="number" step="any" id="edit-lat" placeholder="13.2233">
+                    </div>
+                    <div class="form-group">
+                        <label>Longitude</label>
+                        <input type="number" step="any" id="edit-lng" placeholder="120.5960">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Description</label>
+                        <textarea id="edit-description" rows="4" placeholder="Describe the incident..."></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="closeEditModal2" onclick="document.getElementById('editModal').classList.add('hidden')">Cancel</button>
+                    <button type="button" class="btn-primary" onclick="saveEditReport()">Save Changes</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
     <script src="../ADMIN/admin.js"></script>
     <script src="reports.js"></script>
 </body>

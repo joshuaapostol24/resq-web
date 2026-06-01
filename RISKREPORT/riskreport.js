@@ -318,12 +318,22 @@ if (weatherRiskBtn) {
 
                 const barangayName = barangaySelect.options[barangaySelect.selectedIndex].text;
                 if (resultDiv) {
+                    const riskLevel = String(data.risk_level || "").toUpperCase();
+                    const riskSummaryMap = {
+                        "VERY HIGH": "⚠️ This barangay is at very high flood risk. Immediate precautions and possible evacuation may be needed.",
+                        "HIGH":      "🔶 This barangay is at high flood risk. Residents should prepare and monitor updates closely.",
+                        "MODERATE":  "🟡 This barangay has a moderate flood risk. Stay alert and keep emergency supplies ready.",
+                        "LOW":       "🟢 This barangay is at low flood risk under current conditions. Stay informed.",
+                        "VERY LOW":  "✅ This barangay is currently at very low flood risk based on current weather conditions.",
+                    };
+                    const riskSummary = riskSummaryMap[riskLevel] || "Risk level could not be determined.";
+
                     resultDiv.innerHTML = `
                         <div class="result-card">
                             <div class="result-header">
                                 <div>
                                     <h2>${escapeHtml(barangayName)}</h2>
-                                    <p>ML-Based Disaster Risk Assessment</p>
+                                    <p>Live Flood Risk Assessment</p>
                                 </div>
                                 <div class="risk-badge ${getRiskClass(data.risk_level)}">
                                     ${getRiskEmoji(data.risk_level)} ${escapeHtml(data.risk_level)}
@@ -336,7 +346,6 @@ if (weatherRiskBtn) {
                                 <div class="weather-box"><span>Wind Speed</span><strong>${data.wind_speed ?? "—"} km/h</strong></div>
                                 <div class="weather-box"><span>Humidity</span><strong>${data.humidity ?? "—"}%</strong></div>
                                 <div class="weather-box"><span>Season</span><strong>${escapeHtml(data.season ?? "—")}</strong></div>
-                                <div class="weather-box"><span>Soil Saturation</span><strong>${data.soil?.toFixed(4) ?? "—"}</strong></div>
                             </div>
 
                             <div class="flood-susceptibility-section">
@@ -344,15 +353,11 @@ if (weatherRiskBtn) {
                                 <div class="weather-grid">
                                     <div class="weather-box">
                                         <span>Flood Hazard Level</span>
-                                        <strong class="${getRiskClass(data.flood_hazard_level ?? '')}">${escapeHtml(data.flood_hazard_level ?? "N/A")}</strong>
+                                        <strong>${escapeHtml(data.flood_hazard_level ?? "N/A")}</strong>
                                     </div>
                                     <div class="weather-box">
-                                        <span>Flood Hazard Score</span>
-                                        <strong>${data.flood_hazard_score?.toFixed(4) ?? "—"}</strong>
-                                    </div>
-                                    <div class="weather-box">
-                                        <span>Storm Surge Score</span>
-                                        <strong>${data.storm_surge_score?.toFixed(4) ?? "—"}</strong>
+                                        <span>Storm Surge Risk</span>
+                                        <strong>${(data.storm_surge_score > 0) ? "Present" : "None"}</strong>
                                     </div>
                                     <div class="weather-box">
                                         <span>Overall Hazard</span>
@@ -361,22 +366,8 @@ if (weatherRiskBtn) {
                                 </div>
                             </div>
 
-                            <div class="risk-score-section">
-                                <h4>Risk Score Breakdown</h4>
-                                <div class="weather-grid">
-                                    <div class="weather-box">
-                                        <span>Final Risk Score</span>
-                                        <strong>${data.final_risk?.toFixed(4) ?? "—"}</strong>
-                                    </div>
-                                    <div class="weather-box">
-                                        <span>Rule Score</span>
-                                        <strong>${data.rule_score?.toFixed(4) ?? "—"}</strong>
-                                    </div>
-                                    <div class="weather-box">
-                                        <span>ML Predicted Score</span>
-                                        <strong>${data.predicted?.toFixed(4) ?? "—"}</strong>
-                                    </div>
-                                </div>
+                            <div class="risk-summary-box ${getRiskClass(data.risk_level)}">
+                                ${riskSummary}
                             </div>
                         </div>`;
                 }

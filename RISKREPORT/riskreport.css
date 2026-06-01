@@ -1241,3 +1241,20 @@ body{
     letter-spacing: 0.05em;
     margin-bottom: 10px;
 }
+
+/* =========================
+   RISK SUMMARY BOX
+========================= */
+.risk-summary-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.risk-summary-box.critical { background: #FEE2E2; color: #7F1D1D; }
+.risk-summary-box.high     { background: #FEF3C7; color: #78350F; }
+.risk-summary-box.moderate { background: #FEF9C3; color: #713F12; }
+.risk-summary-box.low      { background: #DCFCE7; color: #14532D; }

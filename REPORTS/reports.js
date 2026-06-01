@@ -121,6 +121,9 @@ document.addEventListener(
         let selectedReport =
             null;
 
+        let pendingSelectedId =
+            null;
+
         function firstTextValue(source, fields){
 
             for(const field of fields){
@@ -416,6 +419,10 @@ document.addEventListener(
 
             }
 
+            // Always use fresh data from reports array
+            const fresh = reports.find(r => String(r.id) === String(selectedReport.id));
+            if(fresh) selectedReport = fresh;
+
             detailPanel.innerHTML = `
 
     <div class="detail-header">
@@ -436,36 +443,57 @@ document.addEventListener(
 
         </div>
 
-        <div class="detail-right">
+       <div class="detail-right">
 
             <div class="detail-actions">
 
+                ${selectedReport.status === "approved"
+                ? `
                 <button
-                    class="action-btn btn-approve"
-                    onclick="approveReport('${selectedReport.id}')"
+                    class="action-btn btn-edit"
+                    onclick="openEditModal('${selectedReport.id}')"
                 >
-
-                    Approve
-
-                </button>
-
-                <button
-                    class="action-btn btn-reject"
-                    onclick="rejectReport('${selectedReport.id}')"
-                >
-
-                    Reject
-
+                    Edit
                 </button>
 
                 <button
                     class="action-btn btn-delete"
                     onclick="deleteReport('${selectedReport.id}')"
                 >
-
                     Delete
-
                 </button>
+                `
+                : selectedReport.status === "rejected"
+                ? `
+                <button
+                    class="action-btn btn-delete"
+                    onclick="deleteReport('${selectedReport.id}')"
+                >
+                    Delete
+                </button>
+                `
+                : `
+                <button
+                    class="action-btn btn-approve"
+                    onclick="approveReport('${selectedReport.id}')"
+                >
+                    Approve
+                </button>
+
+                <button
+                    class="action-btn btn-reject"
+                    onclick="rejectReport('${selectedReport.id}')"
+                >
+                    Reject
+                </button>
+
+                <button
+                    class="action-btn btn-delete"
+                    onclick="deleteReport('${selectedReport.id}')"
+                >
+                    Delete
+                </button>
+                `}
 
             </div>
 
@@ -525,6 +553,18 @@ document.addEventListener(
 
                     <strong>
                         ${selectedReport.priority}
+                    </strong>
+
+                </div>
+
+                <div class="meta-item">
+
+                    <span>
+                        Location
+                    </span>
+
+                    <strong>
+                        ${selectedReport.location || "N/A"}
                     </strong>
 
                 </div>
@@ -792,6 +832,12 @@ document.addEventListener(
 
             renderSummary();
 
+            if(pendingSelectedId){
+                const updated = reports.find(r => String(r.id) === String(pendingSelectedId));
+                if(updated) selectedReport = updated;
+                pendingSelectedId = null;
+            }
+
             renderList();
 
             renderDetail();
@@ -1011,7 +1057,8 @@ document.addEventListener(
 
                     }
 
-                    loadReportsFromSupabase();
+                    pendingSelectedId = id;
+                    await loadReportsFromSupabase();
 
                 }catch(error){
 
@@ -1047,17 +1094,16 @@ document.addEventListener(
 
                     }
 
+                    pendingSelectedId = id;
+                    await loadReportsFromSupabase();
 
+                }catch(error){
 
-        loadReportsFromSupabase();
+                    console.log(error);
 
-    }catch(error){
+                }
 
-        console.log(error);
-
-    }
-
-};
+            };
 
 window.deleteReport = async function(id){
 
@@ -1092,8 +1138,8 @@ window.deleteReport = async function(id){
         }
 
         selectedReport = null;
-
-        loadReportsFromSupabase();
+        pendingSelectedId = null;
+        await loadReportsFromSupabase();
 
     }catch(error){
 
@@ -1103,6 +1149,81 @@ window.deleteReport = async function(id){
 
 };
 
+
+            /*
+                EDIT REPORT
+            */
+            window.openEditModal = function(id){
+
+                const report = reports.find(r => String(r.id) === String(id));
+                if(!report) return;
+
+                document.getElementById("edit-id").value          = report.id;
+                document.getElementById("edit-title").value       = report.title || "";
+                document.getElementById("edit-type").value        = report.type  || "OTHER";
+                document.getElementById("edit-priority").value    = report.priority || "medium";
+                document.getElementById("edit-location").value    = report.location || "";
+                document.getElementById("edit-description").value = report.description || "";
+                document.getElementById("edit-assigned").value    = report.assignedTo || "";
+                document.getElementById("edit-responder").value   = report.dispatch?.responder || "";
+                document.getElementById("edit-eta").value         = report.dispatch?.etaMinutes || "";
+                document.getElementById("edit-lat").value         = report.coordinates?.lat || "";
+                document.getElementById("edit-lng").value         = report.coordinates?.lng || "";
+
+                document.getElementById("editModal").classList.remove("hidden");
+
+            };
+
+            window.saveEditReport = async function(){
+
+                const id          = document.getElementById("edit-id").value;
+                const title       = document.getElementById("edit-title").value.trim();
+                const type        = document.getElementById("edit-type").value;
+                const priority    = document.getElementById("edit-priority").value;
+                const location    = document.getElementById("edit-location").value;
+                const description = document.getElementById("edit-description").value.trim();
+                const assigned_to = document.getElementById("edit-assigned").value.trim();
+                const responder   = document.getElementById("edit-responder").value.trim();
+                const eta_minutes = Number(document.getElementById("edit-eta").value);
+                const lat         = Number(document.getElementById("edit-lat").value);
+                const lng         = Number(document.getElementById("edit-lng").value);
+
+                try{
+
+                    const { error } = await supabaseClient
+                        .from("reports")
+                        .update({
+                            title, type, priority, location,
+                            description, assigned_to, responder,
+                            eta_minutes, lat, lng
+                        })
+                        .eq("id", id);
+
+                    if(error){
+                        console.log(error);
+                        alert("Failed to update report");
+                        return;
+                    }
+
+                    document.getElementById("editModal").classList.add("hidden");
+                    loadReportsFromSupabase();
+
+                }catch(err){
+                    console.log(err);
+                    alert("Error saving report");
+                }
+
+            };
+
+            document.getElementById("closeEditModal").addEventListener("click", () => {
+                document.getElementById("editModal").classList.add("hidden");
+            });
+
+            document.getElementById("editModal").addEventListener("click", event => {
+                if(event.target === document.getElementById("editModal")){
+                    document.getElementById("editModal").classList.add("hidden");
+                }
+            });
 
             function initializeReportMap(){
 
@@ -1223,10 +1344,11 @@ window.deleteReport = async function(id){
 
             */
 
-            loadReportsFromSupabase();
+            typeFilter.value = "all";
+        loadReportsFromSupabase();
 
 
         
 
+        
     });
-

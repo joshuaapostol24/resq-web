@@ -1,621 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        ResQ Admin | Dashboard
-    </title>
-
- <link
-        rel="stylesheet"
-        href="dashboard.css"
-    >
-    
-<script src="https://unpkg.com/lucide@latest"></script>
-
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResQ Admin | Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 </head>
-
 <body>
 
-    <div class="scoped-banner">
-
-        <i data-lucide="lock"></i>
-
-        SCOPED VIEW: MUNICIPALITY OF MAMBURAO
-
-    </div>
-
     <header class="top-nav">
-
         <div class="nav-left">
-
-            <div class="logo-box">
-
-                <i data-lucide="shield-alert"></i>
-
-            </div>
-
-            <span class="brand">
-
-                ResQ Admin
-
-            </span>
-
+            <div class="logo-box"><i data-lucide="shield-alert"></i></div>
+            <span class="brand">ResQ Admin</span>
             <nav class="nav-links">
-
-                <a
-                    href="../DASHBOARD/dashboard.html"
-                    class="active"
-                >
-                    Dashboard
-                </a>
-
-                <a href="../REPORTS/reports.html">
-
-                    Reports
-
-                </a>
-
-                <a href="../RISKREPORT/riskreport.html">
-
-                    Risk Report
-
-                </a>
-
-                <a href="../NEWS/news.html">
-
-                    News
-
-                </a>
-
-                <a href="../USERVER/user.html">
-
-                    Users
-
-                </a>
-
-                <a href="../SMS/sms.html">
-
-                    SMS
-
-                </a>
-
+                <a href="../DASHBOARD/dashboard.html" class="active">Dashboard</a>
+                <a href="../REPORTS/reports.html">Reports</a>
+                <a href="../RISKREPORT/riskreport.html">Risk Report</a>
+                <a href="../NEWS/news.html">News</a>
+                <a href="../USERVER/user.html">Users</a>
+                <a href="../SMS/sms.html">SMS</a>
             </nav>
-
         </div>
-
         <div class="nav-right">
-
             <button class="btn-workspace">
-
                 <i data-lucide="map-pin"></i>
-
                 Mamburao
-
             </button>
-
-            <img
-                src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff"
-                class="avatar"
-            >
-
+            <img src="https://ui-avatars.com/api/?name=Admin&background=FF8C00&color=fff" class="avatar">
         </div>
-
     </header>
 
     <main class="dashboard-main">
 
         <div class="page-header">
-
             <div>
-
-                <h1>
-                    Dashboard
-                </h1>
-
-                <p>
-                    Welcome back, admin@resq.com
-                </p>
-
+                <h1>Dashboard</h1>
+                <p>Welcome back, admin@resq.com</p>
             </div>
-
-            <button class="btn-primary">
-
+            <button class="btn-primary btn-logout">
                 <i data-lucide="log-out"></i>
-
                 Logout
-
             </button>
-
         </div>
 
+        <!-- ROW 1: Summary Cards -->
         <section class="summary-grid">
-
-                <div class="summary-card">
-
-                    <span>
-                        TOTAL RESIDENTS
-                    </span>
-
-                    <strong id="totalResidents">
-                        0
-                    </strong>
-
+            <div class="summary-card">
+                <span>TOTAL RESIDENTS</span>
+                <strong id="totalResidents">—</strong>
+            </div>
+            <div class="summary-card">
+                <span>TOTAL REPORTS</span>
+                <strong id="totalReports">—</strong>
+            </div>
+            <div class="summary-card">
+                <span>TOTAL ASSESSMENTS</span>
+                <strong id="totalAssessments">—</strong>
+            </div>
+            <!-- Pending Reports Card — clickable -->
+            <a href="../REPORTS/reports.html" class="summary-card summary-card-pending">
+                <span>PENDING REPORTS</span>
+                <strong id="pendingCount">—</strong>
+                <div class="pending-latest">
+                    <p id="pendingLatestTitle">—</p>
+                    <small id="pendingLatestTime"></small>
                 </div>
+            </a>
+        </section>
 
-                <div class="summary-card">
+        <!-- ROW 2: Latest Simulation + Latest News -->
+        <section class="middle-grid">
 
-                    <span>
-                        ACTIVE ALERTS
-                    </span>
-
-                    <strong id="activeAlerts">
-                        0
-                    </strong>
-
+            <!-- Latest Simulation -->
+            <div class="panel-card">
+                <div class="panel-header">
+                    <span class="eyebrow">LATEST SIMULATION</span>
                 </div>
-
-            </section>
-
-            <section class="dashboard-widgets">
-
-                <a
-                    href="../REPORTS/reports.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="triangle-alert"></i>
-
-                    <h3>
-                        Reports
-                    </h3>
-
-                    <p>
-                        View emergency reports
-                    </p>
-
-                </a>
-
-                <a
-                    href="../RISKREPORT/riskreport.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="cloud-rain"></i>
-
-                    <h3>
-                        Risk Report
-                    </h3>
-
-                    <p>
-                        Weather & flood analysis
-                    </p>
-
-                </a>
-
-                <a
-                    href="../NEWS/news.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="newspaper"></i>
-
-                    <h3>
-                        News
-                    </h3>
-
-                    <p>
-                        Manage announcements
-                    </p>
-
-                </a>
-
-                <a
-                    href="../USERVER/user.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="users"></i>
-
-                    <h3>
-                        Users
-                    </h3>
-
-                    <p>
-                        Manage residents
-                    </p>
-
-                </a>
-
-                <a
-                    href="../SMS/sms.html"
-                    class="dashboard-widget"
-                >
-
-                    <i data-lucide="message-square"></i>
-
-                    <h3>
-                        SMS
-                    </h3>
-
-                    <p>
-                        Send emergency alerts
-                    </p>
-
-                </a>
-
-            </section>
-
-            <section class="map-section">
-
-            <div class="map-card">
-
-                <div class="card-header">
-
-                    <h3>
-                        Municipality Risk Monitoring Map
-                    </h3>
-
+                <div class="sim-meta">
+                    <div class="sim-meta-row"><label>Date</label><span id="simDate">—</span></div>
+                    <div class="sim-meta-row"><label>Rainfall</label><span id="simRainfall">—</span></div>
+                    <div class="sim-meta-row"><label>Humidity</label><span id="simHumidity">—</span></div>
                 </div>
+                <div class="rank-header">Priority Rankings</div>
+                <ul class="rank-list" id="simRankings">
+                    <li class="rank-empty">Loading...</li>
+                </ul>
+            </div>
 
-                <div id="map"></div>
-
+            <!-- Latest News -->
+            <div class="panel-card">
+                <div class="panel-header">
+                    <span class="eyebrow">LATEST NEWS</span>
+                    <a href="../NEWS/news.html" class="panel-link">View all →</a>
+                </div>
+                <ul class="news-list" id="newsList">
+                    <li class="news-empty">Loading...</li>
+                </ul>
             </div>
 
         </section>
+
+        <!-- ROW 3: Verified Reports -->
+        <section class="panel-card verified-reports-card">
+            <div class="panel-header">
+                <span class="eyebrow">VERIFIED REPORTS</span>
+                <a href="../REPORTS/reports.html" class="panel-link">View all →</a>
+            </div>
+            <ul class="report-feed" id="verifiedReportsList">
+                <li class="news-empty">Loading...</li>
+            </ul>
+        </section>
+
+        <!-- ROW 4: Quick Access Widgets -->
+        <section class="dashboard-widgets">
+            <a href="../REPORTS/reports.html" class="dashboard-widget">
+                <i data-lucide="triangle-alert"></i>
+                <h3>Reports</h3>
+                <p>View emergency reports</p>
+            </a>
+            <a href="../RISKREPORT/riskreport.html" class="dashboard-widget">
+                <i data-lucide="cloud-rain"></i>
+                <h3>Risk Report</h3>
+                <p>Weather & flood analysis</p>
+            </a>
+            <a href="../NEWS/news.html" class="dashboard-widget">
+                <i data-lucide="newspaper"></i>
+                <h3>News</h3>
+                <p>Manage announcements</p>
+            </a>
+            <a href="../USERVER/user.html" class="dashboard-widget">
+                <i data-lucide="users"></i>
+                <h3>Users</h3>
+                <p>Manage residents</p>
+            </a>
+            <a href="../SMS/sms.html" class="dashboard-widget">
+                <i data-lucide="message-square"></i>
+                <h3>SMS</h3>
+                <p>Send emergency alerts</p>
+            </a>
+        </section>
+
+        <!-- MAP -->
+        <section class="map-section">
+            <div class="map-card">
+                <div class="card-header">
+                    <h3>Flood Hazard & Incident Map</h3>
+                </div>
+                <div id="map"></div>
+            </div>
+        </section>
+
     </main>
 
-    <script>
+    <script>lucide.createIcons();</script>
+    <script src="dashboard.js"></script>
 
+    <script>
         lucide.createIcons();
 
+        var map = L.map('map').setView([13.223, 120.596], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+        fetch('../ASSETS/flood_hazard.geojson')
+            .then(r => r.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: function (feature) {
+                        const fl = String(feature.properties?.Flood || "").toLowerCase();
+                        let color = "#FF8C00";
+                        if (fl === "low")      color = "#FACC15";
+                        if (fl === "moderate") color = "#E07800";
+                        if (fl === "high")     color = "#DC2626";
+                        return { color, weight: 2, fillColor: color, fillOpacity: 0.4 };
+                    },
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup(`<strong>Flood Hazard</strong><br>Level: ${feature.properties?.Flood || "N/A"}<br>Province: ${feature.properties?.Province || "N/A"}`);
+                    }
+                }).addTo(map);
+            });
+
+        fetch('../ASSETS/stormsurge_hazard.geojson')
+            .then(r => r.json())
+            .then(data => {
+                L.geoJSON(data, { style: () => ({ color: 'orange', weight: 2, fillOpacity: 0.3 }) }).addTo(map);
+            });
+
+        const SUPABASE_URL = "https://jpovamcznyzoemcnjrgs.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const liveReportsLayer = L.layerGroup().addTo(map);
+
+        function getReportColor(report) {
+            const priority = String(report.priority || "").toLowerCase();
+            const status   = String(report.status   || "").toLowerCase();
+            if (status === "rejected" || status === "false_report") return "#64748B";
+            if (priority === "critical" || priority === "high")     return "#DC2626";
+            if (priority === "medium")                              return "#F59E0B";
+            return "#FF8C00";
+        }
+
+        async function loadLiveReports() {
+            const { data, error } = await supabaseClient
+                .from("reports").select("*")
+                .not("lat", "is", null).not("lng", "is", null)
+                .order("created_at", { ascending: false });
+            if (error) { console.error(error); return; }
+            liveReportsLayer.clearLayers();
+            (data || []).forEach(report => {
+                const lat = Number(report.lat);
+                const lng = Number(report.lng);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+                const color = getReportColor(report);
+                L.circleMarker([lat, lng], { radius: 8, color, weight: 2, fillColor: color, fillOpacity: 0.9 })
+                    .bindPopup(`<strong>${report.type || report.title || "Emergency Report"}</strong><br>Priority: ${report.priority || "N/A"}<br>Status: ${report.status || "received"}`)
+                    .addTo(liveReportsLayer);
+            });
+        }
+
+        loadLiveReports();
+        setInterval(loadLiveReports, 10000);
+        supabaseClient.channel("dashboard-live-reports")
+            .on("postgres_changes", { event: "*", schema: "public", table: "reports" }, loadLiveReports)
+            .subscribe();
     </script>
 
-    <script src="dashboard.js"></script>
-    <script>
-
-lucide.createIcons();
-
-var map = L.map('map').setView([13.223,120.596], 13);
-
-L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{
-maxZoom:19
-}).addTo(map);
-
-/* =========================
-   FLOOD HAZARD
-========================= */
-
-fetch('../ASSETS/flood_hazard.geojson')
-.then(response => response.json())
-.then(data => {
-
-L.geoJSON(data, {
-
-style: function(feature){
-
-const floodLevel =
-String(feature.properties?.Flood || "").toLowerCase();
-
-let floodColor =
-"#FF8C00";
-
-if(floodLevel === "low"){
-
-floodColor =
-"#FACC15";
-
-}
-
-if(floodLevel === "moderate"){
-
-floodColor =
-"#E07800";
-
-}
-
-if(floodLevel === "high"){
-
-floodColor =
-"#DC2626";
-
-}
-
-return{
-color:floodColor,
-weight:2,
-fillColor:floodColor,
-fillOpacity:0.4
-};
-
-},
-
-onEachFeature: function(feature, layer){
-
-layer.bindPopup(`
-<strong>Flood Hazard</strong><br>
-Level: ${feature.properties?.Flood || "N/A"}<br>
-Province: ${feature.properties?.Province || "N/A"}
-`);
-
-}
-
-}).addTo(map);
-
-});
-
-/* =========================
-   STORM SURGE
-========================= */
-
-fetch('../ASSETS/stormsurge_hazard.geojson')
-.then(response => response.json())
-.then(data => {
-
-L.geoJSON(data, {
-
-style: function(feature){
-
-return{
-color:'orange',
-weight:2,
-fillOpacity:0.3
-};
-
-}
-
-}).addTo(map);
-
-});
-
-/* =========================
-   COORDINATE POINTS
-========================= */
-
-fetch('../ASSETS/coordinates.geojson')
-.then(response => response.json())
-.then(data => {
-
-const coordinateLayer =
-L.layerGroup();
-
-(data.features || []).forEach(feature => {
-
-const latitude =
-Number(feature.properties?.latitude);
-
-const longitude =
-Number(feature.properties?.longitude);
-
-if(
-!Number.isFinite(latitude) ||
-!Number.isFinite(longitude)
-){
-
-return;
-
-}
-
-const marker =
-L.circleMarker(
-[latitude,longitude],
-{
-
-
-radius:5,
-fillColor:'yellow',
-color:'#333',
-weight:1,
-fillOpacity:1
-
-}
-);
-
-marker.bindPopup(`
-<strong>${feature.properties?.Barangay || "Coordinate Point"}</strong><br>
-Sitio: ${feature.properties?.Sitio || "N/A"}<br>
-Flood: ${feature.properties?.Flood || "N/A"}<br>
-Storm Surge: ${feature.properties?.Stormsurge || "N/A"}<br>
-Landslide: ${feature.properties?.Landslide || "N/A"}
-`);
-
-marker.addTo(coordinateLayer);
-
-});
-
-coordinateLayer.addTo(map);
-
-});
-
-/* =========================
-   LIVE REPORTS
-========================= */
-
-const SUPABASE_URL =
-"https://jpovamcznyzoemcnjrgs.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
-
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-const liveReportsLayer =
-L.layerGroup().addTo(map);
-
-function getReportColor(report){
-
-const priority =
-String(report.priority || "").toLowerCase();
-
-const status =
-String(report.status || "").toLowerCase();
-
-if(
-status === "rejected" ||
-status === "false_report"
-){
-
-return "#64748B";
-
-}
-
-if(
-priority === "critical" ||
-priority === "high"
-){
-
-return "#DC2626";
-
-}
-
-if(priority === "medium"){
-
-return "#F59E0B";
-
-}
-
-return "#FF8C00";
-
-}
-
-function formatReportDate(value){
-
-const date =
-new Date(value);
-
-if(Number.isNaN(date.getTime())){
-
-return "";
-
-}
-
-return date.toLocaleString();
-
-}
-
-async function loadLiveReports(){
-
-const {
-data,
-error
-} = await supabaseClient
-
-.from("reports")
-
-.select("*")
-
-.not("lat","is",null)
-
-.not("lng","is",null)
-
-.order(
-"created_at",
-{
-ascending:false
-}
-);
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-liveReportsLayer.clearLayers();
-
-(data || []).forEach(report => {
-
-const lat =
-Number(report.lat);
-
-const lng =
-Number(report.lng);
-
-if(
-!Number.isFinite(lat) ||
-!Number.isFinite(lng)
-){
-
-return;
-
-}
-
-const color =
-getReportColor(report);
-
-const marker =
-L.circleMarker(
-[lat,lng],
-{
-radius:8,
-color:color,
-weight:2,
-fillColor:color,
-fillOpacity:0.9
-}
-);
-
-marker.bindPopup(`
-<strong>${report.type || report.title || "Emergency Report"}</strong><br>
-Priority: ${report.priority || "N/A"}<br>
-Status: ${report.status || "received"}<br>
-${formatReportDate(report.created_at)}
-`);
-
-marker.addTo(liveReportsLayer);
-
-});
-
-}
-
-loadLiveReports();
-
-setInterval(
-loadLiveReports,
-10000
-);
-
-supabaseClient
-.channel("dashboard-live-reports")
-.on(
-"postgres_changes",
-{
-event:"*",
-schema:"public",
-table:"reports"
-},
-() => {
-
-loadLiveReports();
-
-}
-)
-.subscribe();
-
-</script>
 </body>
 </html>

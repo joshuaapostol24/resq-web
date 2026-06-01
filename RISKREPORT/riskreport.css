@@ -1205,3 +1205,109 @@ body{
 .risk-badge.moderate { background: var(--warning);  color: #fff; }
 .risk-badge.high     { background: var(--danger);   color: #fff; }
 .risk-badge.critical { background: var(--critical); color: #fff; }
+/* =========================
+   SIMULATE ALL LABEL
+========================= */
+.sim-all-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFF5E9;
+    border: 1px solid #FFE4C4;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #B45309;
+    margin-bottom: 4px;
+}
+
+/* =========================
+   FLOOD SUSCEPTIBILITY & RISK SCORE SECTIONS
+========================= */
+.flood-susceptibility-section,
+.risk-score-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #E2E8F0;
+}
+
+.flood-susceptibility-section h4,
+.risk-score-section h4 {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #64748B;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   RISK SUMMARY BOX
+========================= */
+.risk-summary-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.risk-summary-box.critical { background: #FEE2E2; color: #7F1D1D; }
+.risk-summary-box.high     { background: #FEF3C7; color: #78350F; }
+.risk-summary-box.moderate { background: #FEF9C3; color: #713F12; }
+.risk-summary-box.low      { background: #DCFCE7; color: #14532D; }
+/* =========================
+   SIMULATE ALL LABEL
+========================= */
+.sim-all-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFF5E9;
+    border: 1px solid #FFE4C4;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #B45309;
+    margin-bottom: 4px;
+}
+
+/* =========================
+   FLOOD SUSCEPTIBILITY & RISK SCORE SECTIONS
+========================= */
+.flood-susceptibility-section,
+.risk-score-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #E2E8F0;
+}
+
+.flood-susceptibility-section h4,
+.risk-score-section h4 {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #64748B;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   RISK SUMMARY BOX
+========================= */
+.risk-summary-box {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.risk-summary-box.critical { background: #FEE2E2; color: #7F1D1D; }
+.risk-summary-box.high     { background: #FEF3C7; color: #78350F; }
+.risk-summary-box.moderate { background: #FEF9C3; color: #713F12; }
+.risk-summary-box.low      { background: #DCFCE7; color: #14532D; }

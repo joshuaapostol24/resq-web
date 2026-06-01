@@ -807,13 +807,26 @@ function generateRecommendations(riskLevel) {
 // =============================================================
 
 if (viewHistoryBtn) {
-    viewHistoryBtn.addEventListener("click", () => {
+    viewHistoryBtn.addEventListener("click", async () => {
         const barangayId = barangaySelect?.value;
         if (!barangayId || barangayId === "ALL") {
             alert("Please select a specific barangay to view its history.");
             return;
         }
-        loadHistory(barangayId);
+
+        const historySection = document.getElementById("historySection");
+        const isHidden = historySection?.classList.contains("hidden");
+
+        if (isHidden) {
+            historySection?.classList.remove("hidden");
+            viewHistoryBtn.innerHTML = `<i data-lucide="eye-off" size="14"></i> Hide History`;
+            if (window.lucide) lucide.createIcons();
+            await loadHistory(barangayId);
+        } else {
+            historySection?.classList.add("hidden");
+            viewHistoryBtn.innerHTML = `<i data-lucide="history" size="14"></i> View History`;
+            if (window.lucide) lucide.createIcons();
+        }
     });
 }
 

@@ -127,8 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         // ── Latest news ──────────────────────────────────────────────────────
-        const newsList = document.getElementById("newsList");
-        if (newsList) {
+        const newsList = document.getElementById("newsList");        if (newsList) {
             const news = data.latest_news || [];
             if (!news.length) {
                 newsList.innerHTML = `<li class="news-empty">No announcements yet</li>`;
@@ -150,6 +149,58 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (error) {
         console.error("Dashboard load error:", error);
         ["totalResidents","totalReports","totalAssessments","pendingCount"].forEach(id => setEl(id, "—"));
+    }
+
+    // ── Verified reports (direct Supabase) ───────────────────────────────
+    try {
+        const SUPABASE_URL = "https://jpovamcznyzoemcnjrgs.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        const { data: reports, error: rErr } = await sb
+            .from("reports")
+            .select("id, type, title, location, priority, status, created_at")
+            .eq("status", "approved")
+            .order("created_at", { ascending: false })
+            .limit(10);
+
+        const reportsList = document.getElementById("verifiedReportsList");
+        if (reportsList) {
+            if (rErr || !reports?.length) {
+                reportsList.innerHTML = `<li class="news-empty">No verified reports yet</li>`;
+            } else {
+                const priorityColor = (p = "") => {
+                    p = String(p).toLowerCase();
+                    if (p === "critical" || p === "high") return "#DC2626";
+                    if (p === "medium")                   return "#D97706";
+                    return "#16A34A";
+                };
+                const priorityBg = (p = "") => {
+                    p = String(p).toLowerCase();
+                    if (p === "critical" || p === "high") return "#FEE2E2";
+                    if (p === "medium")                   return "#FEF3C7";
+                    return "#DCFCE7";
+                };
+                reportsList.innerHTML = reports.map(r => `
+                    <li class="report-feed-item" onclick="window.location.href='../REPORTS/reports.html'">
+                        <div class="report-feed-left">
+                            <span class="report-feed-type">${r.type || r.title || "Incident"}</span>
+                            <span class="report-feed-location">📍 ${r.location || "Unknown location"}</span>
+                            <span class="report-feed-time">${timeAgo(r.created_at)}</span>
+                        </div>
+                        <span class="report-feed-priority" style="
+                            background:${priorityBg(r.priority)};
+                            color:${priorityColor(r.priority)};
+                        ">${(r.priority || "low").toUpperCase()}</span>
+                    </li>
+                `).join("");
+            }
+        }
+
+        if (window.lucide) window.lucide.createIcons();
+
+    } catch (err) {
+        console.error("Verified reports error:", err);
     }
 
 });

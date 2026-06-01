@@ -403,3 +403,68 @@ body {
     .summary-grid { grid-template-columns: 1fr; }
     .page-header { flex-direction: column; }
 }
+/* =========================
+   VERIFIED REPORTS PANEL
+========================= */
+.verified-reports-card {
+    margin-bottom: 20px;
+}
+
+.report-feed {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.report-feed-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--bg-light);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+.report-feed-item:hover { background: #FFF5E9; }
+
+.report-feed-left {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+}
+
+.report-feed-type {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.report-feed-location {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.report-feed-time {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.report-feed-priority {
+    font-size: 10px;
+    font-weight: 900;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}

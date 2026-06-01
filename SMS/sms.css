@@ -413,13 +413,13 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
 
     padding:12px 14px;
 
-    border:1px solid #2d3748;
+    border:1px solid #d1d5db;
 
     border-radius:10px;
 
-    background:#111827;
+    background:#ffffff;
 
-    color:#fff;
+    color:#111827;
 
     font-size:14px;
 
@@ -436,6 +436,16 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
     box-shadow:
         0 0 0 3px
         rgba(255,140,0,0.15);
+
+}
+
+/* dropdown options */
+
+.recipient-dropdown option{
+
+    background:#ffffff;
+
+    color:#111827;
 
 }
 
@@ -467,7 +477,7 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
    HISTORY ITEM
 ───────────────────────────── */
 
-#smsHistory .user-item{
+.sms-history-card .user-item{
 
     background:#111827;
 
@@ -489,7 +499,7 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
 
 }
 
-#smsHistory .user-item-info{
+.sms-history-card .user-item-info{
 
     display:flex;
 
@@ -499,7 +509,7 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
 
 }
 
-#smsHistory .user-item-name{
+.sms-history-card .user-item-name{
 
     color:#fff;
 
@@ -509,7 +519,7 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
 
 }
 
-#smsHistory .user-item-phone{
+.sms-history-card .user-item-phone{
 
     color:#9ca3af;
 

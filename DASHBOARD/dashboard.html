@@ -189,21 +189,6 @@
                 L.geoJSON(data, { style: () => ({ color: 'orange', weight: 2, fillOpacity: 0.3 }) }).addTo(map);
             });
 
-        fetch('../ASSETS/coordinates.geojson')
-            .then(r => r.json())
-            .then(data => {
-                const layer = L.layerGroup();
-                (data.features || []).forEach(f => {
-                    const lat = Number(f.properties?.latitude);
-                    const lng = Number(f.properties?.longitude);
-                    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-                    L.circleMarker([lat, lng], { radius: 5, fillColor: 'yellow', color: '#333', weight: 1, fillOpacity: 1 })
-                        .bindPopup(`<strong>${f.properties?.Barangay || "Coordinate Point"}</strong><br>Sitio: ${f.properties?.Sitio || "N/A"}<br>Flood: ${f.properties?.Flood || "N/A"}`)
-                        .addTo(layer);
-                });
-                layer.addTo(map);
-            });
-
         const SUPABASE_URL = "https://jpovamcznyzoemcnjrgs.supabase.co";
         const SUPABASE_KEY = "sb_publishable_kJmAZtcu7dO2aLdPwWYclg_I7y5kq3G";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);

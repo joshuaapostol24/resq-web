@@ -361,11 +361,10 @@ if (weatherRiskBtn) {
 if (runSimulationBtn) {
     runSimulationBtn.addEventListener("click", async () => {
 
-        const simBarangay = document.getElementById("simBarangay")?.value;
-        const rainfall    = Number(document.getElementById("simRainfall")?.value);
-        const humidity    = Number(document.getElementById("simHumidity")?.value);
-        const wind        = Number(document.getElementById("simWind")?.value);
-        const temp        = Number(document.getElementById("simTemp")?.value);
+        const rainfall = Number(document.getElementById("simRainfall")?.value);
+        const humidity = Number(document.getElementById("simHumidity")?.value);
+        const wind     = Number(document.getElementById("simWind")?.value);
+        const temp     = Number(document.getElementById("simTemp")?.value);
 
         const body = {
             rainfall:    rainfall,
@@ -375,7 +374,7 @@ if (runSimulationBtn) {
         };
 
         if (simulationResults) {
-            simulationResults.innerHTML = '<div class="loading">Running simulation...</div>';
+            simulationResults.innerHTML = '<div class="loading">Running simulation for all barangays...</div>';
         }
 
         // Show factor bars
@@ -403,44 +402,25 @@ if (runSimulationBtn) {
         }
 
         try {
-            let data, endpoint;
+            // Always simulate all 15 barangays
+            const response = await fetch(`${API_BASE_URL}/simulate/`, {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify(body),
+            });
+            if (!response.ok) throw new Error("Simulation failed");
+            const data = await response.json();
 
-            if (!simBarangay || simBarangay === "ALL") {
-                // ── All 15 barangays  →  POST /simulate/ ─────────────────────
-                endpoint = `${API_BASE_URL}/simulate/`;
-                const response = await fetch(endpoint, {
-                    method:  "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body:    JSON.stringify(body),
-                });
-                if (!response.ok) throw new Error("Simulation failed");
-                data = await response.json();
+            renderSimulationResults(
+                data.barangays,
+                data.inputs,
+                data.summary,
+                data.comparison,
+            );
 
-                renderSimulationResults(
-                    data.barangays,
-                    data.inputs,
-                    data.summary,
-                    data.comparison,
-                );
-
-                // ── Announcement modal if HIGH/VERY HIGH ──────────────────
-                if (data.suggest_announcement) {
-                    showAnnouncementModal(data.suggest_announcement, data);
-                }
-
-            } else {
-                // ── Single barangay  →  POST /simulate/barangay/{id} ─────────
-                endpoint = `${API_BASE_URL}/simulate/barangay/${simBarangay}`;
-                const response = await fetch(endpoint, {
-                    method:  "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body:    JSON.stringify(body),
-                });
-                if (!response.ok) throw new Error("Simulation failed");
-                data = await response.json();
-
-                const result = data.barangay;
-                renderSingleBarangayResult(result);
+            // Announcement modal if HIGH/VERY HIGH
+            if (data.suggest_announcement) {
+                showAnnouncementModal(data.suggest_announcement, data);
             }
 
         } catch (error) {

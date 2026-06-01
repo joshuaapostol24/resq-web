@@ -1205,3 +1205,19 @@ body{
 .risk-badge.moderate { background: var(--warning);  color: #fff; }
 .risk-badge.high     { background: var(--danger);   color: #fff; }
 .risk-badge.critical { background: var(--critical); color: #fff; }
+/* =========================
+   SIMULATE ALL LABEL
+========================= */
+.sim-all-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #FFF5E9;
+    border: 1px solid #FFE4C4;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #B45309;
+    margin-bottom: 4px;
+}

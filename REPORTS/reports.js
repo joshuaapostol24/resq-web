@@ -560,6 +560,18 @@ document.addEventListener(
                 <div class="meta-item">
 
                     <span>
+                        Location
+                    </span>
+
+                    <strong>
+                        ${selectedReport.location || "N/A"}
+                    </strong>
+
+                </div>
+
+                <div class="meta-item">
+
+                    <span>
                         Latitude
                     </span>
 

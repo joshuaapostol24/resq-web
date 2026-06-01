@@ -139,21 +139,39 @@ async function loadHistory(barangayId) {
         if (moderateRiskCount) moderateRiskCount.textContent = history.filter(h => h.risk_level === "MODERATE").length;
         if (safeCount)         safeCount.textContent         = history.filter(h => h.risk_level === "LOW" || h.risk_level === "VERY LOW").length;
 
-        historyTableBody.innerHTML = history.map((item, index) => `
-            <div class="history-row ${index >= 3 ? 'extra-history hidden-history' : ''}">
-                <div class="history-risk">
-                    <span class="risk-badge ${getRiskClass(item.risk_level)}">
+        const histRiskSummaryMap = {
+            "VERY HIGH": "⚠️ This barangay was at very high flood risk at this time.",
+            "HIGH":      "🔶 This barangay was at high flood risk at this time.",
+            "MODERATE":  "🟡 This barangay had a moderate flood risk at this time.",
+            "LOW":       "🟢 This barangay was at low flood risk at this time.",
+            "VERY LOW":  "✅ This barangay was at very low flood risk. No significant rainfall was detected.",
+        };
+
+        historyTableBody.innerHTML = history.map((item, index) => {
+            const level = String(item.risk_level || "").toUpperCase();
+            const summary = histRiskSummaryMap[level] || "Risk level could not be determined.";
+            return `
+            <div class="result-card ${index >= 3 ? 'extra-history hidden-history' : ''}" style="margin-bottom:16px;">
+                <div class="result-header">
+                    <div>
+                        <h2 style="font-size:16px;">${formatDate(item.timestamp)}</h2>
+                        <p>Flood Risk Assessment Record</p>
+                    </div>
+                    <div class="risk-badge ${getRiskClass(item.risk_level)}">
                         ${getRiskEmoji(item.risk_level)} ${escapeHtml(item.risk_level)}
-                    </span>
+                    </div>
                 </div>
-                <div class="history-date">${formatDate(item.timestamp)}</div>
-                <div class="history-metric"><label>Rainfall</label><span>${item.rainfall ?? "—"} mm/h</span></div>
-                <div class="history-metric"><label>Humidity</label><span>${item.humidity ?? "—"}%</span></div>
-                <div class="history-metric"><label>Wind</label><span>${item.wind_speed ?? "—"} km/h</span></div>
-                <div class="history-metric"><label>Temp</label><span>${item.temperature ?? "—"}°C</span></div>
-                <div class="history-metric"><label>Risk Score</label><span>${item.final_risk?.toFixed(4) ?? "—"}</span></div>
-            </div>
-        `).join("");
+                <div class="weather-grid">
+                    <div class="weather-box"><span>Temperature</span><strong>${item.temperature ?? "—"}°C</strong></div>
+                    <div class="weather-box"><span>Rainfall</span><strong>${item.rainfall ?? "—"} mm/h</strong></div>
+                    <div class="weather-box"><span>Wind Speed</span><strong>${item.wind_speed ?? "—"} km/h</strong></div>
+                    <div class="weather-box"><span>Humidity</span><strong>${item.humidity ?? "—"}%</strong></div>
+                </div>
+                <div class="risk-summary-box ${getRiskClass(item.risk_level)}" style="margin-top:12px;">
+                    ${summary}
+                </div>
+            </div>`;
+        }).join("");
 
         if (history.length > 3) {
             historyTableBody.innerHTML += `
@@ -318,12 +336,22 @@ if (weatherRiskBtn) {
 
                 const barangayName = barangaySelect.options[barangaySelect.selectedIndex].text;
                 if (resultDiv) {
+                    const riskLevel = String(data.risk_level || "").toUpperCase();
+                    const riskSummaryMap = {
+                        "VERY HIGH": "⚠️ This barangay is at very high flood risk. Immediate precautions and possible evacuation may be needed.",
+                        "HIGH":      "🔶 This barangay is at high flood risk. Residents should prepare and monitor updates closely.",
+                        "MODERATE":  "🟡 This barangay has a moderate flood risk. Stay alert and keep emergency supplies ready.",
+                        "LOW":       "🟢 This barangay is at low flood risk under current conditions. Stay informed.",
+                        "VERY LOW":  "✅ This barangay is currently at very low flood risk. No significant rainfall detected — risk will rise when rainfall exceeds 7.5 mm/h.",
+                    };
+                    const riskSummary = riskSummaryMap[riskLevel] || "Risk level could not be determined.";
+
                     resultDiv.innerHTML = `
                         <div class="result-card">
                             <div class="result-header">
                                 <div>
                                     <h2>${escapeHtml(barangayName)}</h2>
-                                    <p>ML-Based Disaster Risk Assessment</p>
+                                    <p>Live Flood Risk Assessment</p>
                                 </div>
                                 <div class="risk-badge ${getRiskClass(data.risk_level)}">
                                     ${getRiskEmoji(data.risk_level)} ${escapeHtml(data.risk_level)}
@@ -334,8 +362,27 @@ if (weatherRiskBtn) {
                                 <div class="weather-box"><span>Rainfall</span><strong>${data.rainfall ?? "—"} mm/h</strong></div>
                                 <div class="weather-box"><span>Wind Speed</span><strong>${data.wind_speed ?? "—"} km/h</strong></div>
                                 <div class="weather-box"><span>Humidity</span><strong>${data.humidity ?? "—"}%</strong></div>
-                                <div class="weather-box"><span>Risk Score</span><strong>${data.final_risk?.toFixed(4) ?? "—"}</strong></div>
                                 <div class="weather-box"><span>Season</span><strong>${escapeHtml(data.season ?? "—")}</strong></div>
+                            </div>
+                            <div class="flood-susceptibility-section">
+                                <h4>Flood Susceptibility</h4>
+                                <div class="weather-grid">
+                                    <div class="weather-box">
+                                        <span>Flood Hazard Level</span>
+                                        <strong>${escapeHtml(data.flood_hazard_level ?? "N/A")}</strong>
+                                    </div>
+                                    <div class="weather-box">
+                                        <span>Storm Surge Risk</span>
+                                        <strong>${(data.storm_surge_score > 0) ? "Present" : "None"}</strong>
+                                    </div>
+                                    <div class="weather-box">
+                                        <span>Overall Hazard</span>
+                                        <strong>${escapeHtml(data.overall_hazard ?? "N/A")}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="risk-summary-box ${getRiskClass(data.risk_level)}">
+                                ${riskSummary}
                             </div>
                         </div>`;
                 }
@@ -361,11 +408,10 @@ if (weatherRiskBtn) {
 if (runSimulationBtn) {
     runSimulationBtn.addEventListener("click", async () => {
 
-        const simBarangay = document.getElementById("simBarangay")?.value;
-        const rainfall    = Number(document.getElementById("simRainfall")?.value);
-        const humidity    = Number(document.getElementById("simHumidity")?.value);
-        const wind        = Number(document.getElementById("simWind")?.value);
-        const temp        = Number(document.getElementById("simTemp")?.value);
+        const rainfall = Number(document.getElementById("simRainfall")?.value);
+        const humidity = Number(document.getElementById("simHumidity")?.value);
+        const wind     = Number(document.getElementById("simWind")?.value);
+        const temp     = Number(document.getElementById("simTemp")?.value);
 
         const body = {
             rainfall:    rainfall,
@@ -375,10 +421,9 @@ if (runSimulationBtn) {
         };
 
         if (simulationResults) {
-            simulationResults.innerHTML = '<div class="loading">Running simulation...</div>';
+            simulationResults.innerHTML = '<div class="loading">Running simulation for all barangays...</div>';
         }
 
-        // Show factor bars
         const chartCard = document.getElementById("chartCard");
         if (chartCard) chartCard.classList.remove("hidden");
         const factorBars = document.getElementById("factorBars");
@@ -403,44 +448,23 @@ if (runSimulationBtn) {
         }
 
         try {
-            let data, endpoint;
+            const response = await fetch(`${API_BASE_URL}/simulate/`, {
+                method:  "POST",
+                headers: { "Content-Type": "application/json" },
+                body:    JSON.stringify(body),
+            });
+            if (!response.ok) throw new Error("Simulation failed");
+            const data = await response.json();
 
-            if (!simBarangay || simBarangay === "ALL") {
-                // ── All 15 barangays  →  POST /simulate/ ─────────────────────
-                endpoint = `${API_BASE_URL}/simulate/`;
-                const response = await fetch(endpoint, {
-                    method:  "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body:    JSON.stringify(body),
-                });
-                if (!response.ok) throw new Error("Simulation failed");
-                data = await response.json();
+            renderSimulationResults(
+                data.barangays,
+                data.inputs,
+                data.summary,
+                data.comparison,
+            );
 
-                renderSimulationResults(
-                    data.barangays,
-                    data.inputs,
-                    data.summary,
-                    data.comparison,
-                );
-
-                // ── Announcement modal if HIGH/VERY HIGH ──────────────────
-                if (data.suggest_announcement) {
-                    showAnnouncementModal(data.suggest_announcement, data);
-                }
-
-            } else {
-                // ── Single barangay  →  POST /simulate/barangay/{id} ─────────
-                endpoint = `${API_BASE_URL}/simulate/barangay/${simBarangay}`;
-                const response = await fetch(endpoint, {
-                    method:  "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body:    JSON.stringify(body),
-                });
-                if (!response.ok) throw new Error("Simulation failed");
-                data = await response.json();
-
-                const result = data.barangay;
-                renderSingleBarangayResult(result);
+            if (data.suggest_announcement) {
+                showAnnouncementModal(data.suggest_announcement, data);
             }
 
         } catch (error) {

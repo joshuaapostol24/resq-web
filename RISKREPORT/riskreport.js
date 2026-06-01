@@ -318,56 +318,24 @@ if (weatherRiskBtn) {
 
                 const barangayName = barangaySelect.options[barangaySelect.selectedIndex].text;
                 if (resultDiv) {
-                    const riskLevel = String(data.risk_level || "").toUpperCase();
-                    const riskSummaryMap = {
-                        "VERY HIGH": "⚠️ This barangay is at very high flood risk. Immediate precautions and possible evacuation may be needed.",
-                        "HIGH":      "🔶 This barangay is at high flood risk. Residents should prepare and monitor updates closely.",
-                        "MODERATE":  "🟡 This barangay has a moderate flood risk. Stay alert and keep emergency supplies ready.",
-                        "LOW":       "🟢 This barangay is at low flood risk under current conditions. Stay informed.",
-                        "VERY LOW":  "✅ This barangay is currently at very low flood risk based on current weather conditions.",
-                    };
-                    const riskSummary = riskSummaryMap[riskLevel] || "Risk level could not be determined.";
-
                     resultDiv.innerHTML = `
                         <div class="result-card">
                             <div class="result-header">
                                 <div>
                                     <h2>${escapeHtml(barangayName)}</h2>
-                                    <p>Live Flood Risk Assessment</p>
+                                    <p>ML-Based Disaster Risk Assessment</p>
                                 </div>
                                 <div class="risk-badge ${getRiskClass(data.risk_level)}">
                                     ${getRiskEmoji(data.risk_level)} ${escapeHtml(data.risk_level)}
                                 </div>
                             </div>
-
                             <div class="weather-grid">
                                 <div class="weather-box"><span>Temperature</span><strong>${data.temperature ?? "—"}°C</strong></div>
                                 <div class="weather-box"><span>Rainfall</span><strong>${data.rainfall ?? "—"} mm/h</strong></div>
                                 <div class="weather-box"><span>Wind Speed</span><strong>${data.wind_speed ?? "—"} km/h</strong></div>
                                 <div class="weather-box"><span>Humidity</span><strong>${data.humidity ?? "—"}%</strong></div>
+                                <div class="weather-box"><span>Risk Score</span><strong>${data.final_risk?.toFixed(4) ?? "—"}</strong></div>
                                 <div class="weather-box"><span>Season</span><strong>${escapeHtml(data.season ?? "—")}</strong></div>
-                            </div>
-
-                            <div class="flood-susceptibility-section">
-                                <h4>Flood Susceptibility</h4>
-                                <div class="weather-grid">
-                                    <div class="weather-box">
-                                        <span>Flood Hazard Level</span>
-                                        <strong>${escapeHtml(data.flood_hazard_level ?? "N/A")}</strong>
-                                    </div>
-                                    <div class="weather-box">
-                                        <span>Storm Surge Risk</span>
-                                        <strong>${(data.storm_surge_score > 0) ? "Present" : "None"}</strong>
-                                    </div>
-                                    <div class="weather-box">
-                                        <span>Overall Hazard</span>
-                                        <strong>${escapeHtml(data.overall_hazard ?? "N/A")}</strong>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="risk-summary-box ${getRiskClass(data.risk_level)}">
-                                ${riskSummary}
                             </div>
                         </div>`;
                 }
@@ -678,6 +646,17 @@ function showAnnouncementModal(payload, simulationSnapshot) {
                 "
             >${escapeHtml(payload.message)}</textarea>
 
+            <label style="
+                display:flex; align-items:center; gap:8px;
+                margin-bottom:16px; font-size:13px;
+                cursor:pointer; color:#374151;
+            ">
+                <input type="checkbox" id="modalPinCheck" style="
+                    width:16px; height:16px; cursor:pointer; accent-color:#FF8C00;
+                ">
+                📌 Pin this announcement to the top of the News dashboard
+            </label>
+
             <div style="display:flex; gap:12px; justify-content:flex-end;">
                 <button id="modalCancelBtn" style="
                     padding:10px 24px; border:1px solid #ddd;
@@ -710,13 +689,14 @@ function showAnnouncementModal(payload, simulationSnapshot) {
       try {
     const editedTitle   = document.getElementById("modalTitleInput")?.value.trim() || payload.title;
     const editedMessage = document.getElementById("modalMessageTextarea")?.value.trim() || payload.message;
+    const pinned        = document.getElementById("modalPinCheck")?.checked ? "Yes" : "No";
     const body = {
         title:    editedTitle,
         message:  editedMessage,
         category: payload.category || "Emergency",
         priority: payload.priority || "High",
         audience: payload.audience || "All Residents",
-        pinned:   payload.pinned   || "No",
+        pinned:   pinned,
         date:     payload.date     || new Date().toISOString(),
     };
             // CORRECT — matches POST /news/create in news_routes.py

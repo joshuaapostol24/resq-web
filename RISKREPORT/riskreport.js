@@ -329,13 +329,54 @@ if (weatherRiskBtn) {
                                     ${getRiskEmoji(data.risk_level)} ${escapeHtml(data.risk_level)}
                                 </div>
                             </div>
+
                             <div class="weather-grid">
                                 <div class="weather-box"><span>Temperature</span><strong>${data.temperature ?? "—"}°C</strong></div>
                                 <div class="weather-box"><span>Rainfall</span><strong>${data.rainfall ?? "—"} mm/h</strong></div>
                                 <div class="weather-box"><span>Wind Speed</span><strong>${data.wind_speed ?? "—"} km/h</strong></div>
                                 <div class="weather-box"><span>Humidity</span><strong>${data.humidity ?? "—"}%</strong></div>
-                                <div class="weather-box"><span>Risk Score</span><strong>${data.final_risk?.toFixed(4) ?? "—"}</strong></div>
                                 <div class="weather-box"><span>Season</span><strong>${escapeHtml(data.season ?? "—")}</strong></div>
+                                <div class="weather-box"><span>Soil Saturation</span><strong>${data.soil?.toFixed(4) ?? "—"}</strong></div>
+                            </div>
+
+                            <div class="flood-susceptibility-section">
+                                <h4>Flood Susceptibility</h4>
+                                <div class="weather-grid">
+                                    <div class="weather-box">
+                                        <span>Flood Hazard Level</span>
+                                        <strong class="${getRiskClass(data.flood_hazard_level ?? '')}">${escapeHtml(data.flood_hazard_level ?? "N/A")}</strong>
+                                    </div>
+                                    <div class="weather-box">
+                                        <span>Flood Hazard Score</span>
+                                        <strong>${data.flood_hazard_score?.toFixed(4) ?? "—"}</strong>
+                                    </div>
+                                    <div class="weather-box">
+                                        <span>Storm Surge Score</span>
+                                        <strong>${data.storm_surge_score?.toFixed(4) ?? "—"}</strong>
+                                    </div>
+                                    <div class="weather-box">
+                                        <span>Overall Hazard</span>
+                                        <strong>${escapeHtml(data.overall_hazard ?? "N/A")}</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="risk-score-section">
+                                <h4>Risk Score Breakdown</h4>
+                                <div class="weather-grid">
+                                    <div class="weather-box">
+                                        <span>Final Risk Score</span>
+                                        <strong>${data.final_risk?.toFixed(4) ?? "—"}</strong>
+                                    </div>
+                                    <div class="weather-box">
+                                        <span>Rule Score</span>
+                                        <strong>${data.rule_score?.toFixed(4) ?? "—"}</strong>
+                                    </div>
+                                    <div class="weather-box">
+                                        <span>ML Predicted Score</span>
+                                        <strong>${data.predicted?.toFixed(4) ?? "—"}</strong>
+                                    </div>
+                                </div>
                             </div>
                         </div>`;
                 }
@@ -361,10 +402,11 @@ if (weatherRiskBtn) {
 if (runSimulationBtn) {
     runSimulationBtn.addEventListener("click", async () => {
 
-        const rainfall = Number(document.getElementById("simRainfall")?.value);
-        const humidity = Number(document.getElementById("simHumidity")?.value);
-        const wind     = Number(document.getElementById("simWind")?.value);
-        const temp     = Number(document.getElementById("simTemp")?.value);
+        const simBarangay = document.getElementById("simBarangay")?.value;
+        const rainfall    = Number(document.getElementById("simRainfall")?.value);
+        const humidity    = Number(document.getElementById("simHumidity")?.value);
+        const wind        = Number(document.getElementById("simWind")?.value);
+        const temp        = Number(document.getElementById("simTemp")?.value);
 
         const body = {
             rainfall:    rainfall,
@@ -374,7 +416,7 @@ if (runSimulationBtn) {
         };
 
         if (simulationResults) {
-            simulationResults.innerHTML = '<div class="loading">Running simulation for all barangays...</div>';
+            simulationResults.innerHTML = '<div class="loading">Running simulation...</div>';
         }
 
         // Show factor bars
@@ -402,25 +444,44 @@ if (runSimulationBtn) {
         }
 
         try {
-            // Always simulate all 15 barangays
-            const response = await fetch(`${API_BASE_URL}/simulate/`, {
-                method:  "POST",
-                headers: { "Content-Type": "application/json" },
-                body:    JSON.stringify(body),
-            });
-            if (!response.ok) throw new Error("Simulation failed");
-            const data = await response.json();
+            let data, endpoint;
 
-            renderSimulationResults(
-                data.barangays,
-                data.inputs,
-                data.summary,
-                data.comparison,
-            );
+            if (!simBarangay || simBarangay === "ALL") {
+                // ── All 15 barangays  →  POST /simulate/ ─────────────────────
+                endpoint = `${API_BASE_URL}/simulate/`;
+                const response = await fetch(endpoint, {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify(body),
+                });
+                if (!response.ok) throw new Error("Simulation failed");
+                data = await response.json();
 
-            // Announcement modal if HIGH/VERY HIGH
-            if (data.suggest_announcement) {
-                showAnnouncementModal(data.suggest_announcement, data);
+                renderSimulationResults(
+                    data.barangays,
+                    data.inputs,
+                    data.summary,
+                    data.comparison,
+                );
+
+                // ── Announcement modal if HIGH/VERY HIGH ──────────────────
+                if (data.suggest_announcement) {
+                    showAnnouncementModal(data.suggest_announcement, data);
+                }
+
+            } else {
+                // ── Single barangay  →  POST /simulate/barangay/{id} ─────────
+                endpoint = `${API_BASE_URL}/simulate/barangay/${simBarangay}`;
+                const response = await fetch(endpoint, {
+                    method:  "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body:    JSON.stringify(body),
+                });
+                if (!response.ok) throw new Error("Simulation failed");
+                data = await response.json();
+
+                const result = data.barangay;
+                renderSingleBarangayResult(result);
             }
 
         } catch (error) {
@@ -587,27 +648,50 @@ function showAnnouncementModal(payload, simulationSnapshot) {
     modal.innerHTML = `
         <div style="
             background:#fff; border-radius:12px; padding:32px;
-            max-width:540px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.2);
+            max-width:600px; width:95%; box-shadow:0 8px 32px rgba(0,0,0,0.2);
+            max-height:90vh; overflow-y:auto;
         ">
-            <h3 style="margin:0 0 8px; color:#e74c3c;">
+            <h3 style="margin:0 0 6px; color:#e74c3c; font-size:18px;">
                 ⚠️ High Risk Detected
             </h3>
-            <p style="margin:0 0 16px; color:#555; font-size:14px;">
-                Do you want to publish this announcement to the News dashboard
-                and send a push notification to all residents?
+            <p style="margin:0 0 16px; color:#555; font-size:13px;">
+                Review and edit the announcement before publishing to the News dashboard
+                and sending a push notification to all residents.
             </p>
-            <div style="
-                background:#fef9f0; border:1px solid #f0c040;
-                border-radius:8px; padding:16px; margin-bottom:20px;
-                font-size:13px; line-height:1.6;
-            ">
-                <strong>${escapeHtml(payload.title)}</strong><br><br>
-                <span style="white-space:pre-line">${escapeHtml(payload.message)}</span>
-            </div>
+
+            <label style="display:block; font-size:12px; font-weight:700; color:#64748B; margin-bottom:4px;">
+                TITLE
+            </label>
+            <input
+                id="modalTitleInput"
+                type="text"
+                value="${escapeHtml(payload.title)}"
+                style="
+                    width:100%; border:1px solid #CBD5E1; border-radius:8px;
+                    padding:10px 12px; font-size:13px; margin-bottom:14px;
+                    box-sizing:border-box; outline:none;
+                "
+            >
+
+            <label style="display:block; font-size:12px; font-weight:700; color:#64748B; margin-bottom:4px;">
+                MESSAGE <span style="font-weight:400; color:#94A3B8;">(editable)</span>
+            </label>
+            <textarea
+                id="modalMessageTextarea"
+                rows="12"
+                style="
+                    width:100%; border:1px solid #CBD5E1; border-radius:8px;
+                    padding:10px 12px; font-size:13px; line-height:1.6;
+                    margin-bottom:16px; resize:vertical; box-sizing:border-box;
+                    outline:none; font-family:inherit;
+                "
+            >${escapeHtml(payload.message)}</textarea>
+
             <div style="display:flex; gap:12px; justify-content:flex-end;">
                 <button id="modalCancelBtn" style="
                     padding:10px 24px; border:1px solid #ddd;
                     border-radius:8px; background:#fff; cursor:pointer;
+                    font-size:13px;
                 ">
                     Cancel
                 </button>
@@ -615,6 +699,7 @@ function showAnnouncementModal(payload, simulationSnapshot) {
                     padding:10px 24px; border:none;
                     border-radius:8px; background:#e74c3c;
                     color:#fff; font-weight:600; cursor:pointer;
+                    font-size:13px;
                 ">
                     Publish Announcement
                 </button>
@@ -632,10 +717,12 @@ function showAnnouncementModal(payload, simulationSnapshot) {
         document.getElementById("modalPublishBtn").disabled    = true;
 
       try {
+    const editedTitle   = document.getElementById("modalTitleInput")?.value.trim() || payload.title;
+    const editedMessage = document.getElementById("modalMessageTextarea")?.value.trim() || payload.message;
     const body = {
-        title:    payload.title,
-        message:  payload.message,
-        category: payload.category || "Weather",
+        title:    editedTitle,
+        message:  editedMessage,
+        category: payload.category || "Emergency",
         priority: payload.priority || "High",
         audience: payload.audience || "All Residents",
         pinned:   payload.pinned   || "No",

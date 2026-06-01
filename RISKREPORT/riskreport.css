@@ -1221,3 +1221,23 @@ body{
     color: #B45309;
     margin-bottom: 4px;
 }
+
+/* =========================
+   FLOOD SUSCEPTIBILITY & RISK SCORE SECTIONS
+========================= */
+.flood-susceptibility-section,
+.risk-score-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #E2E8F0;
+}
+
+.flood-susceptibility-section h4,
+.risk-score-section h4 {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #64748B;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}

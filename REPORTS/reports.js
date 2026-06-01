@@ -443,7 +443,7 @@ document.addEventListener(
 
         </div>
 
-        <div class="detail-right">
+       <div class="detail-right">
 
             <div class="detail-actions">
 
@@ -456,6 +456,15 @@ document.addEventListener(
                     Edit
                 </button>
 
+                <button
+                    class="action-btn btn-delete"
+                    onclick="deleteReport('${selectedReport.id}')"
+                >
+                    Delete
+                </button>
+                `
+                : selectedReport.status === "rejected"
+                ? `
                 <button
                     class="action-btn btn-delete"
                     onclick="deleteReport('${selectedReport.id}')"

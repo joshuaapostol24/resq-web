@@ -337,6 +337,11 @@ async function sendTestSMS(){
 
                     body:JSON.stringify({
 
+                        name:
+                            document.getElementById(
+                                "userSelect"
+                            ).selectedOptions[0].text,
+
                         phone:
                             phone,
 

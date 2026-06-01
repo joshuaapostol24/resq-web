@@ -214,6 +214,8 @@ app.get(
     }
 );
 
+
+
 /*
     SEND SMS
 */
@@ -309,6 +311,29 @@ app.post(
             const data =
                 await response.json();
 
+
+            await supabase
+                .from("sms_logs")
+                .insert([{
+
+                        recipient_name:
+                            req.body.name || "Unknown",
+
+                        phone_number:
+                            phone,
+
+                        message:
+                            message,
+
+                        status:
+                            "Sent"
+
+                    }]);
+
+
+
+
+
             console.log(data);
 
             return res.json({
@@ -336,6 +361,40 @@ app.post(
 
     }
 );
+
+
+app.get(
+    "/sms-logs",
+    async(req,res)=>{
+
+        const {
+            data,
+            error
+        } = await supabase
+
+            .from("sms_logs")
+
+            .select("*")
+
+            .order(
+                "sent_at",
+                {
+                    ascending:false
+                }
+            );
+
+        if(error){
+
+            return res.status(500).json(error);
+
+        }
+
+        res.json(data);
+
+    }
+);
+
+
 
 /*
     SERVER

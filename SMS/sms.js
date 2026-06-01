@@ -24,6 +24,8 @@ document.addEventListener(
 
         bindCounters();
 
+        loadSmsHistory();
+
     }
 );
 
@@ -202,7 +204,7 @@ function renderUsers(users){
                     </span>
 
                     <span class="user-item-phone">
-                        ${user.phone || "No phone"}
+                        ${user.mobile_number || "No phone"}
                     </span>
 
                 </div>
@@ -552,6 +554,92 @@ function showResult(
             "result-box hidden";
 
     }, 5000);
+
+}
+
+// ─────────────────────────────
+// SMS HISTORY
+// ─────────────────────────────
+
+async function loadSmsHistory(){
+
+    try{
+
+        const res =
+            await fetch(
+                `${SMS_API}/sms-logs`
+            );
+
+        const logs =
+            await res.json();
+
+        const historyBox =
+            document.getElementById(
+                "smsHistory"
+            );
+
+        if(!historyBox) return;
+
+        if(logs.length === 0){
+
+            historyBox.innerHTML = `
+
+                <div class="user-list-loading">
+
+                    No SMS history found.
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        historyBox.innerHTML =
+            logs.map(log => `
+
+                <div class="user-item">
+
+                    <div class="user-item-info">
+
+                        <span class="user-item-name">
+
+                            ${log.recipient_name}
+
+                        </span>
+
+                        <span class="user-item-phone">
+
+                            ${log.phone_number}
+
+                        </span>
+
+                        <span class="user-item-phone">
+
+                            ${log.message}
+
+                        </span>
+
+                        <span class="user-item-phone">
+
+                            ${new Date(
+                                log.sent_at
+                            ).toLocaleString()}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `).join("");
+
+    }catch(error){
+
+        console.log(error);
+
+    }
 
 }
 

@@ -402,3 +402,119 @@ textarea:focus { border-color: var(--primary); background: var(--white); }
     background:#fff;
 
 }
+
+/* ─────────────────────────────
+   RECIPIENT DROPDOWN
+───────────────────────────── */
+
+.recipient-dropdown{
+
+    width:100%;
+
+    padding:12px 14px;
+
+    border:1px solid #2d3748;
+
+    border-radius:10px;
+
+    background:#111827;
+
+    color:#fff;
+
+    font-size:14px;
+
+    outline:none;
+
+    transition:0.2s ease;
+
+}
+
+.recipient-dropdown:focus{
+
+    border-color:#FF8C00;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(255,140,0,0.15);
+
+}
+
+
+/* ─────────────────────────────
+   SMS HISTORY
+───────────────────────────── */
+
+.sms-history-card{
+
+    margin-top:20px;
+
+}
+
+#smsHistory{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+    margin-top:10px;
+
+}
+
+
+/* ─────────────────────────────
+   HISTORY ITEM
+───────────────────────────── */
+
+#smsHistory .user-item{
+
+    background:#111827;
+
+    border:1px solid #1f2937;
+
+    border-radius:12px;
+
+    padding:14px;
+
+    transition:0.2s ease;
+
+}
+
+#smsHistory .user-item:hover{
+
+    border-color:#FF8C00;
+
+    transform:translateY(-1px);
+
+}
+
+#smsHistory .user-item-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:6px;
+
+}
+
+#smsHistory .user-item-name{
+
+    color:#fff;
+
+    font-weight:600;
+
+    font-size:14px;
+
+}
+
+#smsHistory .user-item-phone{
+
+    color:#9ca3af;
+
+    font-size:13px;
+
+    word-break:break-word;
+
+}
